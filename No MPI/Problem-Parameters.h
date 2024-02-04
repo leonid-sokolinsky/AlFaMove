@@ -115,7 +115,7 @@ This source code has been produced with using BSF-skeleton
 #define PP_MM (2*(PP_M+PP_N))	// Maximal number of inequalities
 #define PP_KK 1024				// Maximal number of hyperedges that include surface point: 2^10 = 1024
 #define PP_MAX_NUM_SHIFTS_SAME_LENGTH	5			// Maximal number of shifts with the same length
-#define PP_MAX_SHIFTS_NUMBER			10000		// Maximum number of shifts
+#define PP_MAX_SHIFTS_NUMBER			1000000		// Maximum number of shifts
 #define PP_MAX_ITER_COUNT				10000000000 // Maximal count of iterations
 //-------------------------- Input/Outpoot Parameters ---------------------------
 #define PP_OUTPUT_LIMIT	8	// Number of Elements to output
