@@ -15,6 +15,8 @@ This source code has been produced with using BSF-skeleton
 //#define PP_USE_LEASTPROJECTION
 
 //=========================== Problem Parameters =========================
+// The following LP problems were obtained using BSF-LPP-Generator.
+// The initial surface points for these problems were calculated using BSF-Apex-Quest.
 
 /*============================== rnd3-0-1 LP problem ==============================*
 // Solution:   200		200		100
@@ -82,16 +84,18 @@ This source code has been produced with using BSF-skeleton
 //------------------------------------------------------------------/**/
 
 /*============================== rnd5-5-1 LP problem ==============================*
-// Solution:   Not solved!
+// Surface movement method cannot solve problem rnd5-5-1!!!
+// Solution:   122.998630527   200   170.935274444	0	165.23198902
+// This solution was found using the BSF-LPP-Validator.
 #define PP_PROBLEM_NAME	"rnd5-5-1"
 #define PP_M 10		// Number of equations (number of rows in *.mtx)
 #define PP_N 15		// Number of variables (number of cols in *.mtx)
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
 #define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
-#define PP_OPTIMAL_OBJ_VALUE		0			// Exact maximum value of objective function
+#define PP_OPTIMAL_OBJ_VALUE		2526.8335783751	// Exact maximum value of objective function
 #define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
-#define PP_OBJECTIVE_VECTOR_LENGTH	100			// Starting length of Objective Vector
+#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
 //------------------------------------------------------------------/**/
 
 /*============================== rnd5-5-2 LP problem ==============================*/
@@ -104,14 +108,14 @@ This source code has been produced with using BSF-skeleton
 #define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
 #define PP_OPTIMAL_OBJ_VALUE		2233.2757094184	// Exact maximum value of objective function
 #define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
-#define PP_OBJECTIVE_VECTOR_LENGTH	10			// Starting length of Objective Vector
+#define PP_OBJECTIVE_VECTOR_LENGTH	10				// Starting length of Objective Vector
 //------------------------------------------------------------------/**/
 
 //================================ Common Paramrters ===========================
 #define PP_MM (2*(PP_M+PP_N))	// Maximal number of inequalities
 #define PP_KK 1024				// Maximal number of hyperedges that include surface point: 2^10 = 1024
 #define PP_MAX_NUM_SHIFTS_SAME_LENGTH	5			// Maximal number of shifts with the same length
-#define PP_MAX_SHIFTS_NUMBER			1000000		// Maximum number of shifts
+#define PP_MAX_SHIFTS_NUMBER			10000		// Maximum number of shifts
 #define PP_MAX_ITER_COUNT				10000000000 // Maximal count of iterations
 //-------------------------- Input/Outpoot Parameters ---------------------------
 #define PP_OUTPUT_LIMIT	8	// Number of Elements to output
