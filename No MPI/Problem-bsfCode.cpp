@@ -18,6 +18,7 @@ void PC_bsf_SetInitParameter(PT_bsf_parameter_T* parameter) {
 }
 
 void PC_bsf_Init(bool* success) {
+	PD_problemName = PP_PROBLEM_NAME;
 	*success = MTX_Load__Problem();
 	if (*success == false)
 		return;
