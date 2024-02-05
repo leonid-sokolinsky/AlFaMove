@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe
-Theme:  Theme: Surface movement method (No MPI)
+Theme: Surface movement method (No MPI)
 Module: Problem-bsfTypes.h (Predefined BSF Problem Types)
 Prefix: PT_bsf
 Author: Leonid B. Sokolinsky

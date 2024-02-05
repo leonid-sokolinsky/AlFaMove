@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe
-Theme:  Theme: Surface movement method (No MPI)
+Theme: Surface movement method (No MPI)
 Module: Problem-Parameters.h (Problem Parameters)
 Prefix: PP
 Author: Leonid B. Sokolinsky
@@ -129,15 +129,12 @@ This source code has been produced with using BSF-skeleton
 #define PP_MTX_POSTFIX_HI		"_hi.mtx"
 #define PP_MTX_POSTFIX_C		"_c.mtx"
 #define PP_MTX_POSTFIX_SP		"_sp.mtx" // Surface point
-#define PP_MTX_POSTFIX_TR		"_tr.mtx" // Trace
 //-------------------------- Jobs  -----------------------
-#define PP_JOB_GET_MAX_SUBSET	0 
-//-------------------------- Process states --------------------------
-#define PP_STATE_GET_NEXT_POINT						0
+#define PP_JOB_GET_BEST_DIRECTION	0 
 //------------- Vector Projection Onto Halfspace exit codes -------------
 #define PP_EXITCODE_DEGENERATE_INEQUALITY	0
 #define PP_EXITCODE_INSIDE_HALFSPACE		1
-#define PP_EXITCODE_TRUE_PROJECTING	2
+#define PP_EXITCODE_NATURAL_PROJECTING		2
 #define PP_EXITCODE_PARALLEL				3
 #define PP_EXITCODE_RECESSIVE				4
 #define PP_EXITCODE_ON_HYPERPLANE			5

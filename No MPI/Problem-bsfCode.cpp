@@ -1,6 +1,6 @@
 ﻿/*==============================================================================
 Project: LiFe
-Theme: Theme: Surface movement method (No MPI)
+Theme: Surface movement method (No MPI)
 Module: Problem-bsfCode.cpp (Implementation of Problem Code)
 Prefix: PC
 Author: Leonid B. Sokolinsky
@@ -29,8 +29,6 @@ void PC_bsf_Init(bool* success) {
 		abort();
 	}
 
-	UnitObjVector(PD_e_c);
-
 	MakeHyperplaneList(&PD_mh);
 
 	if (!MakeHyperplaneSubsetCodeList(PD_mh, &PD_K)) {
@@ -39,6 +37,7 @@ void PC_bsf_Init(bool* success) {
 	}
 
 	PD_objF_u = ObjF(PD_u);
+	PD_objF_initialValue = PD_objF_u;
 }
 
 void PC_bsf_SetListSize(int* listSize) {
@@ -308,7 +307,6 @@ void PC_bsf_ProcessResults(
 ) {
 
 	if (PD_objF_u >= reduceResult->objF - PP_EPS_ZERO) {
-		PD_problemIsSolved = true;
 		*exit = true;
 		return;
 	}
@@ -474,27 +472,20 @@ void PC_bsf_IterOutput_3(PT_bsf_reduceElem_T_3* reduceResult, int reduceCounter,
 }
 
 void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, PT_bsf_parameter_T parameter, double t) {
+	cout << setprecision(PP_SETW/2);
+
 	cout << "=============================================" << endl;
 	cout << "Elapsed time: " << t << endl;
-	cout << "Current objective value: " << setw(PP_SETW) << PD_objF_u << endl;
-	cout << "Optimal objective value: " << setw(PP_SETW) << PP_OPTIMAL_OBJ_VALUE << endl;
+	cout << "Current objective value: " << PD_objF_u << endl;
+	cout << "Optimal objective value: " << PP_OPTIMAL_OBJ_VALUE << endl;
 	cout << "Relative error = " << relativeError(PP_OPTIMAL_OBJ_VALUE, PD_objF_u) << endl;
 	cout << "=============================================" << endl;
 
-	if (PD_problemIsSolved) {
-		cout << "Solution:\t";
-		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++) cout << setw(PP_SETW) << PD_u[j];
-		if (PP_OUTPUT_LIMIT < PD_n) cout << "	...";
-		cout << endl;
-		cout << "Polytope residual: " << PolytopeResidual(PD_u) << endl;
-		cout << "u on hyperplanes: ";
-		for (int i = 0; i < PD_m; i++) {
-			if (Vector_OnHyperplane(PD_u, PD_A[i], PD_b[i]))
-				cout << i << " ";
-		}
-		cout << endl;
+	if (fabs(PD_objF_u - PD_objF_initialValue) < PP_EPS_ZERO) {
+		cout << "The initial value of the objective function was not refined!\n";
+		return;
 	}
-	else {
+
 		cout << "Surface point:\t";
 		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++) cout << setw(PP_SETW) << PD_u[j];
 		if (PP_OUTPUT_LIMIT < PD_n) cout << "	...";
@@ -509,9 +500,8 @@ void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, 
 
 #ifdef OUTPUT
 		if (MTX_Save_sp(PD_u, t))
-			cout << "Calculated surface point is saved into file *.sp'" << endl;
+			cout << "Calculated surface point is saved into file *.sp" << endl;
 #endif // OUTPUT
-	}
 }
 
 void PC_bsf_ProblemOutput_1(PT_bsf_reduceElem_T_1* reduceResult, int reduceCounter, PT_bsf_parameter_T parameter, double t) {
@@ -606,7 +596,7 @@ inline void Pseudoprojection(PT_vector_T v, PT_vector_T w) {
 			PT_float_T halfspaceResidual =
 				Vector_OrthogonalProjectionOntoHalfspace(w, PD_A[i], PD_b[i], r, &exitcode);
 			assert(exitcode != PP_EXITCODE_DEGENERATE_INEQUALITY);
-			if (exitcode == PP_EXITCODE_TRUE_PROJECTING) {
+			if (exitcode == PP_EXITCODE_NATURAL_PROJECTING) {
 				for (int j = 0; j < PD_n; j++) {
 					sum_r[j] += r[j];
 				}
@@ -1447,7 +1437,7 @@ Vector_OrthogonalProjectionOntoHalfspace(PT_vector_T z, PT_vector_T a, PT_float_
 	factor = -a_dot_z_minus_b / aNormSquare; // (b - <z,a>) / ||a||^2
 	for (int j = 0; j < PD_n; j++) // a(b - <z,a>) / ||a||^2
 		r[j] = factor * a[j];
-	*exitCode = PP_EXITCODE_TRUE_PROJECTING;
+	*exitCode = PP_EXITCODE_NATURAL_PROJECTING;
 	return a_dot_z_minus_b;
 }
 
@@ -1508,7 +1498,7 @@ inline void Vector_ObliqueProjectionOntoHalfspace(PT_vector_T z, PT_vector_T a, 
 	for (int j = 0; j < PD_n; j++)
 		o[j] = -factor * g[j];
 
-	*exitCode = PP_EXITCODE_TRUE_PROJECTING;
+	*exitCode = PP_EXITCODE_NATURAL_PROJECTING;
 	return;
 };
 
@@ -1516,11 +1506,6 @@ inline PT_float_T Distance(PT_vector_T x, PT_vector_T y) {
 	PT_vector_T z;
 	Vector_Subtraction(x, y, z);
 	return Vector_Norm(z);
-}
-
-inline void UnitObjVector(PT_vector_T objUnitVector) { // Calculating Objective Unit Vector
-	double c_norm = Vector_Norm(PD_c);
-	Vector_DivideByNumber(PD_c, c_norm, objUnitVector);
 }
 
 inline void ShrinkUnitVector(PT_vector_T objUnitVector, int shrinkBound) { // Shrink Objective Unit Vector from 0 to (shrinkBound-1)
@@ -1548,33 +1533,6 @@ inline void SkipComments(FILE* stream) {
 	};
 	fsetpos(stream, &pos);
 }
-
-/*
-inline void SortObjVarI() { // Sorting objective variables in absolute descending order
-	PT_float_T bigestAbsVal;
-	int iBig;
-
-	for (int j = 0; j < PD_n; j++)
-		PD_obj_i[j] = j;
-
-	for (int J = 0; J < PD_n - 1; J++) {
-		bigestAbsVal = fabs(PD_c[J]);
-		iBig = J;
-		for (int j = J + 1; j < PD_n; j++) {
-			if (fabs(PD_c[j]) > bigestAbsVal) {
-				bigestAbsVal = fabs(PD_c[j]);
-				iBig = j;
-			}
-		}
-		if (iBig != J) {
-			int j;
-			j = PD_obj_i[iBig];
-			PD_obj_i[iBig] = PD_obj_i[J];
-			PD_obj_i[J] = j;
-		}
-	}
-}
-*/
 
 inline bool MovingOnSurface(PT_vector_T directionVector, PT_vector_T point) {
 	int numShiftsSameRate = 0; // Number of shifts with the same length

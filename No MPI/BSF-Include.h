@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe
-Theme:  Theme: Surface movement method (No MPI)
+Theme: Surface movement method (No MPI)
 Module: BSF-Include.h (Problem Independent "Include" Files)
 Author: Leonid B. Sokolinsky 
 

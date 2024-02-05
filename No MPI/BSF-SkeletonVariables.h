@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe
-Theme:  Theme: Surface movement method (No MPI)
+Theme: Surface movement method (No MPI)
 Module: BSF-SceletonVariables.h (Skeleton Variables)
 Prefix: BSF_sv
 Author: Leonid B. Sokolinsky

@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe
-Theme: Theme: Surface movement method (No MPI)
+Theme: Surface movement method (No MPI)
 Module: BSF-Code.cpp (Problem Independent Code)
 Prefix: BC
 Author: Leonid B. Sokolinsky
@@ -411,7 +411,7 @@ static void BC_ProcessExtendedReduceList_3(BT_extendedReduceElem_T_3* reduceList
 };
 
 static void BC_Init(bool* success) {// Performs the memory allocation and the initialization of the skeleton data structures and variables.
-//	cout << setprecision(PP_BSF_PRECISION);
+	cout << setprecision(PP_BSF_PRECISION);
 	BD_masterRank = 0;
 	BD_numOfWorkers = 1;
 	PC_bsf_SetListSize(&BD_listSize);
