@@ -18,14 +18,14 @@ void PC_bsf_SetInitParameter(PT_bsf_parameter_T* parameter) {
 }
 
 void PC_bsf_Init(bool* success) {
-	//
-
 	*success = MTX_Load__Problem();
 	if (*success == false)
 		return;
 
 	if (!PointInPolytope(PD_u)) {
-		cout << "Starting point does not belong to the feasible polytope with precision PP_EPS_ZERO = " << PP_EPS_ZERO << "!!!\n";
+		// No MPI
+		cout 
+			<< "Starting point does not belong to the feasible polytope with precision PP_EPS_ZERO = " << PP_EPS_ZERO << "!!!\n";
 		abort();
 	}
 
@@ -42,7 +42,9 @@ void PC_bsf_Init(bool* success) {
 
 void PC_bsf_SetListSize(int* listSize) {
 	if (PD_K == 0) {
-		cout << "Map-list has zero size!!!\n";
+		// No MPI
+		cout
+			<< "Map-list has zero size!!!\n";
 		abort();
 	}
 	*listSize = PD_K;
@@ -71,6 +73,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	PT_float_T objF_u1 = ObjF(u);
 
 #ifdef PP_DEBUG
+	// No MPI
 	cout << "Subset: {";
 #endif // PP_DEBUG
 
@@ -83,7 +86,9 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 			int ih = PD_index_hyperplanesIncludeSP[i];
 
 #ifdef PP_DEBUG
-			if(outpoot > 0) cout << ", ";
+			if (outpoot > 0) 
+				// No MPI
+				cout << ", ";
 			outpoot++;
 #endif // PP_DEBUG
 
@@ -99,12 +104,15 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	MakeObjVector(PD_c, PP_OBJECTIVE_VECTOR_LENGTH, PD_objVector);
 
 #ifdef PP_DEBUG
-	cout << "}\n";
-	cout << "Objective vector length : " << Vector_Norm(PD_objVector) << endl;
-	cout << "u =\t    ";
+	// No MPI
+	cout << "}\nObjective vector length : " << Vector_Norm(PD_objVector) << Vector_Norm(PD_objVector) << "\nu =\t    ";
 	for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
+		// No MPI
 		cout << setw(PP_SETW) << u[j];
-	if (PP_OUTPUT_LIMIT < PD_n) cout << " ...";
+	if (PP_OUTPUT_LIMIT < PD_n) 
+		// No MPI
+		cout << " ...";
+	// No MPI
 	cout << "\tF(u) = " << setw(PP_SETW) << objF_u1 << endl;
 #endif // PP_DEBUG
 
@@ -114,10 +122,15 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 
 		/**
 #ifdef PP_DEBUG
+		// No MPI
 		cout << "v =\t    ";
 		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
+			// No MPI
 			cout << setw(PP_SETW) << v[j];
-		if (PP_OUTPUT_LIMIT < PD_n) cout << " ...";
+		if (PP_OUTPUT_LIMIT < PD_n) 
+			// No MPI
+			cout << " ...";
+		// No MPI
 		cout << "\tF(v) = " << setw(PP_SETW) << ObjF(v) << endl;
 #endif // PP_DEBUG /**/
 
@@ -131,12 +144,16 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 
 			/*
 #ifdef PP_DEBUG
+			// No MPI
 			cout << "w =\t    ";
 			for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
+				// No MPI
 				cout << setw(PP_SETW) << w[j];
-			if (PP_OUTPUT_LIMIT < PD_n) cout << " ...";
-			cout << "\tF(w) = " << setw(PP_SETW) << ObjF(w) << endl;
-			cout << "ObjF(u) = " << objF_u1 << " >= ObjF(w) = " << objF_w << endl;
+			if (PP_OUTPUT_LIMIT < PD_n) 
+				// No MPI
+				cout << " ...";
+			// No MPI
+			cout << "\tF(w) = " << setw(PP_SETW) << ObjF(w) << "\nObjF(u) = " << objF_u1 << " >= ObjF(w) = " << objF_w << endl;
 #endif // PP_DEBUG /**/
 
 			if (Vector_Norm(PD_objVector) < PP_EPS_ZERO) {
@@ -146,12 +163,14 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 				reduceElem->objF = objF_u1;
 
 #ifdef PP_DEBUG
+				// No MPI
 				cout << "u =\t    ";
 				for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
+					// No MPI
 					cout << setw(PP_SETW) << u[j];
 				if (PP_OUTPUT_LIMIT < PD_n) cout << " ...";
-				cout << "\tF(u) = " << setw(PP_SETW) << objF_u1 << endl;
-				cout << "Length of objective vector = " << Vector_Norm(PD_objVector) << " < PP_EPS_ZERO  ===>>> return!!!\n";
+				// No MPI
+				cout << "\tF(u) = " << setw(PP_SETW) << objF_u1 << "\nLength of objective vector = " << Vector_Norm(PD_objVector) << " < PP_EPS_ZERO  ===>>> return!!!\n";
 #endif // PP_DEBUG /**/
 				return;
 			}
@@ -159,6 +178,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 
 			/**
 #ifdef PP_DEBUG
+			// No MPI
 			cout << "Objective vector length : " << Vector_Norm(PD_objVector) << endl;
 #endif // PP_DEBUG /**/
 		}
@@ -297,7 +317,6 @@ void PC_bsf_ReduceF_3(PT_bsf_reduceElem_T_3* x, PT_bsf_reduceElem_T_3* y, PT_bsf
 	// not used
 }
 
-
 void PC_bsf_ProcessResults(
 	PT_bsf_reduceElem_T* reduceResult,
 	int reduceCounter, // Number of successfully produced Elements of Reduce List
@@ -331,7 +350,7 @@ void PC_bsf_ProcessResults(
 	cout << endl;
 #endif // PP_DEBUG
 
-	*exit = true;
+	* exit = true;
 }
 
 void PC_bsf_ProcessResults_1(
@@ -472,7 +491,7 @@ void PC_bsf_IterOutput_3(PT_bsf_reduceElem_T_3* reduceResult, int reduceCounter,
 }
 
 void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, PT_bsf_parameter_T parameter, double t) {
-	cout << setprecision(PP_SETW/2);
+	cout << setprecision(PP_SETW / 2);
 
 	cout << "=============================================" << endl;
 	cout << "Elapsed time: " << t << endl;
@@ -517,10 +536,7 @@ void PC_bsf_ProblemOutput_3(PT_bsf_reduceElem_T_3* reduceResult, int reduceCount
 }
 
 void PC_bsf_MainArguments(int argc, char* argv[]) {
-	if (argc > 1)
-		PD_problemName = argv[1];
-	else
-		PD_problemName = PP_PROBLEM_NAME;
+// not used
 }
 
 //----------------------- Assigning Values to BSF-skeleton Variables (Do not modify!) -----------------------
@@ -650,8 +666,7 @@ inline PT_float_T Vector_NormSquare(PT_vector_T x) {
 
 inline bool PointInHalfspace // If the point belongs to the Halfspace with prescigion of PP_EPS_ZERO
 (PT_vector_T x, PT_vector_T a, PT_float_T b) {
-	PT_float_T a_dot_x_minus_b = Vector_DotProduct(a, x) - b;
-	return a_dot_x_minus_b <= PP_EPS_ZERO;
+	return (Vector_DotProduct(a, x) - b <= PP_EPS_ZERO);
 }
 
 inline bool PointInPolytope(PT_vector_T x) { // If the point belongs to the polytope with prescigion of PP_EPS_ZERO
@@ -767,25 +782,12 @@ static bool MTX_Load__Problem() {
 		noe;	// Number of equations
 
 	//--------------- Reading A ------------------
-	if(!MTX_Load_A(&nor, &noc, &non, &noe))
+	if (!MTX_Load_A(&nor, &noc, &non, &noe))
 		return false;
-
-	/*debug*
-	for (int i = 0; i < PD_m; i++) {
-		for (int j = 0; j < PD_n; j++)
-			cout << PD_A[i][j] << " ";
-		cout << endl;
-	}
-	/*end debug*/
 
 	//--------------- Reading b ------------------
 	if (!MTX_Load_b(&nor, &noc, &noe))
 		return false;
-
-	/*debug*
-	for (int i = 0; i < PD_m; i++)
-		cout << PD_b[i] << endl;
-	/*end debug*/
 
 	//--------------- Reading lo ------------------
 	if (!MTX_Load_lo(&nor, &noc))
@@ -795,12 +797,6 @@ static bool MTX_Load__Problem() {
 	if (!MTX_Load_c(&nor, &noc))
 		return false;
 
-	/*debug*
-	for (int j = 0; j < PD_n; j++) 
-		cout << PD_c[j] << " ";
-	cout << endl;
-	/*end debug*/
-
 	//--------------- Reading hi ------------------
 	if (!MTX_Load_hi(&nor, &noc))
 		return false;
@@ -808,8 +804,6 @@ static bool MTX_Load__Problem() {
 	//---------- Conversion to inequalities -----------
 	if (!Conversion()) 
 		return false;
-
-	//SortObjVarI();
 
 	//--------------- Reading surfase point ------------------
 	if (!MTX_Load_sp(&nor, &noc))
@@ -837,7 +831,7 @@ inline bool MTX_Load_A( // Reading A
 	stream = fopen(mtxFile, "r+b");
 
 	if (stream == NULL) {
-		//
+		// No MPI
 		cout
 			<< "Failure of opening file '" << mtxFile << "'.\n";
 		return false;
@@ -845,28 +839,28 @@ inline bool MTX_Load_A( // Reading A
 
 	SkipComments(stream);
 	if (fscanf(stream, "%d%d%d", nor, noc, non) < 3) {
-		//
+		// No MPI
 		cout
 			<< "Unexpected end of file " << mtxFile << endl;
 		return false;
 	}
 
 	if (*nor >= *noc) {
-		//
+		// No MPI
 		cout
 			<< "Number of rows m = " << *nor << " must be < " << "Number of columns n = " << *noc << "\n";
 		return false;
 	}
 
 	if (*noc != PP_N) {
-		//
+		// No MPI
 		cout
 			<< "Invalid input data: PP_N must be = " << *noc << "\n";
 		return false;
 	}
 
 	if (*nor != PP_M) {
-		//
+		// No MPI
 		cout
 			<< "Invalid input data: PP_M must be = " << *nor << "\n";
 		return false;
@@ -876,7 +870,7 @@ inline bool MTX_Load_A( // Reading A
 	PD_n = *noc;
 
 	if (2 * *nor + *noc > PP_MM) {
-		//
+		// No MPI
 		cout
 			<< "Invalid input data: number of inequalities m = " << 2 * *nor + *noc
 			<< " must be < PP_MM + 1 =" << PP_MM + 1 << "\n";
@@ -887,7 +881,7 @@ inline bool MTX_Load_A( // Reading A
 		int i, j;
 
 		if (fscanf(stream, "%d%d%s", &i, &j, str) < 3) {
-			//	
+			// No MPI	
 			cout
 				<< "Unexpected end of file'" << mtxFile << "'." << endl;
 			return false;
@@ -896,13 +890,13 @@ inline bool MTX_Load_A( // Reading A
 		i -= 1;
 		j -= 1;
 		if (i < 0) {
-			//
+			// No MPI
 			cout
 				<< "Negative row index in'" << mtxFile << "'.\n" << endl;
 			return false;
 		}
 		if (j < 0) {
-			//
+			// No MPI
 			cout
 				<< "Negative column index in'" << mtxFile << "'.\n" << endl;
 			return false;
@@ -933,7 +927,7 @@ inline bool MTX_Load_b(
 	stream = fopen(mtxFile, "r+b");
 
 	if (stream == NULL) {
-		//
+		// No MPI
 		cout
 			<< "Failure of opening file '" << mtxFile << "'.\n";
 		return false;
@@ -941,19 +935,19 @@ inline bool MTX_Load_b(
 
 	SkipComments(stream);
 	if (fscanf(stream, "%d%d", nor, noc) < 2) {
-		//
+		// No MPI
 		cout
 			<< "Unexpected end of file'" << mtxFile << "'." << endl;
 		return false;
 	}
 	if (*noe != *nor) {
-		//
+		// No MPI
 		cout
 			<< "Incorrect number of rows in'" << mtxFile << "'.\n";
 		return false;
 	}
 	if (*noc != 1) {
-		//
+		// No MPI
 		cout
 			<< "Incorrect number of columnws in'" << mtxFile << "'.\n";
 		return false;
@@ -961,7 +955,7 @@ inline bool MTX_Load_b(
 
 	for (int i = 0; i < *noe; i++) {
 		if (fscanf(stream, "%s", str) < 1) {
-			//
+			// No MPI
 			cout
 				<< "Unexpected end of file '" << mtxFile << "'." << endl;
 			return false;
@@ -990,7 +984,7 @@ inline bool MTX_Load_lo(
 	stream = fopen(mtxFile, "r+b");
 
 	if (stream == NULL) {
-		//
+		// No MPI
 		cout
 			<< "Failure of opening file '" << mtxFile << "'.\n";
 		return false;
@@ -998,19 +992,19 @@ inline bool MTX_Load_lo(
 
 	SkipComments(stream);
 	if (fscanf(stream, "%d%d", nor, noc) < 2) {
-		//
+		// No MPI
 		cout
 			<< "Unexpected end of file'" << mtxFile << "'." << endl;
 		return false;
 	}
 	if (*nor != PD_n) {
-		//
+		// No MPI
 		cout
 			<< "Incorrect number of rows in'" << mtxFile << "'.\n";
 		return false;
 	}
 	if (*noc != 1) {
-		//
+		// No MPI
 		cout
 			<< "Incorrect number of columnws in'" << mtxFile << "'.\n";
 		return false;
@@ -1018,7 +1012,7 @@ inline bool MTX_Load_lo(
 
 	for (int j = 0; j < PD_n; j++) {
 		if (fscanf(stream, "%s", str) < 1) {
-			//
+			// No MPI
 			cout
 				<< "Unexpected end of file '" << mtxFile << "'." << endl;
 			return false;
@@ -1047,7 +1041,7 @@ inline bool MTX_Load_hi(
 	stream = fopen(mtxFile, "r+b");
 
 	if (stream == NULL) {
-		//
+		// No MPI
 		cout
 			<< "Failure of opening file '" << mtxFile << "'.\n";
 		return false;
@@ -1055,19 +1049,19 @@ inline bool MTX_Load_hi(
 
 	SkipComments(stream);
 	if (fscanf(stream, "%d%d", nor, noc) < 2) {
-		//
+		// No MPI
 		cout
 			<< "Unexpected end of file'" << mtxFile << "'." << endl;
 		return false;
 	}
 	if (*nor != PD_n) {
-		//
+		// No MPI
 		cout
 			<< "Incorrect number of rows in'" << mtxFile << "'.\n";
 		return false;
 	}
 	if (*noc != 1) {
-		//
+		// No MPI
 		cout
 			<< "Incorrect number of columnws in'" << mtxFile << "'.\n";
 		return false;
@@ -1075,7 +1069,7 @@ inline bool MTX_Load_hi(
 
 	for (int j = 0; j < PD_n; j++) {
 		if (fscanf(stream, "%s", str) < 1) {
-			//
+			// No MPI
 			cout
 				<< "Unexpected end of file '" << mtxFile << "'." << endl;
 			return false;
@@ -1103,7 +1097,7 @@ inline bool MTX_Load_c(
 	stream = fopen(mtxFile, "r+b");
 
 	if (stream == NULL) {
-		//
+		// No MPI
 		cout
 			<< "Failure of opening file '" << mtxFile << "'.\n";
 		return false;
@@ -1111,19 +1105,19 @@ inline bool MTX_Load_c(
 
 	SkipComments(stream);
 	if (fscanf(stream, "%d%d", nor, noc) < 2) {
-		//
+		// No MPI
 		cout
 			<< "Unexpected end of file'" << mtxFile << "'." << endl;
 		return false;
 	}
 	if (*nor != PD_n) {
-		//
+		// No MPI
 		cout
 			<< "Incorrect number of rows in'" << mtxFile << "'.\n";
 		return false;
 	}
 	if (*noc != 1) {
-		//
+		// No MPI
 		cout
 			<< "Incorrect number of columnws in'" << mtxFile << "'.\n";
 		return false;
@@ -1131,7 +1125,7 @@ inline bool MTX_Load_c(
 
 	for (int j = 0; j < PD_n; j++) {
 		if (fscanf(stream, "%s", str) < 0) {
-			//
+			// No MPI
 			cout
 				<< "Unexpected end of file" << endl;
 			return false;
@@ -1160,7 +1154,7 @@ inline bool MTX_Load_sp(
 	stream = fopen(mtxFile, "r+b");
 
 	if (stream == NULL) {
-		//
+		// No MPI
 		cout
 			<< "Failure of opening file '" << mtxFile << "'.\n";
 		return false;
@@ -1168,19 +1162,19 @@ inline bool MTX_Load_sp(
 
 	SkipComments(stream);
 	if (fscanf(stream, "%d%d", nor, noc) < 2) {
-		//
+		// No MPI
 		cout
 			<< "Unexpected end of file'" << mtxFile << "'." << endl;
 		return false;
 	}
 	if (*nor != PD_n) {
-		//
+		// No MPI
 		cout
 			<< "Incorrect number of rows in'" << mtxFile << "'.\n";
 		return false;
 	}
 	if (*noc != 1) {
-		//
+		// No MPI
 		cout
 			<< "Incorrect number of columnws in'" << mtxFile << "'.\n";
 		return false;
@@ -1188,7 +1182,7 @@ inline bool MTX_Load_sp(
 
 	for (int j = 0; j < PD_n; j++) {
 		if (fscanf(stream, "%s", str) < 0) {
-			//
+			// No MPI
 			cout
 				<< "Unexpected end of file" << endl;
 			return false;
@@ -1234,18 +1228,6 @@ static bool Conversion() { // Transformation to inequalities & dimensionality re
 			fvA[fvEqI] = PD_A[fvEqI][jc];
 	}
 
-	/*debug*
-	for (int j = 0; j < PD_n; j++)
-		cout << Flag[j] << " ";
-	cout << endl;
-	/*end debug*/
-
-	/*debug*
-	for (int i = 0; i < PD_m; i++)
-		cout << fvA[i] << endl;
-	/*end debug*/
-
-
 	static bool PD_delete[PP_MM]; // Rows to delete
 	PT_float_T s;
 
@@ -1255,7 +1237,7 @@ static bool Conversion() { // Transformation to inequalities & dimensionality re
 			s += fabs(PD_A[i][j]);
 		if (s == 0) {
 			if (PD_b[i] != 0) {
-				//
+				// No MPI
 				cout
 					<< "Inconsistent equation " << i << ": " << s << " = " << PD_b[i] << endl;
 				return false;
@@ -1296,16 +1278,6 @@ static bool Conversion() { // Transformation to inequalities & dimensionality re
 		PD_hi[PD_n] = 0;
 	}
 
-	/*debug*
-	for (int i = 0; i < PD_m; i++) {
-		cout << i << ")\t";
-		for (int j = 0; j < PD_n; j++)
-			cout << PD_A[i][j] << " ";
-		cout << endl;
-	}
-	cout << "----------------------------------------\n";
-	/*end debug*/
-
 	int m = PD_m;
 	for (int i = 0; i < m; i++) { // Conversion to inequalities
 
@@ -1324,16 +1296,6 @@ static bool Conversion() { // Transformation to inequalities & dimensionality re
 		}
 	}
 
-	/*debug*
-	for (int i = 0; i < PD_m; i++) {
-		cout << i << ")\t";
-		for (int j = 0; j < PD_n; j++)
-			cout << PD_A[i][j] << " ";
-		cout << endl;
-	}
-	cout << "----------------------------------------\n";
-	/*end debug*/
-
 	for (int i = 0; i < PD_m; i++) // Remove negative sign for zero value
 		for (int j = 0; j < PD_n; j++)
 			if (PD_A[i][j] == 0)
@@ -1349,7 +1311,6 @@ static bool Conversion() { // Transformation to inequalities & dimensionality re
 			PD_b[i + PD_m] = -PD_lo[i];
 	}
 	PD_m += PD_n; assert(PD_m <= PP_MM);
-	assert(PD_m <= PP_MM);
 
 	for (int i = 0; i < PD_n; i++) { // Adding higher bound conditions
 		if (PD_hi[i] != PP_INFINITY) {
@@ -1360,23 +1321,6 @@ static bool Conversion() { // Transformation to inequalities & dimensionality re
 			PD_m++; assert(PD_m <= PP_MM);
 		}
 	}
-
-	/*debug*
-	for (int i = 0; i < PD_m; i++) {
-		cout << i << ")\t";
-		for (int j = 0; j < PD_n; j++)
-			cout << PD_A[i][j] << " ";
-		cout << endl;
-	}
-	cout << "----------------------------------------\n";
-	/*end debug*/
-
-	/*debug*
-	//
-	for (int j = 0; j < PD_n; j++)
-		cout << PD_c[j] << endl;
-	/*end debug*/
-
 	return true;
 }
 
@@ -1506,15 +1450,6 @@ inline PT_float_T Distance(PT_vector_T x, PT_vector_T y) {
 	PT_vector_T z;
 	Vector_Subtraction(x, y, z);
 	return Vector_Norm(z);
-}
-
-inline void ShrinkUnitVector(PT_vector_T objUnitVector, int shrinkBound) { // Shrink Objective Unit Vector from 0 to (shrinkBound-1)
-	for (int j = 0; j < shrinkBound; j++)
-		objUnitVector[j] = 0;
-	for (int j = shrinkBound; j < PD_n; j++)
-		objUnitVector[j] = PD_c[j];
-	double norm = Vector_Norm(objUnitVector);
-	Vector_DivideEquals(objUnitVector, norm);
 }
 
 inline void MakeObjVector(PT_vector_T c, PT_float_T length, PT_vector_T objVector) { // Calculating Objective Vector with given length

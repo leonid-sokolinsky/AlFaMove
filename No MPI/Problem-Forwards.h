@@ -32,7 +32,6 @@ double		ProblemScale();
 void		Pseudoprojection(PT_vector_T v, PT_vector_T w);
 PT_float_T	relativeError(PT_float_T trueValue, PT_float_T calcValue);
 void		Shift(PT_vector_T basePoint, PT_vector_T direction, PT_float_T shiftRate, PT_vector_T endPoint);
-void		ShrinkUnitVector(PT_vector_T objUnitVector, int shrinkBound);
 void		SkipComments(FILE* stream);
 void		Vector_Addition(PT_vector_T x, PT_vector_T y, PT_vector_T z);
 void		Vector_Copy(PT_vector_T fromPoint, PT_vector_T toPoint);

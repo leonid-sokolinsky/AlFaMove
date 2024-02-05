@@ -7,7 +7,7 @@ Author: Leonid B. Sokolinsky
 This source code has been produced with using BSF-skeleton
 ==============================================================================*/
 //-------------------------- Compilation Modes -----------------------
-//#define PP_DEBUG
+#define PP_DEBUG
 #define OUTPUT
 #define PP_PATH "C:/TEMP/"
 //#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Problems/"
