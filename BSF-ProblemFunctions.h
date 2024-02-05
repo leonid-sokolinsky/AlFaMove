@@ -2,7 +2,7 @@
 Project: LiFe
 Theme: Surface movement method
 Module: BSF-ProblemFunctions.h (Predefined Problem Function Forwards)
-Author: Leonid B. Sokolinsky
+Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
 This source code is a part of BSF Skeleton (https://github.com/leonid-sokolinsky/BSF-skeleton)
 ==============================================================================*/
 #include "Problem-bsfTypes.h"	// Predefined Problem Types

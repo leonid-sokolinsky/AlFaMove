@@ -3,7 +3,7 @@ Project: LiFe
 Theme: Surface movement method
 Module: Problem-bsfParameters.h (BSF-skeleton Parameters)
 Prefix: PP_BSF
-Author: Leonid B. Sokolinsky
+Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
 This source code has been produced with using BSF-skeleton
 ==============================================================================*/
 

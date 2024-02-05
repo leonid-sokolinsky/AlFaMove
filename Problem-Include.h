@@ -2,7 +2,7 @@
 Project: LiFe
 Theme: Surface movement method
 Module: Problem-Include.h ("Includ" Files of the Problem)
-Author: Leonid B. Sokolinsky
+Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
 This source code has been produced with using BSF-skeleton
 ==============================================================================*/
 #pragma once

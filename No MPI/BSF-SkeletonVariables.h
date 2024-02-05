@@ -3,7 +3,7 @@ Project: LiFe
 Theme: Surface movement method (No MPI)
 Module: BSF-SceletonVariables.h (Skeleton Variables)
 Prefix: BSF_sv
-Author: Leonid B. Sokolinsky
+Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
 This source code is a part of BSF Skeleton (https://github.com/leonid-sokolinsky/BSF-skeleton)
 ==============================================================================*/
 static int BSF_sv_addressOffset;			// Contains the number of the first element of the map-sublist scheduled to the current worker process.

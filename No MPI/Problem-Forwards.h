@@ -2,7 +2,7 @@
 Project: LiFe
 Theme: Surface movement method (No MPI)
 Module: Problem-Forwards.h (Problem Function Forwards)
-Author: Leonid B. Sokolinsky
+Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
 This source code has been produced with using BSF-skeleton
 ==============================================================================*/
 #include "Problem-bsfTypes.h"

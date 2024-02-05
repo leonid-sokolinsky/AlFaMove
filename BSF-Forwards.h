@@ -2,7 +2,7 @@
 Project: LiFe
 Theme: Surface movement method
 Module: BSF-Forwards.h (Problem Independent Function Forwards)
-Author: Leonid B. Sokolinsky 
+Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky 
 This source code is a part of BSF Skeleton (https://github.com/leonid-sokolinsky/BSF-skeleton)
 ==============================================================================*/
 #include "BSF-Types.h"					// Problem Independent Types 

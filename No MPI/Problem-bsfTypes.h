@@ -3,7 +3,7 @@ Project: LiFe
 Theme: Surface movement method (No MPI)
 Module: Problem-bsfTypes.h (Predefined BSF Problem Types)
 Prefix: PT_bsf
-Author: Leonid B. Sokolinsky
+Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
 This source code is a part of BSF Skeleton
 ==============================================================================*/
 #pragma once

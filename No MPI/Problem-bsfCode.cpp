@@ -3,7 +3,7 @@ Project: LiFe
 Theme: Surface movement method (No MPI)
 Module: Problem-bsfCode.cpp (Implementation of Problem Code)
 Prefix: PC
-Author: Leonid B. Sokolinsky
+Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
 This source code has been produced with using BSF-skeleton
 ==============================================================================*/
 #include "Problem-Data.h"			// Problem Types 

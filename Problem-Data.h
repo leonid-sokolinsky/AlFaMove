@@ -3,7 +3,7 @@ Project: LiFe
 Theme: Surface movement method
 Module: Problem-Data.h (Problem Data)
 Prefix: PD
-Author: Leonid B. Sokolinsky
+Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
 This source code has been produced with using BSF-skeleton
 ==============================================================================*/
 #include "Problem-Types.h"		// Problem Parameters 
