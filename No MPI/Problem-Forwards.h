@@ -8,7 +8,8 @@ This source code has been produced with using BSF-skeleton
 #include "Problem-bsfTypes.h"
 #include "Problem-Types.h"
 //====================== Problem Functions ===========================
-void		AddOppositeInequality(int hyperplaneIndex, int* m);
+void		AddOppositeInequality(int hyperplaneIndex, int m);
+void		ActivePseProjection(PT_vector_T v, PT_vector_T w);
 bool		Conversion();
 void		DirVectorCleanup(PT_vector_T x);
 PT_float_T	Distance(PT_vector_T x, PT_vector_T y);
@@ -25,8 +26,8 @@ bool		MTX_Save_sp(PT_vector_T x, double elapsedTime);
 void		MakeObjVector(PT_vector_T c, PT_float_T length, PT_vector_T objVector);
 bool		MovingOnSurface(PT_vector_T directionVector, PT_vector_T point);
 PT_float_T	ObjF(PT_vector_T x);
-bool		PointInHalfspace(PT_vector_T point, PT_vector_T a, PT_float_T b);
-bool		PointInPolytope(PT_vector_T x);
+bool		PointInHalfspace(PT_vector_T point, PT_vector_T a, PT_float_T b, PT_float_T eps);
+bool		PointInPolytope(PT_vector_T x, PT_float_T eps);
 PT_float_T	PolytopeResidual(PT_vector_T x);
 double		ProblemScale();
 void		Pseudoprojection(PT_vector_T v, PT_vector_T w);

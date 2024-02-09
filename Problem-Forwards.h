@@ -8,7 +8,8 @@ This source code has been produced with using BSF-skeleton
 #include "Problem-bsfTypes.h"
 #include "Problem-Types.h"
 //====================== Problem Functions ===========================
-void		AddOppositeInequality(int hyperplaneIndex, int* m);
+void		AddOppositeInequality(int hyperplaneIndex, int m);
+void		ActivePseProjection(PT_vector_T v, PT_vector_T w);
 bool		Conversion();
 void		DirVectorCleanup(PT_vector_T x);
 PT_float_T	Distance(PT_vector_T x, PT_vector_T y);
@@ -25,14 +26,13 @@ bool		MTX_Save_sp(PT_vector_T x, double elapsedTime);
 void		MakeObjVector(PT_vector_T c, PT_float_T length, PT_vector_T objVector);
 bool		MovingOnSurface(PT_vector_T directionVector, PT_vector_T point);
 PT_float_T	ObjF(PT_vector_T x);
-bool		PointInHalfspace(PT_vector_T point, PT_vector_T a, PT_float_T b);
-bool		PointInPolytope(PT_vector_T x);
+bool		PointInHalfspace(PT_vector_T point, PT_vector_T a, PT_float_T b, PT_float_T eps);
+bool		PointInPolytope(PT_vector_T x, PT_float_T eps);
 PT_float_T	PolytopeResidual(PT_vector_T x);
 double		ProblemScale();
 void		Pseudoprojection(PT_vector_T v, PT_vector_T w);
 PT_float_T	relativeError(PT_float_T trueValue, PT_float_T calcValue);
 void		Shift(PT_vector_T basePoint, PT_vector_T direction, PT_float_T shiftRate, PT_vector_T endPoint);
-void		ShrinkUnitVector(PT_vector_T objUnitVector, int shrinkBound);
 void		SkipComments(FILE* stream);
 void		Vector_Addition(PT_vector_T x, PT_vector_T y, PT_vector_T z);
 void		Vector_Copy(PT_vector_T fromPoint, PT_vector_T toPoint);

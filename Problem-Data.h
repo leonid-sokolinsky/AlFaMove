@@ -12,6 +12,7 @@ using namespace std;
 static int PD_m;						// Current number of inequalities
 static int PD_n;						// Space dimension
 static int PD_mh;						// Number of hyperplanes that include surface point
+static int PD_ma;						// Number of half-spces used for pseudoprojection
 static int PD_K;						// Number of edges of all possible dimensions
 static PT_float_T PD_objF_initialValue; // Initial value of objective function
 static PT_float_T PD_objF_u;			// Current value of objective function
@@ -23,9 +24,10 @@ static PT_vector_T PD_u;					// Current surface point
 static PT_vector_T PD_hi;					// Higher bound
 static PT_vector_T PD_lo;					// Lower bound
 static PT_vector_T PD_objVector;			// Used for pseudoprojecting
-static bool PD_u_hyperplanes_tag[PP_MM + 100];	// Tag of point u belongness to recessive hyperplane
+static bool PD_u_hyperplanes_tag[PP_MM];	// Tag of point u belongness to recessive hyperplane
 static int PD_index_hyperplanesIncludeSP[PP_MM];	// Index of hyperplanes that include surface point u
 static int PD_hyperplaneSubsetCodeList[PP_KK];		// Hyperplane subset numbers
+static int PD_index_activeHalfspaces[PP_MM];		// Index of half-spces used for pseudoprojection
 //========================== Input/Output ====================================
 static string PD_problemName;
 //===================== Matrix format (with equations only) ===============================

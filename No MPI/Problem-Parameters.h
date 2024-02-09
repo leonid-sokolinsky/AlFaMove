@@ -18,61 +18,9 @@ This source code has been produced with using BSF-skeleton
 // The following LP problems were obtained using BSF-LPP-Generator.
 // The initial surface points for these problems were calculated using BSF-Apex-Quest.
 
-/*============================== rnd3-0-1 LP problem ==============================*
-// Solution:   200		200		100
-#define PP_PROBLEM_NAME	"rnd3-0-1"
-#define PP_M 4		// Number of equations (number of rows in *.mtx)
-#define PP_N 7		// Number of variables (number of cols in *.mtx)
-//------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
-#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
-#define PP_OPTIMAL_OBJ_VALUE		1100			// Exact maximum value of objective function
-#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
-#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
-//------------------------------------------------------------------/**/
-
-/*============================== rnd3-3-1 LP problem ==============================*
-// Solution:   38.340303295476986		200		200
-#define PP_PROBLEM_NAME	"rnd3-3-1"
-#define PP_M 6		// Number of equations (number of rows in *.mtx)
-#define PP_N 9		// Number of variables (number of cols in *.mtx)
-//------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
-#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
-#define PP_OPTIMAL_OBJ_VALUE		1115.0209098864	// Exact maximum value of objective function
-#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
-#define PP_OBJECTIVE_VECTOR_LENGTH	10				// Starting length of Objective Vector
-//------------------------------------------------------------------/**/
-
-/*============================== rnd4-0-1 LP problem ==============================*
-// Solution:   100   200   200   200
-#define PP_PROBLEM_NAME	"rnd4-0-1"
-#define PP_M 5		// Number of equations (number of rows in *.mtx)
-#define PP_N 9		// Number of variables (number of cols in *.mtx)
-//------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
-#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
-#define PP_OPTIMAL_OBJ_VALUE		1900			// Exact maximum value of objective function
-#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
-#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
-//------------------------------------------------------------------/**/
-
-/*============================== rnd4-4-1 LP problem ==============================*
-// Solution:   70.020493427    200    142.925358841    111.7199061746
-#define PP_PROBLEM_NAME	"rnd4-4-1"
-#define PP_M 8		// Number of equations (number of rows in *.mtx)
-#define PP_N 12		// Number of variables (number of cols in *.mtx)
-//------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
-#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
-#define PP_OPTIMAL_OBJ_VALUE		1480.5369695509	// Exact maximum value of objective function
-#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
-#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
-//------------------------------------------------------------------/**/
-
-/*============================== rnd5-0-1 LP problem ==============================*
+/*============================== rnd5-0 LP problem ==============================*
 // Solution:   100   200   200   200   200
-#define PP_PROBLEM_NAME	"rnd5-0-1"
+#define PP_PROBLEM_NAME	"rnd5-0"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 11		// Number of variables (number of cols in *.mtx)
 //------------------------------------------------------------------
@@ -80,45 +28,162 @@ This source code has been produced with using BSF-skeleton
 #define PP_EPS_ZERO_DIR				PP_EPS_ZERO	// Accuracy for comparison with zero
 #define PP_OPTIMAL_OBJ_VALUE		2900			// Exact maximum value of objective function
 #define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
-#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
+#define PP_OBJECTIVE_VECTOR_LENGTH	50				// Starting length of Objective Vector
 //------------------------------------------------------------------/**/
 
-/*============================== rnd5-5-1 LP problem ==============================*
-// Surface movement method cannot solve problem rnd5-5-1!!!
-// Solution:   122.998630527   200   170.935274444	0	165.23198902
-// This solution was found using the BSF-LPP-Validator.
-#define PP_PROBLEM_NAME	"rnd5-5-1"
-#define PP_M 10		// Number of equations (number of rows in *.mtx)
-#define PP_N 15		// Number of variables (number of cols in *.mtx)
+/*============================== rnd5-1-1 LP problem ==============================*
+// Relative error = 0.007
+#define PP_PROBLEM_NAME	"rnd5-1-1"
+#define PP_M 6		// Number of equations (number of rows in *.mtx)
+#define PP_N 11		// Number of variables (number of cols in *.mtx)
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
 #define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
-#define PP_OPTIMAL_OBJ_VALUE		2526.8335783751	// Exact maximum value of objective function
+#define PP_OPTIMAL_OBJ_VALUE		2941.82823		// Exact maximum value of objective function
 #define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
 #define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
 //------------------------------------------------------------------/**/
 
-/*============================== rnd5-5-2 LP problem ==============================*/
-// Solution:   26.847787814   200   200   6.427921593   200
-#define PP_PROBLEM_NAME	"rnd5-5-2"
-#define PP_M 10		// Number of equations (number of rows in *.mtx)
-#define PP_N 15		// Number of variables (number of cols in *.mtx)
+/*============================== rnd5-1-2 LP problem ==============================*
+// Solution:		200             200             200       5.546             200
+#define PP_PROBLEM_NAME	"rnd5-1-2"
+#define PP_M 6		// Number of equations (number of rows in *.mtx)
+#define PP_N 11		// Number of variables (number of cols in *.mtx)
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
 #define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
-#define PP_OPTIMAL_OBJ_VALUE		2233.2757094184	// Exact maximum value of objective function
+#define PP_OPTIMAL_OBJ_VALUE		2405.546		// Exact maximum value of objective function
 #define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
-#define PP_OBJECTIVE_VECTOR_LENGTH	10				// Starting length of Objective Vector
+#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
+//------------------------------------------------------------------/**/
+
+/*============================== rnd5-1-3 LP problem ==============================*
+// Solution:	200               0             200        143.3234             200
+#define PP_PROBLEM_NAME	"rnd5-1-3"
+#define PP_M 6		// Number of equations (number of rows in *.mtx)
+#define PP_N 11		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
+#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
+#define PP_OPTIMAL_OBJ_VALUE		2486.6468		// Exact maximum value of objective function
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
+//------------------------------------------------------------------/**/
+
+/*============================== rnd5-1-4 LP problem ==============================*
+// Exact solution:		200				200             200			42.2486126				  200
+// Computed solution:   200       70.627578             200			 141.25516			70.627578
+// Relative error = 0.03
+// Subset: {0, 2}
+#define PP_PROBLEM_NAME	"rnd5-1-4"
+#define PP_M 6		// Number of equations (number of rows in *.mtx)
+#define PP_N 11		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
+#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
+#define PP_OPTIMAL_OBJ_VALUE		1884.49723		// Exact maximum value of objective function
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
+//------------------------------------------------------------------/**/
+
+/*============================== rnd5-1-5 LP problem ==============================*
+// Solution:	200       181.71348               0             200               0
+#define PP_PROBLEM_NAME	"rnd5-1-5"
+#define PP_M 6		// Number of equations (number of rows in *.mtx)
+#define PP_N 11		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
+#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
+#define PP_OPTIMAL_OBJ_VALUE		2726.8539		// Exact maximum value of objective function
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
+//------------------------------------------------------------------/**/
+
+/*============================== rnd10-0 LP problem ==============================*
+// Solution:	100  200  200  200  200  200  200  200  200  200
+#define PP_PROBLEM_NAME	"rnd10-0"
+#define PP_M 11		// Number of equations (number of rows in *.mtx)
+#define PP_N 21		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
+#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
+#define PP_OPTIMAL_OBJ_VALUE		10900			// Exact maximum value of objective function
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
+//------------------------------------------------------------------/**/
+
+/*============================== rnd10-1-1 LP problem ==============================*
+// Solution:	0  200  200  0  200  189.3989  200  200  0  200
+#define PP_PROBLEM_NAME	"rnd10-1-1"
+#define PP_M 11		// Number of equations (number of rows in *.mtx)
+#define PP_N 21		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
+#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
+#define PP_OPTIMAL_OBJ_VALUE		10146.995		// Exact maximum value of objective function
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
+//------------------------------------------------------------------/**/
+
+/*============================== rnd10-1-2 LP problem ==============================*
+// Relative error = 0.005
+#define PP_PROBLEM_NAME	"rnd10-1-2"
+#define PP_M 11		// Number of equations (number of rows in *.mtx)
+#define PP_N 21		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
+#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
+#define PP_OPTIMAL_OBJ_VALUE		8842.5318		// Exact maximum value of objective function
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
+//------------------------------------------------------------------/**/
+
+/*============================== rnd10-1-3 LP problem ==============================*
+// Relative error = 0.004	
+#define PP_PROBLEM_NAME	"rnd10-1-3"
+#define PP_M 11		// Number of equations (number of rows in *.mtx)
+#define PP_N 21		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
+#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
+#define PP_OPTIMAL_OBJ_VALUE		9323			// Exact maximum value of objective function
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
+//------------------------------------------------------------------/**/
+
+/*============================== rnd10-1-4 LP problem ==============================*
+#define PP_PROBLEM_NAME	"rnd10-1-4"
+#define PP_M 11		// Number of equations (number of rows in *.mtx)
+#define PP_N 21		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
+#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
+#define PP_OPTIMAL_OBJ_VALUE		9408.9108		// Exact maximum value of objective function
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
+//------------------------------------------------------------------/**/
+
+/*============================== rnd10-1-5 LP problem ==============================*/
+// Solution:	
+#define PP_PROBLEM_NAME	"rnd10-1-5"
+#define PP_M 11		// Number of equations (number of rows in *.mtx)
+#define PP_N 21		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
+#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
+#define PP_OPTIMAL_OBJ_VALUE		8913.1381		// Exact maximum value of objective function
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
 //------------------------------------------------------------------/**/
 
 //================================ Common Paramrters ===========================
 #define PP_MM (2*(PP_M+PP_N))	// Maximal number of inequalities
 #define PP_KK 1024				// Maximal number of hyperedges that include surface point: 2^10 = 1024
 #define PP_MAX_NUM_SHIFTS_SAME_LENGTH	5			// Maximal number of shifts with the same length
-#define PP_MAX_SHIFTS_NUMBER			1000000		// Maximum number of shifts
+#define PP_MAX_SHIFTS_NUMBER			500		// Maximum number of shifts
 #define PP_MAX_ITER_COUNT				10000000000 // Maximal count of iterations
 //-------------------------- Input/Outpoot Parameters ---------------------------
-#define PP_OUTPUT_LIMIT	8	// Number of Elements to output
+#define PP_OUTPUT_LIMIT	10	// Number of Elements to output
 #define PP_MATRIX_OUTPUT	// To output Matrix
 #define PP_SETW 16
 //------------------------- Matrix format ----------------

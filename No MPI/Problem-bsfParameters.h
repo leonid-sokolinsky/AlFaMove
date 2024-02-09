@@ -15,7 +15,7 @@ This source code has been produced with using BSF-skeleton
 #define PP_BSF_MAX_JOB_CASE 0
 
 //--------------------------- OpenMP Parameters ---------------------------
-// OpenMP mode is impossible!
+// OpenMP mode is impossible here!
 
 //--------------- BSF Lists parameters (For "No MPI" only) ----------------
 #include "Problem-Parameters.h"
