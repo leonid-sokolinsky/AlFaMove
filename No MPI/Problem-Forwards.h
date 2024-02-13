@@ -10,11 +10,14 @@ This source code has been produced with using BSF-skeleton
 //====================== Problem Functions ===========================
 void		AddOppositeInequality(int hyperplaneIndex, int m);
 void		ActivePseProjection(PT_vector_T v, PT_vector_T w);
+void		CodeToSubset(int code, int subset[PP_MM], int* ma);
 bool		Conversion();
 void		DirVectorCleanup(PT_vector_T x);
 PT_float_T	Distance(PT_vector_T x, PT_vector_T y);
 void		MakeHyperplaneList(int* mh);
 bool		MakeHyperplaneSubsetCodeList(int mh, int* K);
+void		MakeObjVector(PT_vector_T c, PT_float_T length, PT_vector_T objVector);
+bool		MovingOnSurface(PT_vector_T directionVector, PT_vector_T point);
 bool		MTX_Load__Problem();
 bool		MTX_Load_A(int* nor, int* noc, int* non, int* noe);
 bool		MTX_Load_b(int* nor, int* noc, int* noe);
@@ -23,8 +26,6 @@ bool		MTX_Load_hi(int* nor, int* noc);
 bool		MTX_Load_lo(int* nor, int* noc);
 bool		MTX_Load_sp(int* nor, int* noc);
 bool		MTX_Save_sp(PT_vector_T x, double elapsedTime);
-void		MakeObjVector(PT_vector_T c, PT_float_T length, PT_vector_T objVector);
-bool		MovingOnSurface(PT_vector_T directionVector, PT_vector_T point);
 PT_float_T	ObjF(PT_vector_T x);
 bool		PointInHalfspace(PT_vector_T point, PT_vector_T a, PT_float_T b, PT_float_T eps);
 bool		PointInPolytope(PT_vector_T x, PT_float_T eps);

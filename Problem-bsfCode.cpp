@@ -66,50 +66,42 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	PT_float_T objF_w = -DBL_MAX; // F(w)
 	int outpoot;
 
+	outpoot = 0;
+
 	/**
 #ifdef PP_DEBUG
 	cout << "------------------------------------ Map(" << BSF_sv_addressOffset + BSF_sv_numberInSublist << ") ------------------------------------" << endl;
 #endif // PP_DEBUG /**/
 
 	mOld = PD_m;
-	PD_ma = 0;
 	Vector_Copy(BSF_sv_parameter.x, u);
 	PT_float_T objF_u1 = ObjF(u);
+	reduceElem->subsetCode = subsetCode;
+	reduceElem->pathLength = 0;
 
-	for (int i = 0; i < PD_mh; i++) {
-		if (subsetCode % 2 == 1) {
-			int ih = PD_index_hyperplanesIncludeSP[i];
-
-			AddOppositeInequality(ih, PD_m);
-			PD_index_activeHalfspaces[PD_ma] = ih;
-			PD_ma++; assert(PD_ma <= PP_MM);
-			PD_index_activeHalfspaces[PD_ma] = PD_m;
-			PD_ma++; assert(PD_ma <= PP_MM);
-			PD_m++; assert(PD_m <= PP_MM);
-		}
-		subsetCode /= 2;
-	}
+	CodeToSubset(subsetCode, PD_index_activeHalfspaces, &PD_ma);
 
 	/**
 #ifdef PP_DEBUG
-			if (outpoot > 0)
-				if (BSF_sv_mpiRank == 0)
-					cout << ", ";
-			outpoot++;
 	outpoot = 0;
-	cout << "\nSubset: {";
+	cout << "\nCode:" << subsetCode << ".\tSubset: {";
 	for (int i = 0; i < PD_ma; i++) {
-		if ((i + 1) % 2 > 0) {
-			if (outpoot > 0)
-				// No MPI
-				cout << ", ";
-			outpoot++;
-			cout << PD_index_activeHalfspaces[i];
-		}
+		if (outpoot > 0)
+			// No MPI
+			cout << ", ";
+		outpoot++;
+		cout << PD_index_activeHalfspaces[i];
 	}
-	cout << "}\n";
+	cout << "}.\n";
 #endif // PP_DEBUG /**/
 
+	int old_PD_ma = PD_ma;
+	for (int i = 0; i < old_PD_ma; i++) {
+		PD_index_activeHalfspaces[PD_ma] = PD_m;
+		PD_ma++; assert(PD_ma <= PP_MM);
+		AddOppositeInequality(PD_index_activeHalfspaces[i], PD_m);
+		PD_m++; assert(PD_m <= PP_MM);
+	}
 
 	MakeObjVector(PD_c, PP_OBJECTIVE_VECTOR_LENGTH, PD_objVector);
 
@@ -201,28 +193,6 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	DirVectorCleanup(d);
 	PT_float_T norm_d = Vector_Norm(d);
 
-	/**
-#ifdef PP_DEBUG
-	cout << "w =\t    ";
-	for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
-		cout << setw(PP_SETW) << w[j];
-	if (PP_OUTPUT_LIMIT < PD_n) cout << " ...";
-	cout << "\tF(w) = " << setw(PP_SETW) << ObjF(w) << endl;
-
-	cout << "w on hyperplanes: ";
-	for (int i = 0; i < PD_m; i++) {
-		if (Vector_OnHyperplane(w, PD_A[i], PD_b[i]))
-			cout << i << " ";
-	}
-	cout << endl;
-
-	cout << "D = ";
-	for (int j = 0; j < PD_n; j++)
-		cout << setw(PP_SETW) << d[j];
-	cout << endl;
-	cout << "\t||w-u|| = " << norm_d << endl;
-#endif // PP_DEBUG /**/
-
 	if (norm_d < PP_EPS_ZERO) {
 		for (int j = 0; j < PD_n; j++)
 			*reduceElem->nextSurfacePoint[j] = BSF_sv_parameter.x[j];
@@ -277,43 +247,42 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 		return;
 	}
 
-#ifdef PP_DEBUG
-
-	outpoot = 0;
-	cout << "\nEdge dimension: " << PD_n - PD_ma / 2;
-	cout << ". Generating hyperplanes: {";
-	for (int i = 0; i < PD_ma; i++) {
-		if ((i + 1) % 2 > 0) {
-			if (outpoot > 0)
-				// No MPI
-				cout << ", ";
-			outpoot++;
-			cout << PD_index_activeHalfspaces[i];
-		}
-	}
-	cout << "}\n";
-
-	cout << "u =\t    ";
-	for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
-		cout << setw(PP_SETW) << u[j];
-	if (PP_OUTPUT_LIMIT < PD_n) cout << " ...";
-	cout << "\tF(u) = " << setw(PP_SETW) << objF_u2 << "\t\t<<==== New edge" << endl;
-
-#endif // PP_DEBUG /**/
-
-	/**
-	#ifdef PP_DEBUG
-		cout << "u on hyperplanes: ";
-	for (int i = 0; i < PD_m; i++) {
-		if (Vector_OnHyperplane(PD_u, PD_A[i], PD_b[i]))
-			cout << i << " ";
-	}
-	cout << endl;
-#endif // PP_DEBUG /**/
-
 	for (int j = 0; j < PD_n; j++)
 		*reduceElem->nextSurfacePoint[j] = u[j];
 	reduceElem->objF = objF_u2;
+	Vector_MinusEquals(u, BSF_sv_parameter.x);
+	reduceElem->pathLength = Vector_Norm(u);
+
+/**
+#ifdef PP_DEBUG
+	CodeToSubset(reduceElem->subsetCode, PD_index_activeHalfspaces, &PD_ma);
+	outpoot = 0;
+	if (BSF_sv_mpiRank == 0)
+		cout
+		<< "\nEdge dimension: " << PD_n - PD_ma << ".\tSubset code:" << reduceElem->subsetCode
+		<< ".\tGenerating hyperplanes: {";
+	for (int i = 0; i < PD_ma; i++) {
+		if (outpoot > 0)
+			// No MPI
+			cout << ", ";
+		outpoot++;
+		cout << PD_index_activeHalfspaces[i];
+	}
+	if (BSF_sv_mpiRank == 0)
+		cout
+		<< "}.\tPath length: " << reduceElem->pathLength << ".\nu =\t";
+	for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
+		if (BSF_sv_mpiRank == 0)
+			cout
+			<< setw(PP_SETW) << *reduceElem->nextSurfacePoint[j];
+	if (PP_OUTPUT_LIMIT < PD_n)
+		if (BSF_sv_mpiRank == 0)
+			cout
+			<< " ...";
+	if (BSF_sv_mpiRank == 0)
+		cout
+		<< "\tF(u) = " << setw(PP_SETW) << reduceElem->objF << "\t\t<<==== New edge" << endl;
+#endif // PP_DEBUG /**/
 }
 
 void PC_bsf_MapF_1(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T_1* reduceElem, int* success) {
@@ -333,11 +302,15 @@ void PC_bsf_ReduceF(PT_bsf_reduceElem_T* x, PT_bsf_reduceElem_T* y, PT_bsf_reduc
 		z->objF = x->objF;
 		for (int j = 0; j < PD_n; j++)
 			*z->nextSurfacePoint[j] = *x->nextSurfacePoint[j];
+		z->subsetCode = x->subsetCode;
+		z->pathLength = x->pathLength;
 	}
 	else {
 		z->objF = y->objF;
 		for (int j = 0; j < PD_n; j++)
 			*z->nextSurfacePoint[j] = *y->nextSurfacePoint[j];
+		z->subsetCode = y->subsetCode;
+		z->pathLength = y->pathLength;
 	}
 }
 
@@ -370,23 +343,7 @@ void PC_bsf_ProcessResults(
 	for (int j = 0; j < PD_n; j++)
 		PD_u[j] = *reduceResult->nextSurfacePoint[j];
 
-#ifdef PP_DEBUG
-	cout << "------------------- The best -------------------\nu =\t    ";
-	for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
-		cout << setw(PP_SETW) << PD_u[j];
-	if (PP_OUTPUT_LIMIT < PD_n) cout << " ...";
-	cout << "\tF(u) = " << setw(PP_SETW) << PD_objF_u << endl;
-
-	cout << "u on hyperplanes: ";
-	for (int i = 0; i < PD_m; i++) {
-		PT_float_T residual = fabs(Vector_DotProduct(PD_A[i], PD_u) - PD_b[i]);
-		if (residual < PP_EPS_ZERO)
-			cout << i << " ";
-	}
-	cout << endl;
-#endif // PP_DEBUG
-
-	* exit = true;
+	*exit = true;
 }
 
 void PC_bsf_ProcessResults_1(
@@ -429,7 +386,7 @@ void PC_bsf_JobDispatcher(
 }
 
 void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
-	cout << "\n\n=================================================== SMM ====================================================" << endl;
+	cout << "\n\n=================================================== BSF-SMM ====================================================" << endl;
 	cout << "Problem name: " << PD_problemName << endl;
 #ifdef PP_USE_LEASTPROJECTION
 	cout << "Mode: Least projections " << endl;
@@ -535,25 +492,30 @@ void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, 
 	cout << "Optimal objective value: " << PP_OPTIMAL_OBJ_VALUE << endl;
 	cout << "Relative error = " << relativeError(PP_OPTIMAL_OBJ_VALUE, PD_objF_u) << endl;
 	cout << "=============================================" << endl;
-	
-	cout << setprecision(PP_SETW / 2);
 
 	if (fabs(PD_objF_u - PD_objF_initialValue) < PP_EPS_ZERO) {
 		cout << "Value of the objective function cannot be refined!\n";
 		return;
 	}
 
+	CodeToSubset(reduceResult->subsetCode, PD_index_activeHalfspaces, &PD_ma);
+	int outpoot = 0;
+	cout << "Edge dimension: " << PD_n - PD_ma << ".\tSubset code:" << reduceResult->subsetCode
+		<< ".\tGenerating hyperplanes: {";
+	for (int i = 0; i < PD_ma; i++) {
+		if (outpoot > 0)
+			// No MPI
+			cout << ", ";
+		outpoot++;
+		cout << PD_index_activeHalfspaces[i];
+	}
+	cout << "}.\tPath length: " << reduceResult->pathLength << ".\n";
+
 	cout << "Surface point:\t";
 	for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++) cout << setw(PP_SETW) << PD_u[j];
 	if (PP_OUTPUT_LIMIT < PD_n) cout << "	...";
 	cout << endl;
 	cout << "Polytope residual: " << PolytopeResidual(PD_u) << endl;
-	cout << "Surface point is on hyperplanes: ";
-	for (int i = 0; i < PD_m; i++) {
-		if (Vector_OnHyperplane(PD_u, PD_A[i], PD_b[i]))
-			cout << i << " ";
-	}
-	cout << endl;
 
 #ifdef OUTPUT
 	if (MTX_Save_sp(PD_u, t))
@@ -1642,3 +1604,16 @@ inline PT_float_T relativeError(PT_float_T trueValue, PT_float_T calcValue) {
 	else
 		return fabs(calcValue - trueValue);
 }
+
+inline void CodeToSubset(int code, int subset[PP_MM], int* ma) {
+	*ma = 0;
+	for (int i = 0; i < PD_mh; i++) {
+		if (code % 2 == 1) {
+			subset[*ma] = PD_index_hyperplanesIncludeSP[i];
+			(*ma)++; assert(*ma <= PP_MM);
+		}
+		code /= 2;
+		if (code == 0)
+			break;
+	}
+};

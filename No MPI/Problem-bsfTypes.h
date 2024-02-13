@@ -20,6 +20,8 @@ struct PT_bsf_mapElem_T {		// Type of map-list elements
 struct PT_bsf_reduceElem_T {	// Type of reduce-list elements for Job 0 (default)	
 	PT_vector_T nextSurfacePoint[PP_N];
 	PT_float_T objF;
+	int subsetCode;
+	PT_float_T pathLength;
 };
 
 struct PT_bsf_reduceElem_T_1 {	// Type of reduce-list elements for Job 1
