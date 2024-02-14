@@ -33,6 +33,9 @@ void PC_bsf_Init(bool* success) {
 	MakeHyperplaneList(&PD_mh);
 
 	if (!MakeHyperplaneSubsetCodeList(PD_mh, &PD_K)) {
+		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
+			cout
+			<< "Number of subsets PD_K = " << PD_K << " must be less than or equal to" << PP_KK << "\n";
 		*success = false;
 		return;
 	}
@@ -63,7 +66,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	PT_vector_T u;		// current surface point
 	PT_vector_T v;		// v = u + PD_objVector (objVector = PP_OBJECTIVE_VECTOR_LENGTH*e_c)
 	PT_vector_T w;		// pseudiprojection of v
-	PT_float_T objF_w = -DBL_MAX; // F(w)
+	PT_float_T objF_w = -PP_DBL_MAX; // F(w)
 	int outpoot;
 
 	outpoot = 0;
@@ -393,7 +396,7 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 #else
 	cout << "Mode: Pseudoprojections " << endl;
 #endif // PP_USE_LEASTPROJECTION
-	cout << "No MPI" << endl;
+	cout << "Number of Workers: " << BSF_sv_numOfWorkers << endl;
 #ifdef PP_BSF_OMP
 #ifdef PP_BSF_NUM_THREADS
 	cout << "Number of Threads: " << PP_BSF_NUM_THREADS << endl;
@@ -564,11 +567,8 @@ inline bool MakeHyperplaneSubsetCodeList(int mh, int* K) {
 	int index;
 
 	*K = (int)pow(2, (double)mh) - 1;
-	if (*K > PP_KK) {
-		//
-		cout << "MakeHyperplaneSubsetCodeList: too much subsets!\n";
+	if (*K > PP_KK) 
 		return false;
-	}
 
 	for (int k = 0; k < *K; k++) {
 		PD_hyperplaneSubsetCodeList[k] = 0;

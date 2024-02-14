@@ -8,9 +8,8 @@ This source code has been produced with using BSF-skeleton
 ==============================================================================*/
 //-------------------------- Compilation Modes -----------------------
 #define PP_DEBUG
-#define OUTPUT
+//#define OUTPUT
 #define PP_PATH "D:/YandexDisk/TEMP/"
-//#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Problems/"
 //#define PP_PATH "Problems/"
 //#define PP_USE_LEASTPROJECTION
 
@@ -186,7 +185,7 @@ This source code has been produced with using BSF-skeleton
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
 #define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
-#define PP_OPTIMAL_OBJ_VALUE		10900			// Exact maximum value of objective function
+#define PP_OPTIMAL_OBJ_VALUE		41900			// Exact maximum value of objective function
 #define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
 #define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
 //------------------------------------------------------------------/**/
@@ -198,6 +197,7 @@ This source code has been produced with using BSF-skeleton
 #define PP_MAX_NUM_SHIFTS_SAME_LENGTH	5		// Maximal number of shifts with the same length
 #define PP_MAX_SHIFTS_NUMBER			500		// Maximum number of shifts
 #define PP_MAX_ITER_COUNT				10000000000 // Maximal count of iterations
+#define PP_DBL_MAX						1E+308		// Highest value
 //-------------------------- Input/Outpoot Parameters ---------------------------
 #define PP_OUTPUT_LIMIT	10	// Number of Elements to output
 #define PP_MATRIX_OUTPUT	// To output Matrix
