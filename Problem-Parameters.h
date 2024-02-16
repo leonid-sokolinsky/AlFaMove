@@ -8,10 +8,9 @@ This source code has been produced with using BSF-skeleton
 ==============================================================================*/
 //-------------------------- Compilation Modes -----------------------
 //#define PP_DEBUG
-#define OUTPUT
-//#define PP_PATH "D:/YandexDisk/TEMP/"
+//#define OUTPUT
+//#define PP_PATH "D:/YandexDisk/_private/Programming/BSF/BSF SMM/Problems/"
 #define PP_PATH "Problems/"
-//#define PP_USE_LEASTPROJECTION
 
 //=========================== Problem Parameters =========================
 // The following LP problems were obtained using BSF-LPP-Generator.
@@ -19,6 +18,7 @@ This source code has been produced with using BSF-skeleton
 
 /*============================== rnd5-0 LP problem ==============================*
 // Solution:   100   200   200   200   200
+// Face dimension : 2.      Generating hyperplanes : {2, 3, 4}.      Path length : 223.6068.
 #define PP_PROBLEM_NAME	"rnd5-0"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 11		// Number of variables (number of cols in *.mtx)
@@ -31,7 +31,9 @@ This source code has been produced with using BSF-skeleton
 //------------------------------------------------------------------/**/
 
 /*============================== rnd5-1-1 LP problem ==============================*
+// Solution: 194.8143       199.33979       195.52149               0       191.16655
 // Relative error = 0.007
+// Value of the objective function cannot be refined!
 #define PP_PROBLEM_NAME	"rnd5-1-1"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 11		// Number of variables (number of cols in *.mtx)
@@ -45,6 +47,8 @@ This source code has been produced with using BSF-skeleton
 
 /*============================== rnd5-1-2 LP problem ==============================*
 // Solution:		200             200             200       5.546             200
+// Face dimension : 1.      Generating hyperplanes : {0, 2, 4, 9}.   Path length : 200.
+// Face dimension : 1.      Generating hyperplanes : {0, 1, 2, 4}.   Path length : 5.5460114.
 #define PP_PROBLEM_NAME	"rnd5-1-2"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 11		// Number of variables (number of cols in *.mtx)
@@ -58,6 +62,7 @@ This source code has been produced with using BSF-skeleton
 
 /*============================== rnd5-1-3 LP problem ==============================*
 // Solution:	200               0             200        143.3234             200
+// Face dimension : 1.      Generating hyperplanes : {0, 2, 4, 7}.   Path length : 143.3234.
 #define PP_PROBLEM_NAME	"rnd5-1-3"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 11		// Number of variables (number of cols in *.mtx)
@@ -73,7 +78,7 @@ This source code has been produced with using BSF-skeleton
 // Exact solution:		200				200             200			42.2486126				  200
 // Computed solution:   200       70.627578             200			 141.25516			70.627578
 // Relative error = 0.03
-// Subset: {0, 2}
+// Face dimension: 3.      Generating hyperplanes: {0, 2}. Path length: 173.00153.
 #define PP_PROBLEM_NAME	"rnd5-1-4"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 11		// Number of variables (number of cols in *.mtx)
@@ -87,6 +92,7 @@ This source code has been produced with using BSF-skeleton
 
 /*============================== rnd5-1-5 LP problem ==============================*
 // Solution:	200       181.71348               0             200               0
+// Face dimension: 1.      Generating hyperplanes: {0, 3, 8, 10}.  Path length: 181.71348.
 #define PP_PROBLEM_NAME	"rnd5-1-5"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 11		// Number of variables (number of cols in *.mtx)
@@ -126,6 +132,7 @@ This source code has been produced with using BSF-skeleton
 
 /*============================== rnd10-1-2 LP problem ==============================*
 // Relative error = 0.005
+// Path length: 0.001
 #define PP_PROBLEM_NAME	"rnd10-1-2"
 #define PP_M 11		// Number of equations (number of rows in *.mtx)
 #define PP_N 21		// Number of variables (number of cols in *.mtx)
@@ -139,6 +146,7 @@ This source code has been produced with using BSF-skeleton
 
 /*============================== rnd10-1-3 LP problem ==============================*
 // Relative error = 0.004
+// Path length: 0.001
 #define PP_PROBLEM_NAME	"rnd10-1-3"
 #define PP_M 11		// Number of equations (number of rows in *.mtx)
 #define PP_N 21		// Number of variables (number of cols in *.mtx)
@@ -163,7 +171,6 @@ This source code has been produced with using BSF-skeleton
 //------------------------------------------------------------------/**/
 
 /*============================== rnd10-1-5 LP problem ==============================*
-// Solution:	
 #define PP_PROBLEM_NAME	"rnd10-1-5"
 #define PP_M 11		// Number of equations (number of rows in *.mtx)
 #define PP_N 21		// Number of variables (number of cols in *.mtx)
@@ -236,7 +243,7 @@ This source code has been produced with using BSF-skeleton
 #define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
 //------------------------------------------------------------------/**/
 
-/*============================== rnd20-1-5 LP problem ==============================*/
+/*============================== rnd20-1-5 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd20-1-5"
 #define PP_M 21		// Number of equations (number of rows in *.mtx)
 #define PP_N 41		// Number of variables (number of cols in *.mtx)
@@ -248,13 +255,86 @@ This source code has been produced with using BSF-skeleton
 #define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
 //------------------------------------------------------------------/**/
 
+/*============================== rnd24-0 LP problem ==============================*
+#define PP_PROBLEM_NAME	"rnd24-0"
+#define PP_M 25		// Number of equations (number of rows in *.mtx)
+#define PP_N 49		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
+#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
+#define PP_OPTIMAL_OBJ_VALUE		59900			// Exact maximum value of objective function
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
+//------------------------------------------------------------------/**/
+
+/*============================== rnd24-1-1 LP problem ==============================*
+#define PP_PROBLEM_NAME	"rnd24-1-1"
+#define PP_M 25		// Number of equations (number of rows in *.mtx)
+#define PP_N 49		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
+#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
+#define PP_OPTIMAL_OBJ_VALUE		48526.028		// Exact maximum value of objective function
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
+//------------------------------------------------------------------/**/
+
+/*============================== rnd24-1-2 LP problem ==============================*
+#define PP_PROBLEM_NAME	"rnd24-1-2"
+#define PP_M 25		// Number of equations (number of rows in *.mtx)
+#define PP_N 49		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
+#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
+#define PP_OPTIMAL_OBJ_VALUE		49853.284		// Exact maximum value of objective function
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
+//------------------------------------------------------------------/**/
+
+/*============================== rnd24-1-3 LP problem ==============================*
+#define PP_PROBLEM_NAME	"rnd24-1-3"
+#define PP_M 25		// Number of equations (number of rows in *.mtx)
+#define PP_N 49		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
+#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
+#define PP_OPTIMAL_OBJ_VALUE		48648.629		// Exact maximum value of objective function
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
+//------------------------------------------------------------------/**/
+
+/*============================== rnd24-1-4 LP problem ==============================*
+#define PP_PROBLEM_NAME	"rnd24-1-4"
+#define PP_M 25		// Number of equations (number of rows in *.mtx)
+#define PP_N 49		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
+#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
+#define PP_OPTIMAL_OBJ_VALUE		48879.373		// Exact maximum value of objective function
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
+//------------------------------------------------------------------/**/
+
+/*============================== rnd24-1-5 LP problem ==============================*/
+#define PP_PROBLEM_NAME	"rnd24-1-5"
+#define PP_M 25		// Number of equations (number of rows in *.mtx)
+#define PP_N 49		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
+#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
+#define PP_OPTIMAL_OBJ_VALUE		49582.56		// Exact maximum value of objective function
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
+//------------------------------------------------------------------/**/
+
 //================================ Common Paramrters ===========================
 #define PP_MM (2*(PP_M+PP_N))	// Maximal number of inequalities
 //#define PP_KK 131072				// Maximal number of hyperedges that include surface point: 2^17 = 131072
 //#define PP_KK 524288				// Maximal number of hyperedges that include surface point: 2^19 = 524288
-#define PP_KK 1048575				// Maximal number of hyperedges that include surface point: 2^20 = 1 048 576
+//#define PP_KK 1048575				// Maximal number of hyperedges that include surface point: 2^20 = 1 048 576
+#define PP_KK 16777215				// Maximal number of hyperedges that include surface point: 2^25 = 16 777 216
 #define PP_MAX_NUM_SHIFTS_SAME_LENGTH	5			// Maximal number of shifts with the same length
-#define PP_MAX_SHIFTS_NUMBER			500		// Maximum number of shifts
+#define PP_MAX_SHIFTS_NUMBER			1000		// Maximum number of shifts
 #define PP_MAX_ITER_COUNT				10000000000 // Maximal count of iterations
 #define PP_DBL_MAX						1E+308		// Highest value
 //-------------------------- Input/Outpoot Parameters ---------------------------

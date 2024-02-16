@@ -35,8 +35,8 @@ void PC_bsf_Init(bool* success) {
 	if (!MakeHyperplaneSubsetCodeList(PD_mh, &PD_K)) {
 		// No MPI
 			cout
-			<< "Number of subsets PD_K = " << PD_K << " must be less than or equal to" << PP_KK << "\n";
-		*success = false;
+				<< "Number of subsets PD_K = " << PD_K << " must be less than or equal to " << PP_KK << "\n";
+			*success = false;
 		return;
 	}
 
@@ -237,7 +237,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 			*reduceElem->nextSurfacePoint[j] = BSF_sv_parameter.x[j];
 		reduceElem->objF = objF_u1;
 
-/**
+		/**
 #ifdef PP_DEBUG
 		cout << "u =\t    ";
 		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
@@ -256,14 +256,13 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	Vector_MinusEquals(u, BSF_sv_parameter.x);
 	reduceElem->pathLength = Vector_Norm(u);
 
-/**
+/**/
 #ifdef PP_DEBUG
 	CodeToSubset(reduceElem->subsetCode, PD_index_activeHalfspaces, &PD_ma);
 	outpoot = 0;
 	// No MPI
 	cout
-		<< "\nEdge dimension: " << PD_n - PD_ma << ".\tSubset code:" << reduceElem->subsetCode
-		<< ".\tGenerating hyperplanes: {";
+		<< "\nFace dimension: " << PD_n - PD_ma << ".\tGenerating hyperplanes: {";
 	for (int i = 0; i < PD_ma; i++) {
 		if (outpoot > 0)
 			// No MPI
@@ -389,13 +388,8 @@ void PC_bsf_JobDispatcher(
 }
 
 void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
-	cout << "\n\n=================================================== SMM ====================================================" << endl;
+	cout << "=================================================== SMM ====================================================" << endl;
 	cout << "Problem name: " << PD_problemName << endl;
-#ifdef PP_USE_LEASTPROJECTION
-	cout << "Mode: Least projections " << endl;
-#else
-	cout << "Mode: Pseudoprojections " << endl;
-#endif // PP_USE_LEASTPROJECTION
 	cout << "No MPI" << endl;
 #ifdef PP_BSF_OMP
 #ifdef PP_BSF_NUM_THREADS
@@ -503,8 +497,7 @@ void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, 
 
 	CodeToSubset(reduceResult->subsetCode, PD_index_activeHalfspaces, &PD_ma);
 	int outpoot = 0;
-	cout << "Edge dimension: " << PD_n - PD_ma << ".\tSubset code:" << reduceResult->subsetCode
-		<< ".\tGenerating hyperplanes: {";
+	cout << "Face dimension: " << PD_n - PD_ma << ".\tGenerating hyperplanes: {";
 	for (int i = 0; i < PD_ma; i++) {
 		if (outpoot > 0)
 			// No MPI
