@@ -1,0 +1,27 @@
+
+
+=================================================== BSF-SMM ====================================================
+Problem name: rnd20-1-2
+Mode: Pseudoprojections 
+Number of Workers: 10
+OpenMP is turned off!
+Map List is not Fragmented.
+Before conversion: m =	21	n = 41
+After conversion:  m =	41	n = 20
+Eps Zero:		1e-08
+Obj Vector Length:	1
+Maximum of objF:	37823.888
+--------------- Data ---------------
+Obj Function:	               6              17              19              16               5              11              11              12               6              17              18              10              13               7              14              10              14               8              19               2
+u0 =		               0             200             200             200               0             200             200       146.60275               0             200             200             200       158.81964               0               0             200             200             200             200               0	F(x) =        37823.888
+u0 on hyperplanes: 1 2 3 5 6 9 10 11 15 16 17 18 21 25 29 34 35 40 
+u0 is inside feasible polytope.
+-------------------------------------------
+Number of hyperplane subsets = 262143
+=============================================
+Elapsed time: 3.2070811
+Current objective value: 37823.888
+Optimal objective value: 37823.888
+Relative error = 7.9304816e-09
+=============================================
+Value of the objective function cannot be refined!

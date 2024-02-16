@@ -1,0 +1,30 @@
+
+
+=================================================== BSF-SMM ====================================================
+Problem name: rnd24-0
+Mode: Pseudoprojections 
+Number of Workers: 30
+OpenMP is turned off!
+Map List is not Fragmented.
+Before conversion: m =	25	n = 49
+After conversion:  m =	49	n = 24
+Eps Zero:		1e-08
+Obj Vector Length:	1
+Maximum of objF:	64900
+--------------- Data ---------------
+Obj Function:	               1               2               3               4               5               6               7               8               9              10              11              12              13              14              15              16              17              18              19              20              21              22              23              24
+u0 =		              50             100             150             200             200             200             200             200             200             200             200             200             200             200             200             200             200             200             200             200             200             200             200             200	F(x) =            59500
+u0 on hyperplanes: 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 
+u0 is inside feasible polytope.
+-------------------------------------------
+Number of hyperplane subsets = 2097151
+=============================================
+Elapsed time: 12.542576
+Current objective value: 59733.333
+Optimal objective value: 64900
+Relative error = 0.079609656
+=============================================
+Edge dimension: 3.	Subset code:2097151.	Generating hyperplanes: {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23}.	Path length: 62.360956.
+Surface point:	       66.666667       133.33333             200             200             200             200             200             200             200             200             200             200             200             200             200             200             200             200             200             200             200             200             200             200
+Polytope residual: 0
+Calculated surface point is saved into file *.sp

@@ -1,0 +1,30 @@
+
+
+=================================================== BSF-SMM ====================================================
+Problem name: rnd20-0
+Mode: Pseudoprojections 
+Number of Workers: 5
+OpenMP is turned off!
+Map List is not Fragmented.
+Before conversion: m =	21	n = 41
+After conversion:  m =	41	n = 20
+Eps Zero:		1e-08
+Obj Vector Length:	1
+Maximum of objF:	41900
+--------------- Data ---------------
+Obj Function:	               1               2               3               4               5               6               7               8               9              10 ...
+u0 =		              25              50              75             100             125             150             175             200             200             200 ...	F(x) =            39900
+u0 on hyperplanes: 7 8 9 10 11 12 13 14 15 16 17 18 19 
+u0 is inside feasible polytope.
+-------------------------------------------
+Number of hyperplane subsets = 8191
+=============================================
+Elapsed time: 0.11617303
+Current objective value: 40400
+Optimal objective value: 41900
+Relative error = 0.035799523
+=============================================
+Edge dimension: 7.	Subset code:8191.	Generating hyperplanes: {7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}.	Path length: 42.257713.
+Surface point:	       28.571429       57.142857       85.714286       114.28571       142.85714       171.42857             200             200             200             200	...
+Polytope residual: 0
+Calculated surface point is saved into file *.sp
