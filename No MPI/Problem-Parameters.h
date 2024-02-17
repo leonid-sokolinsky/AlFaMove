@@ -7,7 +7,7 @@ Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
 This source code has been produced with using BSF-skeleton
 ==============================================================================*/
 //-------------------------- Compilation Modes -----------------------
-#define PP_DEBUG
+//#define PP_DEBUG
 #define OUTPUT
 // No MPI
 #define PP_PATH "D:/YandexDisk/_private/Programming/BSF/BSF SMM/Problems/"
@@ -16,7 +16,7 @@ This source code has been produced with using BSF-skeleton
 // The following LP problems were obtained using BSF-LPP-Generator.
 // The initial surface points for these problems were calculated using BSF-Apex-Quest.
 
-/*============================== rnd5-0 LP problem ==============================*/
+/*============================== rnd5-0 LP problem ==============================*
 // Solution:   100   200   200   200   200
 // Face dimension : 2.      Generating hyperplanes : {2, 3, 4}.      Path length : 223.6068.
 #define PP_PROBLEM_NAME	"rnd5-0"
@@ -104,7 +104,21 @@ This source code has been produced with using BSF-skeleton
 #define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
 //------------------------------------------------------------------/**/
 
-/*============================== rnd10-0 LP problem ==============================*
+/*============================== rnd5-1-6 LP problem ==============================*
+// Solution:	200             200             200               0       101.54166
+// Face dimension: 1.      Generating hyperplanes: {0, 1, 2, 9}.   Path length: 101.54166.
+#define PP_PROBLEM_NAME	"rnd5-1-6"
+#define PP_M 6		// Number of equations (number of rows in *.mtx)
+#define PP_N 11		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-8			// Accuracy for comparison with zero
+#define PP_EPS_ZERO_DIR				PP_EPS_ZERO		// Accuracy for comparison with zero
+#define PP_OPTIMAL_OBJ_VALUE		2803.0833		// Exact maximum value of objective function
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
+//------------------------------------------------------------------/**/
+
+/*============================== rnd10-0 LP problem ==============================*/
 // Solution:	100  200  200  200  200  200  200  200  200  200
 #define PP_PROBLEM_NAME	"rnd10-0"
 #define PP_M 11		// Number of equations (number of rows in *.mtx)
@@ -194,7 +208,7 @@ This source code has been produced with using BSF-skeleton
 #define PP_DBL_MAX						1E+308		// Highest value
 //-------------------------- Input/Outpoot Parameters ---------------------------
 #define PP_OUTPUT_LIMIT	10	// Number of Elements to output
-#define PP_MATRIX_OUTPUT	// To output Matrix
+//#define PP_MATRIX_OUTPUT	// To output Matrix
 #define PP_SETW 16
 //------------------------- Matrix format ----------------
 #define PP_MTX_PREFIX			"lp_"
