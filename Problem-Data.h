@@ -16,11 +16,13 @@ static int PD_ma;						// Number of half-spces used for pseudoprojection
 static int PD_K;						// Number of edges of all possible dimensions
 static PT_float_T PD_objF_initialValue; // Initial value of objective function
 static PT_float_T PD_objF_u;			// Current value of objective function
+static PT_float_T PD_shiftLength;		// Shift length
 //========================== Problem structures ====================================
 static PT_float_T PD_A[PP_MM][PP_N];		// Matrix of coefficients of inequalities
 static PT_column_T PD_b;					// Column of the constant terms of the system Ax <= PD_b
 static PT_vector_T PD_c;					// Objective Function Coefficients
 static PT_vector_T PD_u;					// Current surface point
+static PT_vector_T PD_previous_u;				// Next surface point
 static PT_vector_T PD_hi;					// Higher bound
 static PT_vector_T PD_lo;					// Lower bound
 static PT_vector_T PD_objVector;			// Used for pseudoprojecting

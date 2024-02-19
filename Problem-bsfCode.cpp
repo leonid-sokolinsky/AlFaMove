@@ -27,7 +27,8 @@ void PC_bsf_Init(bool* success) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
 			cout
 			<< "Starting point does not belong to the feasible polytope with precision PP_EPS_ZERO = " << PP_EPS_ZERO << "!!!\n";
-		abort();
+		*success = false;
+		return;
 	}
 
 	MakeHyperplaneList(&PD_mh);
@@ -62,7 +63,6 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	// Map-List index = BSF_sv_addressOffset + BSF_sv_numberInSublist
 	int mOld; // Saves value of m before adding opposite inequalities
 	int subsetCode = *mapElem->hyperplaneSubsetCode;
-	PT_vector_T d;		// direction unit vector
 	PT_vector_T u;		// current surface point
 	PT_vector_T v;		// v = u + PD_objVector (objVector = PP_OBJECTIVE_VECTOR_LENGTH*e_c)
 	PT_vector_T w;		// pseudiprojection of v
@@ -70,27 +70,26 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	int outpoot;
 
 	outpoot = 0;
+	Vector_Zero((*reduceElem).d);
 
-	/**
+	/*MapF_b***
 #ifdef PP_DEBUG
 	cout << "------------------------------------ Map(" << BSF_sv_addressOffset + BSF_sv_numberInSublist << ") ------------------------------------" << endl;
 #endif // PP_DEBUG /**/
 
 	mOld = PD_m;
 	Vector_Copy(BSF_sv_parameter.x, u);
-	PT_float_T objF_u1 = ObjF(u);
+	PT_float_T objF_u = ObjF(u);
 	reduceElem->subsetCode = subsetCode;
-	reduceElem->pathLength = 0;
 
 	CodeToSubset(subsetCode, PD_index_activeHalfspaces, &PD_ma);
 
-	/**
+	/*MapF_b***
 #ifdef PP_DEBUG
 	outpoot = 0;
-	cout << "\nCode:" << subsetCode << ".\tSubset: {";
+	cout << "Code: " << subsetCode << ".\tSubset: {";
 	for (int i = 0; i < PD_ma; i++) {
 		if (outpoot > 0)
-			// No MPI
 			cout << ", ";
 		outpoot++;
 		cout << PD_index_activeHalfspaces[i];
@@ -110,181 +109,148 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 
 	/**
 #ifdef PP_DEBUG
-	// No MPI
-	cout << "Objective vector length : " << Vector_Norm(PD_objVector) << Vector_Norm(PD_objVector) << "\nu =\t    ";
+	cout<< "objV =\t\t";
 	for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
-		// No MPI
-		cout << setw(PP_SETW) << u[j];
+		cout << setw(PP_SETW) << PD_objVector[j];
 	if (PP_OUTPUT_LIMIT < PD_n)
-		// No MPI
 		cout << " ...";
-	// No MPI
-	cout << "\tF(u) = " << setw(PP_SETW) << objF_u1 << endl;
+	cout << "Objective vector length: " << Vector_Norm(PD_objVector) << endl;
 #endif // PP_DEBUG /**/
 
-	while (objF_w < objF_u1 + PP_EPS_ZERO) {
+	while (objF_w < objF_u + PP_EPS_ZERO) {
 
 		Vector_Addition(u, PD_objVector, v);
 
 		/**
 #ifdef PP_DEBUG
-		if (BSF_sv_mpiRank == 0)
 		cout << "v =\t    ";
 		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
-			if (BSF_sv_mpiRank == 0)
 			cout << setw(PP_SETW) << v[j];
 		if (PP_OUTPUT_LIMIT < PD_n)
-			if (BSF_sv_mpiRank == 0)
 			cout << " ...";
-		if (BSF_sv_mpiRank == 0)
 		cout << "\tF(v) = " << setw(PP_SETW) << ObjF(v) << endl;
 #endif // PP_DEBUG /**/
 
-		ActivePseProjection(v, w);
+		ActivePseProjection(v, w, PP_EPS_ZERO / 100000);
+
+		/**
+#ifdef PP_DEBUG
+		cout << "w =\t    ";
+		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
+			cout << setw(PP_SETW) << w[j];
+		if (PP_OUTPUT_LIMIT < PD_n)
+			cout << " ...";
+		cout << "\tF(w) = " << setw(PP_SETW) << ObjF(w) << endl;
+#endif // PP_DEBUG /**/
 
 		PD_m = mOld;
 
 		objF_w = ObjF(w);
 
-		if (objF_w < objF_u1 + PP_EPS_ZERO) {
-
+		if (objF_w < objF_u + PP_EPS_ZERO) {
 			/**
 #ifdef PP_DEBUG
-			if (BSF_sv_mpiRank == 0)
 			cout << "w =\t    ";
 			for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
-				if (BSF_sv_mpiRank == 0)
 				cout << setw(PP_SETW) << w[j];
 			if (PP_OUTPUT_LIMIT < PD_n)
-				if (BSF_sv_mpiRank == 0)
 				cout << " ...";
-			if (BSF_sv_mpiRank == 0)
-			cout << "\tF(w) = " << setw(PP_SETW) << ObjF(w) << "\nObjF(u) = " << objF_u1 << " >= ObjF(w) = " << objF_w << endl;
+			cout << "\tF(w) = " << setw(PP_SETW) << ObjF(w) << "\nObjF(u) = " << objF_u << " >= ObjF(w) = " << objF_w << endl;
 #endif // PP_DEBUG /**/
 
 			if (Vector_Norm(PD_objVector) < PP_EPS_ZERO) {
-
-				for (int j = 0; j < PD_n; j++)
-					*reduceElem->nextSurfacePoint[j] = BSF_sv_parameter.x[j];
-				reduceElem->objF = objF_u1;
-
-				/**
+				/*MapF_b***
 #ifdef PP_DEBUG
-				if (BSF_sv_mpiRank == 0)
-					cout << "u =\t    ";
-				for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
-					if (BSF_sv_mpiRank == 0)
-						cout << setw(PP_SETW) << u[j];
-				if (PP_OUTPUT_LIMIT < PD_n) cout << " ...";
-				if (BSF_sv_mpiRank == 0)
-					cout << "\tF(u) = " << setw(PP_SETW) << objF_u1 << "\nLength of objective vector = " << Vector_Norm(PD_objVector) << " < PP_EPS_ZERO  ===>>> return!!!\n";
+					cout << "\tF(u) = " << setw(PP_SETW) << objF_u << "\nLength of objective vector = " << Vector_Norm(PD_objVector) << " < PP_EPS_ZERO  ===>>> return!!!\n";
 #endif // PP_DEBUG /**/
-
+				Vector_Zero((*reduceElem).d);
+				reduceElem->objF_p = objF_u;
 				return;
 			}
+
 			Vector_DivideEquals(PD_objVector, 2);
 
 			/**
 #ifdef PP_DEBUG
-			if (BSF_sv_mpiRank == 0)
-			cout << "Objective vector length : " << Vector_Norm(PD_objVector) << endl;
+			cout << "Objective vector length: " << Vector_Norm(PD_objVector) << endl;
 #endif // PP_DEBUG /**/
 		}
 	}
 
-	Vector_Subtraction(w, u, d);
-	DirVectorCleanup(d);
-	PT_float_T norm_d = Vector_Norm(d);
+	Vector_Subtraction(w, u, (*reduceElem).d);
+	DirVectorCleanup((*reduceElem).d, PP_EPS_ZERO);
 
+	PT_float_T norm_d = Vector_Norm((*reduceElem).d);
 	if (norm_d < PP_EPS_ZERO) {
-		for (int j = 0; j < PD_n; j++)
-			*reduceElem->nextSurfacePoint[j] = BSF_sv_parameter.x[j];
-		reduceElem->objF = objF_u1;
-
-		/**
+		/*MapF_b***
 #ifdef PP_DEBUG
 		cout << "u =\t    ";
 		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
 			cout << setw(PP_SETW) << u[j];
 		if (PP_OUTPUT_LIMIT < PD_n) cout << " ...";
-		cout << "\tF(u) = " << setw(PP_SETW) << objF_u1 << endl;
-		cout << "||w-u|| < PP_EPS_ZERO" << objF_u1 << " >= ObjF(w) = " << objF_w << "  ===>>> return!!!\n";
+		cout << "\tF(u) = " << setw(PP_SETW) << objF_u << endl;
+		cout << "||w-u|| < PP_EPS_ZERO" << objF_u << " >= ObjF(w) = " << objF_w << "  ===>>> return!!!\n";
 #endif // PP_DEBUG /**/
+		Vector_Zero((*reduceElem).d);
+		reduceElem->objF_p = objF_u;
 		return;
 	}
 
-	if (!MovingOnSurface(d, u)) {
-		for (int j = 0; j < PD_n; j++)
-			*reduceElem->nextSurfacePoint[j] = BSF_sv_parameter.x[j];
-		reduceElem->objF = objF_u1;
+	Vector_MultiplyEquals((*reduceElem).d, PP_PROBE_LENGTH / norm_d);
 
-		/**
+	PT_vector_T p;
+	Vector_Addition(u, (*reduceElem).d, p);
+	if (!PointInPolytope(p, PP_EPS_ZERO * 10)) {
+		/*MapF_b***
+#ifdef PP_DEBUG
+		cout << "Vector d =\t    ";
+		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
+			cout << setw(PP_SETW) << (*reduceElem).d[j];
+		if (PP_OUTPUT_LIMIT < PD_n) cout << " ...";
+		cout << endl;
+		cout << "The point p =\t    ";
+		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
+			cout << setw(PP_SETW) << p[j];
+		if (PP_OUTPUT_LIMIT < PD_n) cout << " ...";
+		cout << "\t not in feasible polytope ===>>> return!!!" << endl;
+#endif // PP_DEBUG /**/
+		Vector_Zero((*reduceElem).d);
+		reduceElem->objF_p = objF_u;
+		return;
+	}
+
+	reduceElem->objF_p = ObjF(p);
+
+	if (relativeError(objF_u, reduceElem->objF_p) < PP_EPS_ZERO) {
+		/*MapF_b***
 #ifdef PP_DEBUG
 		cout << "u =\t    ";
 		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
 			cout << setw(PP_SETW) << u[j];
 		if (PP_OUTPUT_LIMIT < PD_n) cout << " ...";
-		cout << "\tF(u) = " << setw(PP_SETW) << objF_u1 << endl;
-		cout << "Movement does not affect objective value  ===>>> return!!!\n";
+		cout << "\tF(u) = " << setw(PP_SETW) << objF_u << endl;
+		cout << "|F(u1)-F(u2)|/|F(u1)| = " << relativeError(objF_u, reduceElem->objF_p) << " < PP_EPS_ZERO ===>>> return!!!\n";
 #endif // PP_DEBUG /**/
+		Vector_Zero((*reduceElem).d);
+		reduceElem->objF_p = objF_u;
 		return;
 	}
 
-	PT_float_T objF_u2 = ObjF(u);
-
-	if (relativeError(objF_u1, objF_u2) < PP_EPS_ZERO) {
-		for (int j = 0; j < PD_n; j++)
-			*reduceElem->nextSurfacePoint[j] = BSF_sv_parameter.x[j];
-		reduceElem->objF = objF_u1;
-
-		/**
-#ifdef PP_DEBUG
-		cout << "u =\t    ";
-		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
-			cout << setw(PP_SETW) << u[j];
-		if (PP_OUTPUT_LIMIT < PD_n) cout << " ...";
-		cout << "\tF(u) = " << setw(PP_SETW) << objF_u1 << endl;
-		cout << "|F(u1)-F(u2)|/|F(u1)| = " << relativeError(objF_u1, objF_u2) << " < PP_EPS_ZERO ===>>> return!!!\n";
-#endif // PP_DEBUG /**/
-
-		return;
-	}
-
-	for (int j = 0; j < PD_n; j++)
-		*reduceElem->nextSurfacePoint[j] = u[j];
-	reduceElem->objF = objF_u2;
-	Vector_MinusEquals(u, BSF_sv_parameter.x);
-	reduceElem->pathLength = Vector_Norm(u);
-
-/**/
 #ifdef PP_DEBUG
 	CodeToSubset(reduceElem->subsetCode, PD_index_activeHalfspaces, &PD_ma);
 	outpoot = 0;
-	if (BSF_sv_mpiRank == 0)
 		cout
-		<< "\nFace dimension: " << PD_n - PD_ma << ".\tGenerating hyperplanes: {";
-	for (int i = 0; i < PD_ma; i++) {
+			<< "Face dimension: " << PD_n - PD_ma << ".\tGenerating hyperplanes: {";
+		for (int i = 0; i < PD_ma; i++) {
 		if (outpoot > 0)
-			// No MPI
 			cout << ", ";
 		outpoot++;
 		cout << PD_index_activeHalfspaces[i];
 	}
-	if (BSF_sv_mpiRank == 0)
 		cout
-		<< "}.\tPath length: " << reduceElem->pathLength << ".\nu =\t";
-	for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
-		if (BSF_sv_mpiRank == 0)
-			cout
-			<< setw(PP_SETW) << *reduceElem->nextSurfacePoint[j];
-	if (PP_OUTPUT_LIMIT < PD_n)
-		if (BSF_sv_mpiRank == 0)
-			cout
-			<< " ...";
-	if (BSF_sv_mpiRank == 0)
-		cout
-		<< "\tF(u) = " << setw(PP_SETW) << reduceElem->objF << "\t\t<<==== New edge" << endl;
-#endif // PP_DEBUG /**/
+			<< "}.\tF(p) = " << setw(PP_SETW) << reduceElem->objF_p << "\t\t<<==== New face" << endl;
+#endif // PP_DEBUG
+		return;
 }
 
 void PC_bsf_MapF_1(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T_1* reduceElem, int* success) {
@@ -300,19 +266,17 @@ void PC_bsf_MapF_3(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T_3* reduceElem,
 }
 
 void PC_bsf_ReduceF(PT_bsf_reduceElem_T* x, PT_bsf_reduceElem_T* y, PT_bsf_reduceElem_T* z) { // z = x + y
-	if (x->objF > y->objF) {
-		z->objF = x->objF;
+	if (x->objF_p > y->objF_p) {
+		z->objF_p = x->objF_p;
 		for (int j = 0; j < PD_n; j++)
-			*z->nextSurfacePoint[j] = *x->nextSurfacePoint[j];
+			(*z).d[j] = (*x).d[j];
 		z->subsetCode = x->subsetCode;
-		z->pathLength = x->pathLength;
 	}
 	else {
-		z->objF = y->objF;
+		z->objF_p = y->objF_p;
 		for (int j = 0; j < PD_n; j++)
-			*z->nextSurfacePoint[j] = *y->nextSurfacePoint[j];
+			(*z).d[j] = (*y).d[j];
 		z->subsetCode = y->subsetCode;
-		z->pathLength = y->pathLength;
 	}
 }
 
@@ -335,18 +299,12 @@ void PC_bsf_ProcessResults(
 	int* nextJob,
 	bool* exit // "true" if Stopping Criterion is satisfied, and "false" otherwise
 ) {
-
-	if (PD_objF_u >= reduceResult->objF - PP_EPS_ZERO) {
-		*exit = true;
-		return;
-	}
-
-	PD_objF_u = reduceResult->objF;
-	for (int j = 0; j < PD_n; j++)
-		PD_u[j] = *reduceResult->nextSurfacePoint[j];
-
+	Vector_Copy(PD_u, PD_previous_u);
+	bool success = MovingOnSurface(reduceResult->d, PD_u);
+	if (!success)
+		Vector_Copy(PD_previous_u, PD_u);
 	*exit = true;
-}
+	}
 
 void PC_bsf_ProcessResults_1(
 	PT_bsf_reduceElem_T_1* reduceResult,
@@ -433,12 +391,7 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 		cout << " ...";
 	cout << "\tF(x) = " << setw(PP_SETW) << ObjF(PD_u);
 	cout << endl;
-	cout << "u0 on hyperplanes: ";
-	for (int i = 0; i < PD_m; i++) {
-		if (Vector_OnHyperplane(PD_u, PD_A[i], PD_b[i]))
-			cout << i << " ";
-	}
-	cout << endl;
+	cout << "u0 on hyperplanes: "; Print_VectorOnHyperplanes(PD_u);
 	if (!PointInPolytope(PD_u, PP_EPS_ZERO))
 		cout << "u0 is outside feasible polytope!!!\n";
 	else
@@ -483,6 +436,12 @@ void PC_bsf_IterOutput_3(PT_bsf_reduceElem_T_3* reduceResult, int reduceCounter,
 void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, PT_bsf_parameter_T parameter, double t) {
 	cout << setprecision(PP_SETW / 2);
 
+	PT_vector_T refined_u;
+	Pseudoprojection(PD_u, refined_u, PP_EPS_ZERO / 10);
+	Vector_Round(refined_u, PP_EPS_ZERO);
+	Vector_Copy(refined_u, PD_u);
+	PD_objF_u = ObjF(PD_u);
+
 	cout << "=============================================" << endl;
 	cout << "Elapsed time: " << t << endl;
 	cout << "Current objective value: " << PD_objF_u << endl;
@@ -500,12 +459,11 @@ void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, 
 	cout << "Face dimension: " << PD_n - PD_ma << ".\tGenerating hyperplanes: {";
 	for (int i = 0; i < PD_ma; i++) {
 		if (outpoot > 0)
-			// No MPI
 			cout << ", ";
 		outpoot++;
 		cout << PD_index_activeHalfspaces[i];
 	}
-	cout << "}.\tPath length: " << reduceResult->pathLength << ".\n";
+	cout << "}.\t Shift length: " << PD_shiftLength << "\tF(x) = " << PD_objF_u << endl;
 
 	cout << "Surface point:\t";
 	for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++) cout << setw(PP_SETW) << PD_u[j];
@@ -550,7 +508,7 @@ void PC_bsfAssignSublistLength(int value) { BSF_sv_sublistLength = value; };
 inline void MakeHyperplaneList(int* mh) {
 	*mh = 0;
 	for (int i = 0; i < PD_m; i++)
-		if (Vector_OnHyperplane(PD_u, PD_A[i], PD_b[i])) {
+		if (Vector_OnHyperplane(PD_u, PD_A[i], PD_b[i], PP_EPS_ZERO)) {
 			PD_index_hyperplanesIncludeSP[*mh] = i;
 			(*mh)++;
 		}
@@ -585,7 +543,7 @@ inline bool MakeHyperplaneSubsetCodeList(int mh, int* K) {
 	return true;
 }
 
-inline void Pseudoprojection(PT_vector_T v, PT_vector_T w) {
+inline void Pseudoprojection(PT_vector_T v, PT_vector_T w, PT_float_T eps) {
 	PT_float_T maxResidual;
 	int nonZeroCounter;
 	PT_vector_T sum_r;
@@ -597,13 +555,13 @@ inline void Pseudoprojection(PT_vector_T v, PT_vector_T w) {
 	do {
 		maxResidual = 0;
 		nonZeroCounter = 0;
-		for (int j = 0; j < PD_n; j++) sum_r[j] = 0;
+		Vector_Zero(sum_r);
 
 		for (int i = 0; i < PD_m; i++) {
 			int exitcode;
 			PT_vector_T r;
 			PT_float_T halfspaceResidual =
-				Vector_OrthogonalProjectionOntoHalfspace(w, PD_A[i], PD_b[i], r, &exitcode);
+				Vector_OrthogonalProjectionOntoHalfspace(w, PD_A[i], PD_b[i], r, eps, &exitcode);
 			assert(exitcode != PP_EXITCODE_DEGENERATE_INEQUALITY);
 			if (exitcode == PP_EXITCODE_NATURAL_PROJECTING) {
 				for (int j = 0; j < PD_n; j++) {
@@ -626,52 +584,53 @@ inline void Pseudoprojection(PT_vector_T v, PT_vector_T w) {
 				cout << "\tF(w) = " << setw(PP_SETW) << ObjF(w) << "\tmaxResidual = " << maxResidual << endl;
 		#endif // PP_DEBUG
 		/**/
-	} while (maxResidual >= PP_EPS_ZERO);
+	} while (maxResidual >= eps);
 }
 
-inline void ActivePseProjection(PT_vector_T v, PT_vector_T w) {
+inline void ActivePseProjection(PT_vector_T v, PT_vector_T w, PT_float_T eps) {
 	PT_float_T maxResidual;
 	int nonZeroCounter;
 	PT_vector_T sum_r;
 
-	for (int j = 0; j < PD_n; j++) {
-		w[j] = v[j];
-	}
+	Vector_Copy(v, w);
 
 	do {
+		/*ActivePseProjection***
+		cout << "ActivePseProjection: w on active hyperplanes: "; Print_VectorOnActiveHyperplanes(w);
+		/**/
 		maxResidual = 0;
 		nonZeroCounter = 0;
-		for (int j = 0; j < PD_n; j++) sum_r[j] = 0;
+		Vector_Zero(sum_r);
 
 		for (int i = 0; i < PD_ma; i++) {
 			int ia = PD_index_activeHalfspaces[i];
 			int exitcode;
 			PT_vector_T r;
 			PT_float_T halfspaceResidual =
-				Vector_OrthogonalProjectionOntoHalfspace(w, PD_A[ia], PD_b[ia], r, &exitcode);
+				Vector_OrthogonalProjectionOntoHalfspace(w, PD_A[ia], PD_b[ia], r, eps, &exitcode);
 			assert(exitcode != PP_EXITCODE_DEGENERATE_INEQUALITY);
 			if (exitcode == PP_EXITCODE_NATURAL_PROJECTING) {
-				for (int j = 0; j < PD_n; j++) {
-					sum_r[j] += r[j];
-				}
+				Vector_PlusEquals(sum_r, r);
 				nonZeroCounter++;
 				maxResidual = PF_MAX(maxResidual, halfspaceResidual);
 			}
 		}
 
+		Vector_Round(sum_r, eps * 10);
+		if (Vector_NormSquare(sum_r) == 0)
+			break;
+
 		if (nonZeroCounter > 0)
 			Vector_DivideEquals(sum_r, nonZeroCounter);
 		Vector_PlusEquals(w, sum_r);
-		/**
-		#ifdef PP_DEBUG
+		/*ActivePseProjection***
 				cout << "w =\t    ";
 				for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
 					cout << setw(PP_SETW) << w[j];
 				if (PP_OUTPUT_LIMIT < PD_n) cout << " ...";
 				cout << "\tF(w) = " << setw(PP_SETW) << ObjF(w) << "\tmaxResidual = " << maxResidual << endl;
-		#endif // PP_DEBUG
 		/**/
-	} while (maxResidual >= PP_EPS_ZERO);
+	} while (maxResidual >= eps);
 }
 
 inline void AddOppositeInequality(int hyperplaneIndex, int m) {
@@ -701,6 +660,11 @@ inline PT_float_T Vector_NormSquare(PT_vector_T x) {
 	return sum;
 }
 
+inline void Vector_Zero(PT_vector_T x) {
+	for (int j = 0; j < PD_n; j++)
+		x[j] = 0;
+}
+
 inline bool PointInPolytope(PT_vector_T x, PT_float_T eps) { // If the point belongs to the polytope with prescigion of eps
 	for (int i = 0; i < PD_m; i++) {
 		if (!PointInHalfspace(x, PD_A[i], PD_b[i], eps))
@@ -714,14 +678,21 @@ inline bool PointInHalfspace // If the point belongs to the Halfspace with presc
 	return (Vector_DotProduct(a, x) - b <= eps);
 }
 
-inline void Shift(PT_vector_T point, PT_vector_T directionVector, PT_float_T shiftRate, PT_vector_T shiftedPoint) {
+inline void Shift(PT_vector_T point, PT_vector_T directionVector, PT_float_T PD_shiftLength, PT_vector_T shiftedPoint) {
 	for (int j = 0; j < PD_n; j++)
-		shiftedPoint[j] = point[j] + directionVector[j] * shiftRate;
+		shiftedPoint[j] = point[j] + directionVector[j] * PD_shiftLength;
 }
 
 inline void Vector_Copy(PT_vector_T fromPoint, PT_vector_T toPoint) { // toPoint = fromPoint
 	for (int j = 0; j < PD_n; j++)
 		toPoint[j] = fromPoint[j];
+}
+
+inline bool Vector_Equal(PT_vector_T x, PT_vector_T y, PT_float_T eps) { // x = y
+	for (int j = 0; j < PD_n; j++)
+		if (fabs(x[j] - y[j]) >= eps)
+			return false;
+	return true;
 }
 
 inline void Vector_PlusEquals(PT_vector_T equalVector, PT_vector_T plusVector) { // equalVector += plusVector
@@ -759,23 +730,19 @@ inline void Vector_DivideEquals(PT_vector_T x, double r) {  // x = x/r
 		x[j] /= r;
 }
 
-inline void Vector_ResetToZero(PT_vector_T x) {  // x = 0
-	for (int j = 0; j < PD_n; j++) x[j] = 0;
-}
-
 inline void Vector_DivideByNumber(PT_vector_T x, double r, PT_vector_T y) {  // y = x/r
 	for (int j = 0; j < PD_n; j++)
 		y[j] = x[j] / r;
 }
 
-inline void Vector_Round(PT_vector_T x) {
+inline void Vector_Round(PT_vector_T x, PT_float_T eps) {
 	double floorValue;
 	double fractionalPart;
 	double sign;
 	double absValue;
 
 	for (int j = 0; j < PD_n; j++) {
-		if (fabs(x[j]) < PP_EPS_ZERO) {
+		if (fabs(x[j]) < eps) {
 			x[j] = 0;
 			continue;
 		}
@@ -783,18 +750,18 @@ inline void Vector_Round(PT_vector_T x) {
 		sign = x[j] > 0 ? 1 : -1;
 		floorValue = floor(absValue);
 		fractionalPart = absValue - floorValue;
-		if (1 - fractionalPart < PP_EPS_ZERO) {
+		if (1 - fractionalPart < eps) {
 			x[j] = sign * (floorValue + 1);
 			continue;
 		}
-		if (fractionalPart < PP_EPS_ZERO)
+		if (fractionalPart < eps)
 			x[j] = sign * floorValue;
 	}
 }
 
-inline void DirVectorCleanup(PT_vector_T x) { // Zeroing coordinates less than PP_EPS_ZERO_DIR
+inline void DirVectorCleanup(PT_vector_T x, PT_float_T eps) { // Zeroing coordinates less than eps
 	for (int j = 0; j < PD_n; j++)
-		if (fabs(x[j]) < PP_EPS_ZERO_DIR)
+		if (fabs(x[j]) < eps)
 			x[j] = 0;
 }
 
@@ -1387,37 +1354,37 @@ static bool MTX_Save_sp(PT_vector_T x, double elapsedTime) {
 }
 
 inline bool Vector_OnHyperplane // If the point belongs to the Hyperplane with prescigion of PP_EPS_ZERO
-(PT_vector_T point, PT_vector_T a, PT_float_T b) {
-	return (fabs(Vector_DotProduct(a, point) - b) < PP_EPS_ZERO);
+(PT_vector_T point, PT_vector_T a, PT_float_T b, PT_float_T eps) {
+	return (fabs(Vector_DotProduct(a, point) - b) < eps);
 }
 
 // Vector r of orthogonal projection of point z onto Half-space <a,x> <= b
 inline PT_float_T // maxResidual
-Vector_OrthogonalProjectionOntoHalfspace(PT_vector_T z, PT_vector_T a, PT_float_T b, PT_vector_T r, int* exitCode) {
+Vector_OrthogonalProjectionOntoHalfspace(PT_vector_T z, PT_vector_T a, PT_float_T b, PT_vector_T r, PT_float_T eps, int* exitCode) {
 	PT_float_T factor;
 	PT_float_T aNormSquare = Vector_NormSquare(a); // ||a||^2
 	PT_float_T a_dot_z_minus_b = Vector_DotProduct(a, z) - b; // <a,z> - b
 
-	if (sqrt(aNormSquare) < PP_EPS_ZERO) {
+	if (sqrt(aNormSquare) < eps) {
 		*exitCode = PP_EXITCODE_DEGENERATE_INEQUALITY;
-		for (int j = 0; j < PD_n; j++)
-			r[j] = 0;
+		Vector_Zero(r);
 		return -1;
 	}
 
-	if (a_dot_z_minus_b < PP_EPS_ZERO) { // <a,z> - b < 0
-		if (a_dot_z_minus_b <= -PP_EPS_ZERO)
-			*exitCode = PP_EXITCODE_INSIDE_HALFSPACE;
-		else
-			*exitCode = PP_EXITCODE_ON_HYPERPLANE;
-		for (int j = 0; j < PD_n; j++)
-			r[j] = 0;
+	if (a_dot_z_minus_b <= -eps * 10) {
+		*exitCode = PP_EXITCODE_INSIDE_HALFSPACE;
+		Vector_Zero(r);
+		return 0;
+	};
+
+	if (fabs(a_dot_z_minus_b) < eps) { // <a,z> - b < 0
+		*exitCode = PP_EXITCODE_ON_HYPERPLANE;
+		Vector_Zero(r);
 		return 0;
 	}
 
 	factor = -a_dot_z_minus_b / aNormSquare; // (b - <z,a>) / ||a||^2
-	for (int j = 0; j < PD_n; j++) // a(b - <z,a>) / ||a||^2
-		r[j] = factor * a[j];
+	Vector_MultiplyByNumber(a, factor, r);
 	*exitCode = PP_EXITCODE_NATURAL_PROJECTING;
 	return a_dot_z_minus_b;
 }
@@ -1508,32 +1475,41 @@ inline void SkipComments(FILE* stream) {
 
 inline bool MovingOnSurface(PT_vector_T directionVector, PT_vector_T point) {
 	int numShiftsSameRate = 0; // Number of shifts with the same length
-	double	shiftRate = 1; // Start shift rate
+	double leftBound = 0;
+	double rightBound = PP_DBL_MAX;
+	double factor;
 	PT_vector_T shiftedPoint;
 
-	/**
 #ifdef PP_DEBUG
-	cout << "\n------------------------------------ Moving on surface ------------------------------------" << endl;
-#endif // PP_DEBUG /**/
+	cout << "\n------------------------------------ MovingOnSurface ------------------------------------" << endl;
+#endif // PP_DEBUG
 
-	Shift(point, directionVector, shiftRate, shiftedPoint);
-
-	if (relativeError(ObjF(point), ObjF(shiftedPoint)) < PP_EPS_ZERO)
+	if (Vector_Norm(directionVector) < PP_EPS_ZERO)
 		return false;
 
-	int shiftsNumber = 0;
-	while (true) {
+	PD_shiftLength = 100;
+	factor = PD_shiftLength;
 
-		if (shiftsNumber > PP_MAX_SHIFTS_NUMBER) {
-#ifdef PP_DEBUG
-			cout << "Number of shifts exceeded allowed limit PP_MAX_SHIFTS_NUMBER = " << PP_MAX_SHIFTS_NUMBER << "  ===>>> return!!!\n";
-#endif // PP_DEBUG
-			return false;
+	while (rightBound - leftBound >= PP_EPS_ZERO / 10) {
+		Shift(point, directionVector, PD_shiftLength, shiftedPoint);
+		if (PointInPolytope(shiftedPoint, PP_EPS_ZERO)) {
+			leftBound = PD_shiftLength;
+			PD_shiftLength += factor;
 		}
-		shiftsNumber++;
-		/**
+		else {
+			rightBound = PD_shiftLength;
+			factor /= 2;
+			PD_shiftLength -= factor;
+		}
+	}
+
+	Shift(point, directionVector, PD_shiftLength - factor, shiftedPoint);
+
+	if (Vector_Equal(point, shiftedPoint, PP_EPS_ZERO))
+		return false;
+	/*MovingOnSurface_a***
 #ifdef PP_DEBUG
-		cout << "Shift = " << setw(PP_SETW) << shiftRate << "\tt = ";
+	cout << "Shift length = " << setw(PP_SETW) << PD_shiftLength << "\tt = ";
 		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
 			cout << setw(PP_SETW) << shiftedPoint[j];
 		if (PP_OUTPUT_LIMIT < PD_n) cout << "	...";
@@ -1541,25 +1517,9 @@ inline bool MovingOnSurface(PT_vector_T directionVector, PT_vector_T point) {
 		cout << endl;
 #endif // PP_DEBUG
 		/**/
-		if (PointInPolytope(shiftedPoint, PP_EPS_ZERO)) {
-			numShiftsSameRate++;
-			if (numShiftsSameRate > PP_MAX_NUM_SHIFTS_SAME_LENGTH) {
-				shiftRate *= 2;
-				numShiftsSameRate = 0;
-			}
-			Vector_Copy(shiftedPoint, point);
-			Shift(point, directionVector, shiftRate, shiftedPoint);
-			continue;
-		}
-
-		if (shiftRate < PP_EPS_ZERO) {
+	assert(PointInPolytope(shiftedPoint, PP_EPS_ZERO));
+	Vector_Copy(shiftedPoint, point);
 			return true;
-		}
-
-		shiftRate /= 2;
-		numShiftsSameRate = 0;
-		Shift(point, directionVector, shiftRate, shiftedPoint);
-	}
 }
 
 inline PT_float_T PolytopeResidual(PT_vector_T x) { // Measure of distance from point to polytope
@@ -1610,3 +1570,20 @@ inline void CodeToSubset(int code, int subset[PP_MM], int* ma) {
 			break;
 	}
 };
+
+inline void Print_VectorOnHyperplanes(PT_vector_T x) {
+	for (int i = 0; i < PD_m; i++) {
+		if (Vector_OnHyperplane(x, PD_A[i], PD_b[i], PP_EPS_ZERO))
+			cout << i << " ";
+	}
+	cout << endl;
+}
+
+inline void Print_VectorOnActiveHyperplanes(PT_vector_T x) {
+	for (int i = 0; i < PD_ma; i++) {
+		int ia = PD_index_activeHalfspaces[i];
+		if (Vector_OnHyperplane(x, PD_A[ia], PD_b[ia], PP_EPS_ZERO))
+			cout << ia << " ";
+	}
+	cout << endl;
+}
