@@ -10,13 +10,13 @@ This source code has been produced with using BSF-skeleton
 //#define PP_DEBUG
 //#define OUTPUT
 //#define PP_PATH "Problems/"
-#define PP_PATH "D:/YandexDisk/_private/Programming/BSF/BSF SMM/Problems/"
+#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
 
 //=========================== Problem Parameters =========================
 // The following LP problems were obtained using BSF-LPP-Generator.
 // The initial surface points for these problems were calculated using BSF-Apex-Quest.
 
-/*============================== rnd3-0 LP problem ==============================*
+/*============================== rnd3-0 LP problem ==============================*/
 // Start point: 200 0 0
 // Solution:   100   200   200
 // Face dimension: 2.      Generating hyperplanes : {0}.    Shift length : 216.33308       F(x) = 980
@@ -32,7 +32,7 @@ This source code has been produced with using BSF-skeleton
 #define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
 //------------------------------------------------------------------/**/
 
-/*============================== rnd5-0 LP problem ==============================*/
+/*============================== rnd5-0 LP problem ==============================*
 // Start point:	200	0...0
 // Exact solution:   100   200   200   200   200
 // Face dimension: 4.      Generating hyperplanes: {0}.				Shift length: 293.93877        F(x) = 2360

@@ -7,8 +7,8 @@ Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
 This source code has been produced with using BSF-skeleton
 ==============================================================================*/
 //-------------------------- Compilation Modes -----------------------
-//#define PP_DEBUG
-//#define OUTPUT
+#define PP_DEBUG
+#define OUTPUT
 // No MPI
 #define PP_PATH "D:/YandexDisk/_private/Programming/BSF/BSF SMM/Problems/"
 
@@ -32,7 +32,7 @@ This source code has been produced with using BSF-skeleton
 #define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
 //------------------------------------------------------------------/**/
 
-/*============================== rnd5-0 LP problem ==============================*/
+/*============================== rnd5-0 LP problem ==============================*
 // Start point:	200	0...0
 // Exact solution:   100   200   200   200   200
 // Face dimension: 4.      Generating hyperplanes: {0}.				Shift length: 293.93877        F(x) = 2360
@@ -50,7 +50,7 @@ This source code has been produced with using BSF-skeleton
 #define PP_OBJECTIVE_VECTOR_LENGTH	1				// Starting length of Objective Vector
 //------------------------------------------------------------------/**/
 
-/*============================== rnd5-1-1 LP problem ==============================*
+/*============================== rnd5-1-1 LP problem ==============================*/
 // Start point:	200	0...0
 // Face dimension: 4.      Generating hyperplanes: {0}.     Shift length: 266.00701        F(x) = 2460.4815
 #define PP_PROBLEM_NAME	"rnd5-1-1"

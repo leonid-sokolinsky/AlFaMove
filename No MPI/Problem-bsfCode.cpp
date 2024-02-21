@@ -72,7 +72,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	outpoot = 0;
 	Vector_Zero((*reduceElem).d);
 
-	/*MapF_b***
+	/*MapF_b***/
 #ifdef PP_DEBUG
 	cout << "------------------------------------ Map(" << BSF_sv_addressOffset + BSF_sv_numberInSublist << ") ------------------------------------" << endl;
 #endif // PP_DEBUG /**/
@@ -84,7 +84,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 
 	CodeToSubset(subsetCode, PD_index_activeHalfspaces, &PD_ma);
 
-	/*MapF_b***
+	/*MapF_b***/
 #ifdef PP_DEBUG
 	outpoot = 0;
 	cout << "Code: " << subsetCode << ".\tSubset: {";
@@ -159,7 +159,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 #endif // PP_DEBUG /**/
 
 			if (Vector_Norm(PD_objVector) < PP_EPS_ZERO) {
-				/*MapF_b***
+				/*MapF_b***/
 #ifdef PP_DEBUG
 				cout << "\tF(u) = " << setw(PP_SETW) << objF_u << "\nLength of objective vector = " << Vector_Norm(PD_objVector) << " < PP_EPS_ZERO  ===>>> return!!!\n";
 #endif // PP_DEBUG /**/
@@ -182,7 +182,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 
 	PT_float_T norm_d = Vector_Norm((*reduceElem).d);
 	if (norm_d < PP_EPS_ZERO) {
-		/*MapF_b***
+		/*MapF_b***/
 #ifdef PP_DEBUG
 		cout << "u =\t    ";
 		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
@@ -201,7 +201,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	PT_vector_T p;
 	Vector_Addition(u, (*reduceElem).d, p);
 	if (!PointInPolytope(p, PP_EPS_ZERO * 10)) {
-		/*MapF_b***
+		/*MapF_b***/
 #ifdef PP_DEBUG
 		cout << "Vector d =\t    ";
 		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
@@ -222,7 +222,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	reduceElem->objF_p = ObjF(p);
 
 	if (relativeError(objF_u, reduceElem->objF_p) < PP_EPS_ZERO) {
-		/*MapF_b***
+		/*MapF_b***/
 #ifdef PP_DEBUG
 		cout << "u =\t    ";
 		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)

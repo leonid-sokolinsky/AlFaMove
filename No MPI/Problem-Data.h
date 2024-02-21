@@ -26,7 +26,6 @@ static PT_vector_T PD_previous_u;				// Next surface point
 static PT_vector_T PD_hi;					// Higher bound
 static PT_vector_T PD_lo;					// Lower bound
 static PT_vector_T PD_objVector;			// Used for pseudoprojecting
-static bool PD_u_hyperplanes_tag[PP_MM];	// Tag of point u belongness to recessive hyperplane
 static int PD_index_hyperplanesIncludeSP[PP_MM];	// Index of hyperplanes that include surface point u
 static int PD_hyperplaneSubsetCodeList[PP_KK];		// Hyperplane subset codes
 static int PD_index_activeHalfspaces[PP_MM];		// Index of half-spces used for pseudoprojection
