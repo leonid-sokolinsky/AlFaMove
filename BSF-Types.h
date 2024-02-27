@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe
-Theme: Surface movement method
+Theme: Surface movement method (MPI)
 Module: BSF-Types.h (Problem Independent Types)
 Prefix: BT
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky 

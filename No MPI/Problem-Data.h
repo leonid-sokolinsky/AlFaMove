@@ -14,11 +14,11 @@ static int PD_n;						// Space dimension
 static int PD_mh;						// Number of hyperplanes that include surface point
 static int PD_ma;						// Number of half-spces used for pseudoprojection
 static int PD_K;						// Number of edges of all possible dimensions
-static PT_float_T PD_objF_initialValue; // Initial value of objective function
-static PT_float_T PD_objF_u;			// Current value of objective function
-static PT_float_T PD_shiftLength;		// Shift length
+static double PD_objF_initialValue; // Initial value of objective function
+static double PD_objF_u;			// Current value of objective function
+static double PD_shiftLength;		// Shift length
 //========================== Problem structures ====================================
-static PT_float_T PD_A[PP_MM][PP_N];		// Matrix of coefficients of inequalities
+static double PD_A[PP_MM][PP_N];		// Matrix of coefficients of inequalities
 static PT_column_T PD_b;					// Column of the constant terms of the system Ax <= PD_b
 static PT_vector_T PD_c;					// Objective Function Coefficients
 static PT_vector_T PD_u;					// Current surface point
@@ -26,7 +26,7 @@ static PT_vector_T PD_previous_u;				// Next surface point
 static PT_vector_T PD_hi;					// Higher bound
 static PT_vector_T PD_lo;					// Lower bound
 static PT_vector_T PD_objVector;			// Used for pseudoprojecting
-static int PD_index_hyperplanesIncludeSP[PP_MM];	// Index of hyperplanes that include surface point u
+static int PD_index_includingHyperplanes[PP_MM];	// Index of hyperplanes that include surface point u
 static int PD_hyperplaneSubsetCodeList[PP_KK];		// Hyperplane subset codes
 static int PD_index_activeHalfspaces[PP_MM];		// Index of half-spces used for pseudoprojection
 //========================== Input/Output ====================================

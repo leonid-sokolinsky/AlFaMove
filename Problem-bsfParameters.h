@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe
-Theme: Surface movement method
+Theme: Surface movement method (MPI)
 Module: Problem-bsfParameters.h (BSF-skeleton Parameters)
 Prefix: PP_BSF
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky

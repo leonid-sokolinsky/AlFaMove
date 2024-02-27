@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe
-Theme: Surface movement method
+Theme: Surface movement method (MPI)
 Module: BSF-Data.h (Problem Independent Variables & Data Structures)
 Prefix: BD
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky

@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe
-Theme: Surface movement method
+Theme: Surface movement method (MPI)
 Module: Problem-bsfTypes.h (Predefined BSF Problem Types)
 Prefix: PT_bsf
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
@@ -19,7 +19,7 @@ struct PT_bsf_mapElem_T {		// Type of map-list elements
 
 struct PT_bsf_reduceElem_T {	// Type of reduce-list elements for Job 0 (default)	
 	PT_vector_T d;		// d = PP_PROBE_LENGTH*(w-u)/||w-u||
-	PT_float_T objF_p;	// F(p), where p=u+d
+	double objF_p;	// F(p), where p=u+d
 	int subsetCode;
 };
 

@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe
-Theme: Surface movement method
+Theme: Surface movement method (MPI)
 Module: BSF-Code.cpp (Problem Independent Code)
 Prefix: BC
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
