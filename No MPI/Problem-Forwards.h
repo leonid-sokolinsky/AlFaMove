@@ -55,6 +55,7 @@ void	Vector_PlusEquals(PT_vector_T equalVector, PT_vector_T plusVector);
 void	Vector_ObliqueProjectionOntoHalfspace(PT_vector_T z, PT_vector_T a, double b, PT_vector_T g, PT_vector_T o, int* exitCode);
 bool	Vector_OnHyperplane(PT_vector_T point, PT_vector_T a, double b, double eps, double* residual);
 double	Vector_OrthogonalProjectionOntoHalfspace(PT_vector_T z, PT_vector_T a, double b, PT_vector_T r, double eps, int* exitCode);
+double	Vector_OrthogonalProjectionOntoHyperplane(PT_vector_T z, PT_vector_T a, double b, PT_vector_T r, double eps);
 void	Vector_Round(PT_vector_T x, double eps);
 void	Vector_Subtraction(PT_vector_T x, PT_vector_T y, PT_vector_T z);
 void	Vector_Unit(PT_vector_T vector);
