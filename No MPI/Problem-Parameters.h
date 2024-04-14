@@ -17,12 +17,12 @@ This source code has been produced with using BSF-skeleton
 #define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
 
 //=========================== Problem Parameters =========================
-#define PP_MM (2*(PP_M+PP_N))	// Maximal number of inequalities
-#define PP_KK 31				// Maximal number of faces that include surface point: 2^17 = 131072
-//#define PP_KK 131072				// Maximal number of faces that include surface point: 2^17 = 131072
-//#define PP_KK 524288				// Maximal number of faces that include surface point: 2^19 = 524288
-//#define PP_KK 1048575				// Maximal number of faces that include surface point: 2^20 = 1 048 576
-//#define PP_KK 16777215				// Maximal number of faces that include surface point: 2^25 = 16 777 216
+#define PP_MM (2*PP_M+PP_N)	// Maximal number of inequalities
+#define PP_KK 31			// Maximal number of faces that include surface point: 2^17 = 131072
+//#define PP_KK 131072		// Maximal number of faces that include surface point: 2^17 = 131072
+//#define PP_KK 524288		// Maximal number of faces that include surface point: 2^19 = 524288
+//#define PP_KK 1048575		// Maximal number of faces that include surface point: 2^20 = 1 048 576
+//#define PP_KK 16777215	// Maximal number of faces that include surface point: 2^25 = 16 777 216
 #define PP_MAX_ITER_COUNT	10000000000 // Maximal count of iterations
 #define PP_DBL_MAX			1E+308		// Highest value
 //-------------------------- Input/Outpoot Parameters ---------------------------
