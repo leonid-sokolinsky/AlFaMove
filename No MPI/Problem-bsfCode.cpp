@@ -78,7 +78,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 
 	Vector_Addition(u, PD_objVector, v);
 
-	PseudorojectionOnFace(v, w, PP_EPS_P_PROJ_ON_FACE);
+	PseudoprojectionOnFace(v, w, PP_EPS_P_PROJ_ON_FACE);
 
 	objF_w = ObjF(w);
 
@@ -501,7 +501,7 @@ inline void PseudoprojectionOnPolytope(PT_vector_T v, PT_vector_T w) {
 	} while (maxResidual >= PP_EPS_P_PROJ_ON_POLYTOPE);
 }
 
-inline void PseudorojectionOnFace(PT_vector_T v, PT_vector_T w, double eps) {
+inline void PseudoprojectionOnFace(PT_vector_T v, PT_vector_T w, double eps) {
 	double maxResidual;
 	PT_vector_T sum_r;
 
