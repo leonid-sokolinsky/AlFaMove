@@ -14,8 +14,7 @@ This source code has been produced with using BSF-skeleton
 using namespace std;
 
 void PC_bsf_SetInitParameter(PT_bsf_parameter_T* parameter) {
-	for (int j = 0; j < PD_n; j++) // Generating initial approximation
-		parameter->x[j] = PD_u[j];
+	Vector_Copy(PD_u, parameter->x);
 }
 
 void PC_bsf_Init(bool* success) {
@@ -32,29 +31,10 @@ void PC_bsf_Init(bool* success) {
 		*success = false;
 		return;
 	}
-
-	MakeHyperplaneList(&PD_mh);
-
-	if (!MakeHyperplaneSubsetCodeList(PD_mh, &PD_K)) {
-		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Number of subsets PD_K = " << PD_K << " must be less than or equal to " << PP_KK << "\n";
-		*success = false;
-		return;
-	}
-
-	PD_objF_u = ObjF(PD_u);
-	PD_objF_initialValue = PD_objF_u;
 }
 
 void PC_bsf_SetListSize(int* listSize) {
-	if (PD_K == 0) {
-		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Map-list has zero size!!!\n";
-		abort();
-	}
-	*listSize = PD_K;
+	*listSize = PP_KK;
 }
 
 void PC_bsf_SetMapListElem(PT_bsf_mapElem_T* elem, int i) {
@@ -70,7 +50,12 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	PT_vector_T w;		// pseudiprojection of v
 	double objF_w = -PP_DBL_MAX; // F(w)
 
-	Vector_Zero((*reduceElem).d);
+	if (subsetCode == 0) {
+		Vector_Zero((*reduceElem).d);
+		reduceElem->objF_p = -PP_DBL_MAX;
+		reduceElem->subsetCode = 0;
+		return;
+	}
 
 #ifdef PP_DEBUG
 	cout << "------------------------------------ Map(" << BSF_sv_addressOffset + BSF_sv_numberInSublist << ") ------------------------------------" << endl;
@@ -143,7 +128,6 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	reduceElem->objF_p = ObjF(p);
 
 	if (relativeError(objF_u, reduceElem->objF_p) < PP_EPS_ZERO) {
-
 #ifdef PP_DEBUG
 		cout << "u =\t    ";
 		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
@@ -153,6 +137,19 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 		cout << "|F(u1)-F(u2)|/|F(u1)| = " << relativeError(objF_u, reduceElem->objF_p) << " < PP_EPS_ZERO ===>>> movement is impossible.\n";
 #endif // PP_DEBUG
 
+		Vector_Zero((*reduceElem).d);
+		reduceElem->objF_p = objF_u;
+		return;
+	}
+
+	if (reduceElem->objF_p < objF_u) {
+#ifdef PP_DEBUG
+		cout << "u =\t    ";
+		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
+			cout << setw(PP_SETW) << u[j];
+		if (PP_OUTPUT_LIMIT < PD_n) cout << " ...";
+		cout << "\tF(w) = " << setw(PP_SETW) << reduceElem->objF_p << " < F(u) = " << objF_u << " ===>>> movement is impossible.\n";
+#endif // PP_DEBUG
 		Vector_Zero((*reduceElem).d);
 		reduceElem->objF_p = objF_u;
 		return;
@@ -216,11 +213,42 @@ void PC_bsf_ProcessResults(
 	int* nextJob,
 	bool* exit // "true" if Stopping Criterion is satisfied, and "false" otherwise
 ) {
+	bool success;
 	Vector_Copy(PD_u, PD_previous_u);
-	bool success = MovingOnSurface(reduceResult->d, PD_u);
-	if (!success)
+	success = MovingOnSurface(reduceResult->d, PD_u);
+	if (success) {
+		*exit = false;
+		CodeToSubset(reduceResult->subsetCode, PD_index_activeHalfspaces, &PD_ma);
+		//cout << "===========================================================================================================" << endl;
+		cout << "________________________________________________________________________________________________________________" << endl;
+		PD_objF_u = ObjF(PD_u);
+		cout << "Code:" << reduceResult->subsetCode << " Face dimension: " << PD_n - PD_ma << ".\tGenerating hyperplanes: {";
+		for (int i = 0; i < PD_ma - 1; i++)
+			cout << PD_index_activeHalfspaces[i] << ", ";
+		cout << PD_index_activeHalfspaces[PD_ma - 1]
+			<< "}.\tShift = " << PD_shiftLength << "\tF(x) = " << PD_objF_u << endl;
+
+		cout << "Surface point:\t";
+		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++) cout << setw(PP_SETW) << PD_u[j];
+		if (PP_OUTPUT_LIMIT < PD_n) cout << "	...";
+		cout << endl;
+
+		Vector_Copy(PD_u, parameter->x);
+
+#ifdef PP_DEBUG
+		cout << "Polytope residual: " << PolytopeResidual(PD_u) << endl;
+		cout << "=================================================================================" << endl;
+		cout << "Number of hyperplane subsets = "; Print_Number_of_subsets(PD_u);
+#endif // PP_DEBUG
+	}
+	else {
+#ifdef PP_DEBUG
 		Vector_Copy(PD_previous_u, PD_u);
-	*exit = true;
+		cout << "=================================================================================" << endl;
+		cout << "Movement is impossible!" << endl;
+#endif // PP_DEBUG
+		* exit = true;
+	}
 }
 
 void PC_bsf_ProcessResults_1(
@@ -259,7 +287,7 @@ void PC_bsf_JobDispatcher(
 	bool* exit,
 	double t
 ) {
-	cout << "Number of hyperplane subsets = " << PD_K << endl;
+	// Not used
 }
 
 void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
@@ -313,11 +341,13 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	else
 		cout << "u0 is inside feasible polytope.\n";
 	cout << "-------------------------------------------" << endl;
+	cout << "Number of hyperplane subsets = "; Print_Number_of_subsets(PD_u);
 }
 
 void PC_bsf_CopyParameter(PT_bsf_parameter_T parameterIn, PT_bsf_parameter_T* parameterOutP) {
 	for (int j = 0; j < PD_n; j++)
 		parameterOutP->x[j] = parameterIn.x[j];
+	Preparation_for_Movement(parameterOutP->x);
 }
 
 void PC_bsf_IterOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, PT_bsf_parameter_T parameter,
@@ -366,27 +396,17 @@ void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, 
 	cout << "Relative error = " << setprecision(PP_SETW / 2) << relativeError(PP_OPTIMAL_OBJ_VALUE, PD_objF_u) << endl;
 	cout << "=============================================" << endl;
 
-	if (fabs(PD_objF_u - PD_objF_initialValue) < PP_EPS_ZERO) {
-		cout << "Value of the objective function cannot be refined!\n";
-		return;
-	}
-
-	CodeToSubset(reduceResult->subsetCode, PD_index_activeHalfspaces, &PD_ma);
-	cout << "Face dimension: " << PD_n - PD_ma << ".\tGenerating hyperplanes: {";
-	for (int i = 0; i < PD_ma - 1; i++)
-		cout << PD_index_activeHalfspaces[i] << ", ";
-	cout << PD_index_activeHalfspaces[PD_ma - 1]
-		<< "}.\tShift = " << PD_shiftLength << "\tF(x) = " << PD_objF_u << endl;
-
-	cout << "Surface point:\t";
+	cout << "Solution point:\t";
 	for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++) cout << setw(PP_SETW) << PD_u[j];
 	if (PP_OUTPUT_LIMIT < PD_n) cout << "	...";
 	cout << endl;
+#ifdef PP_DEBUG
 	cout << "Polytope residual: " << PolytopeResidual(PD_u) << endl;
+#endif // PP_DEBUG
 
 #ifdef PP_SAVE_RESULT
-	if (MTX_Save_sp(PD_u, t))
-		cout << "Calculated surface point is saved into file *.sp" << endl;
+	if (MTX_Save_so(PD_u, t))
+		cout << "Calculated solution point is saved into file *.so" << endl;
 #endif // PP_SAVE_RESULT
 }
 
@@ -418,11 +438,11 @@ void PC_bsfAssignParameter(PT_bsf_parameter_T parameter) { PC_bsf_CopyParameter(
 void PC_bsfAssignSublistLength(int value) { BSF_sv_sublistLength = value; };
 
 //---------------------------------- Problem functions -------------------------
-inline void MakeHyperplaneList(int* mh) {
+inline void MakeHyperplaneList(PT_vector_T u, int* mh) {
 	double residual;
 	*mh = 0;
 	for (int i = 0; i < PD_m; i++) {
-		if (Vector_OnHyperplane(PD_u, PD_A[i], PD_b[i], PP_EPS_MAKE_H_PLANE_LIST, &residual)) {
+		if (Vector_OnHyperplane(u, PD_A[i], PD_b[i], PP_EPS_MAKE_H_PLANE_LIST, &residual)) {
 			PD_index_includingHyperplanes[*mh] = i;
 			(*mh)++; assert((*mh) <= PP_MM);
 		}
@@ -436,7 +456,7 @@ inline bool MakeHyperplaneSubsetCodeList(int mh, int* K) {
 	if (*K > PP_KK)
 		return false;
 
-	for (int k = 0; k < *K; k++) {
+	for (int k = 0; k < PP_KK; k++) {
 		PD_hyperplaneSubsetCodeList[k] = 0;
 	}
 
@@ -490,15 +510,6 @@ inline void PseudoprojectionOnPolytope(PT_vector_T v, PT_vector_T w) {
 		if (nonZeroCounter > 0)
 			Vector_DivideEquals(sum_r, nonZeroCounter);
 		Vector_PlusEquals(w, sum_r);
-		/**
-		#ifdef PP_DEBUG
-				cout << "w =\t    ";
-				for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
-					cout << setw(PP_SETW) << w[j];
-				if (PP_OUTPUT_LIMIT < PD_n) cout << " ...";
-				cout << "\tF(w) = " << setw(PP_SETW) << ObjF(w) << "\tmaxResidual = " << maxResidual << endl;
-		#endif // PP_DEBUG
-		/**/
 	} while (maxResidual >= PP_EPS_P_PROJ_ON_POLYTOPE);
 }
 
@@ -722,7 +733,7 @@ static bool MTX_Load__Problem() {
 		return false;
 
 	//--------------- Reading surfase point ------------------
-	if (!MTX_Load_sp(&nor, &noc))
+	if (!MTX_Load_u0(&nor, &noc))
 		return false;
 
 	return true;
@@ -1053,7 +1064,7 @@ inline bool MTX_Load_c(
 	return true;
 }
 
-inline bool MTX_Load_sp(
+inline bool MTX_Load_u0(
 	int* nor,	// Number of matrix rows
 	int* noc	// Number of matrix columns
 ) {
@@ -1062,11 +1073,11 @@ inline bool MTX_Load_sp(
 	char str[80] = { '\0' };
 	char* chr = str;
 
-	PD_MTX_File_sp = PP_PATH;
-	PD_MTX_File_sp += PP_MTX_PREFIX;
-	PD_MTX_File_sp += PD_problemName;
-	PD_MTX_File_sp += PP_MTX_POSTFIX_SP;
-	mtxFile = PD_MTX_File_sp.c_str();
+	PD_MTX_File_u0 = PP_PATH;
+	PD_MTX_File_u0 += PP_MTX_PREFIX;
+	PD_MTX_File_u0 += PD_problemName;
+	PD_MTX_File_u0 += PP_MTX_POSTFIX_U0;
+	mtxFile = PD_MTX_File_u0.c_str();
 	stream = fopen(mtxFile, "r+b");
 
 	if (stream == NULL) {
@@ -1240,15 +1251,15 @@ static bool Conversion() { // Transformation to inequalities & dimensionality re
 	return true;
 }
 
-static bool MTX_Save_sp(PT_vector_T x, double elapsedTime) {
+static bool MTX_Save_so(PT_vector_T x, double elapsedTime) {
 	const char* mtxFile;
 	FILE* stream;// Input stream
 
-	PD_MTX_File_sp = PP_PATH;
-	PD_MTX_File_sp += PP_MTX_PREFIX;
-	PD_MTX_File_sp += PD_problemName;
-	PD_MTX_File_sp += PP_MTX_POSTFIX_SP;
-	mtxFile = PD_MTX_File_sp.c_str();
+	PD_MTX_File_so = PP_PATH;
+	PD_MTX_File_so += PP_MTX_PREFIX;
+	PD_MTX_File_so += PD_problemName;
+	PD_MTX_File_so += PP_MTX_POSTFIX_SO;
+	mtxFile = PD_MTX_File_so.c_str();
 	stream = fopen(mtxFile, "w");
 	if (stream == NULL) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
@@ -1387,7 +1398,6 @@ inline void SkipComments(FILE* stream) {
 }
 
 inline bool MovingOnSurface(PT_vector_T directionVector, PT_vector_T point) {
-	int numShiftsSameRate = 0; // Number of shifts with the same length
 	double leftBound = 0;
 	double rightBound = PP_DBL_MAX;
 	double factor;
@@ -1488,4 +1498,29 @@ inline void Print_VectorOnActiveHyperplanes(PT_vector_T x) {
 			cout << ia << " ";
 	}
 	cout << endl;
+}
+
+inline void Print_Number_of_subsets(PT_vector_T x) {
+	int mh = 0;
+	int K;
+	for (int i = 0; i < PD_m; i++) {
+		double residual;
+		if (Vector_OnHyperplane(x, PD_A[i], PD_b[i], PP_EPS_MAKE_H_PLANE_LIST, &residual))
+			mh++;
+	}
+	K = (int)pow(2, (double)mh) - 1;
+	cout << K << " " << endl;
+}
+
+inline void Preparation_for_Movement(PT_vector_T u) {
+	MakeHyperplaneList(u, &PD_mh);
+	if (!MakeHyperplaneSubsetCodeList(PD_mh, &PD_K)) {
+		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
+			cout
+			<< "Number of subsets PD_K = " << PD_K << " must be less than or equal to " << PP_KK << "\n";
+		abort();
+	}
+
+	PD_objF_u = ObjF(PD_u);
+	PD_objF_initialValue = PD_objF_u;
 }
