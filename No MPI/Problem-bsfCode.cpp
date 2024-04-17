@@ -25,8 +25,7 @@ void PC_bsf_Init(bool* success) {
 
 	if (!PointInPolytope(PD_u)) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Starting point does not belong to the feasible polytope with precision PP_RND_EPS_POINT_IN_POLYTOPE = "
+			cout << "Starting point does not belong to the feasible polytope with precision PP_RND_EPS_POINT_IN_POLYTOPE = "
 			<< PP_RND_EPS_POINT_IN_POLYTOPE << "!!!\n";
 		*success = false;
 		return;
@@ -88,7 +87,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	double norm_d = Vector_Norm((*reduceElem).d);
 	if (norm_d < PP_EPS_ZERO) {
 #ifdef PP_DEBUG
-		cout << "\t\t\t\t\t\t\t\t\t\t\t\t\td = ||w-u|| < PP_EPS_ZERO ===>>> movement is impossible.\n";
+		cout << "\t\t\t\t\t\t\t\t\t\t\t\t\t||d|| = ||w-u|| < PP_EPS_ZERO ===>>> movement is impossible.\n";
 #endif // PP_DEBUG
 		Vector_Zero((*reduceElem).d);
 		reduceElem->objF_p = objF_u;
@@ -144,7 +143,6 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	}
 
 #ifdef PP_DEBUG
-	CodeToSubset(reduceElem->subsetCode, PD_index_activeHalfspaces, &PD_ma);
 	cout << "Shifted point p = ";
 	for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
 		cout << setw(PP_SETW) << p[j];
@@ -153,7 +151,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 		<< setw(PP_SETW) << reduceElem->objF_p << "\t\t---> Movement is possible." << endl;
 #endif // PP_DEBUG
 	return;
-}
+} // end PC_bsf_MapF
 
 void PC_bsf_MapF_1(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T_1* reduceElem, int* success) {
 	// not used
@@ -202,12 +200,10 @@ void PC_bsf_ProcessResults(
 	bool* exit // "true" if Stopping Criterion is satisfied, and "false" otherwise
 ) {
 	bool success;
-	Vector_Copy(PD_u, PD_previous_u);
 	success = MovingOnSurface(reduceResult->d, PD_u);
 	if (success) {
 		*exit = false;
 		CodeToSubset(reduceResult->subsetCode, PD_index_activeHalfspaces, &PD_ma);
-		//cout << "===========================================================================================================" << endl;
 		cout << "________________________________________________________________________________________________________________" << endl;
 		PD_objF_u = ObjF(PD_u);
 		cout << "Code:" << reduceResult->subsetCode << " Face dimension: " << PD_n - PD_ma << ".\tGenerating hyperplanes: {";
@@ -222,20 +218,9 @@ void PC_bsf_ProcessResults(
 		cout << endl;
 
 		Vector_Copy(PD_u, parameter->x);
-
-#ifdef PP_DEBUG
-		cout << "Polytope residual: " << PolytopeResidual(PD_u) << endl;
-		cout << "=================================================================================" << endl;
-		cout << "Number of hyperplane subsets = "; Print_Number_of_subsets(PD_u);
-#endif // PP_DEBUG
 	}
 	else {
-#ifdef PP_DEBUG
-		Vector_Copy(PD_previous_u, PD_u);
-		cout << "=================================================================================" << endl;
-		cout << "Movement is impossible!" << endl;
-#endif // PP_DEBUG
-		* exit = true;
+		*exit = true;
 	}
 }
 
@@ -323,7 +308,9 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 		cout << " ...";
 	cout << "\tF(x) = " << setw(PP_SETW) << ObjF(PD_u);
 	cout << endl;
+#ifdef PP_DEBUG
 	cout << "u0 on hyperplanes: "; Print_VectorOnHyperplanes(PD_u);
+#endif // PP_DEBUG
 	if (!PointInPolytope(PD_u))
 		cout << "u0 is outside feasible polytope!!!\n";
 	else
@@ -396,7 +383,7 @@ void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, 
 	if (MTX_Save_so(PD_u, t))
 		cout << "Calculated solution point is saved into file *.so" << endl;
 #endif // PP_SAVE_RESULT
-}
+} // end PC_bsf_ProblemOutput
 
 void PC_bsf_ProblemOutput_1(PT_bsf_reduceElem_T_1* reduceResult, int reduceCounter, PT_bsf_parameter_T parameter, double t) {
 	// not used
@@ -437,12 +424,8 @@ inline void MakeHyperplaneList(PT_vector_T u, int* mh) {
 	}
 }
 
-inline bool MakeHyperplaneSubsetCodeList(int mh, int* K) {
+inline void MakeHyperplaneSubsetCodeList(int mh, int* K) {
 	int index;
-
-	*K = (int)pow(2, (double)mh) - 1;
-	if (*K > PP_KK)
-		return false;
 
 	for (int k = 0; k < PP_KK; k++) {
 		PD_hyperplaneSubsetCodeList[k] = 0;
@@ -450,7 +433,6 @@ inline bool MakeHyperplaneSubsetCodeList(int mh, int* K) {
 
 	for (int k = 1; k <= *K; k++) {
 		index = rand() % *K;
-		assert(index < *K);
 		if (PD_hyperplaneSubsetCodeList[index] == 0)
 			PD_hyperplaneSubsetCodeList[index] = k;
 		else {
@@ -462,8 +444,6 @@ inline bool MakeHyperplaneSubsetCodeList(int mh, int* K) {
 			}
 		}
 	}
-
-	return true;
 }
 
 inline void PseudoprojectionOnPolytope(PT_vector_T v, PT_vector_T w) {
@@ -739,37 +719,32 @@ inline bool MTX_Load_A( // Reading A
 
 	if (stream == NULL) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Failure of opening file '" << mtxFile << "'.\n";
+			cout << "Failure of opening file '" << mtxFile << "'.\n";
 		return false;
 	}
 
 	SkipComments(stream);
 	if (fscanf(stream, "%d%d%d", nor, noc, non) < 3) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Unexpected end of file " << mtxFile << endl;
+			cout << "Unexpected end of file " << mtxFile << endl;
 		return false;
 	}
 
 	if (*nor >= *noc) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Number of rows m = " << *nor << " must be < " << "Number of columns n = " << *noc << "\n";
+			cout << "Number of rows m = " << *nor << " must be < " << "Number of columns n = " << *noc << "\n";
 		return false;
 	}
 
 	if (*noc != PP_N) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Invalid input data: PP_N must be = " << *noc << "\n";
+			cout << "Invalid input data: PP_N must be = " << *noc << "\n";
 		return false;
 	}
 
 	if (*nor != PP_M) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Invalid input data: PP_M must be = " << *nor << "\n";
+			cout << "Invalid input data: PP_M must be = " << *nor << "\n";
 		return false;
 	}
 
@@ -778,8 +753,7 @@ inline bool MTX_Load_A( // Reading A
 
 	if (2 * *nor + *noc > PP_MM) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Invalid input data: number of inequalities m = " << 2 * *nor + *noc
+			cout << "Invalid input data: number of inequalities m = " << 2 * *nor + *noc
 			<< " must be < PP_MM + 1 =" << PP_MM + 1 << "\n";
 		return false;
 	}
@@ -835,28 +809,24 @@ inline bool MTX_Load_b(
 
 	if (stream == NULL) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Failure of opening file '" << mtxFile << "'.\n";
+			cout << "Failure of opening file '" << mtxFile << "'.\n";
 		return false;
 	}
 
 	SkipComments(stream);
 	if (fscanf(stream, "%d%d", nor, noc) < 2) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Unexpected end of file'" << mtxFile << "'." << endl;
+			cout << "Unexpected end of file'" << mtxFile << "'." << endl;
 		return false;
 	}
 	if (*noe != *nor) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Incorrect number of rows in'" << mtxFile << "'.\n";
+			cout << "Incorrect number of rows in'" << mtxFile << "'.\n";
 		return false;
 	}
 	if (*noc != 1) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Incorrect number of columnws in'" << mtxFile << "'.\n";
+			cout << "Incorrect number of columnws in'" << mtxFile << "'.\n";
 		return false;
 	}
 
@@ -892,28 +862,24 @@ inline bool MTX_Load_lo(
 
 	if (stream == NULL) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Failure of opening file '" << mtxFile << "'.\n";
+			cout << "Failure of opening file '" << mtxFile << "'.\n";
 		return false;
 	}
 
 	SkipComments(stream);
 	if (fscanf(stream, "%d%d", nor, noc) < 2) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Unexpected end of file'" << mtxFile << "'." << endl;
+			cout << "Unexpected end of file'" << mtxFile << "'." << endl;
 		return false;
 	}
 	if (*nor != PD_n) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Incorrect number of rows in'" << mtxFile << "'.\n";
+			cout << "Incorrect number of rows in'" << mtxFile << "'.\n";
 		return false;
 	}
 	if (*noc != 1) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Incorrect number of columnws in'" << mtxFile << "'.\n";
+			cout << "Incorrect number of columnws in'" << mtxFile << "'.\n";
 		return false;
 	}
 
@@ -949,36 +915,31 @@ inline bool MTX_Load_hi(
 
 	if (stream == NULL) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Failure of opening file '" << mtxFile << "'.\n";
+			cout << "Failure of opening file '" << mtxFile << "'.\n";
 		return false;
 	}
 
 	SkipComments(stream);
 	if (fscanf(stream, "%d%d", nor, noc) < 2) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Unexpected end of file'" << mtxFile << "'." << endl;
+			cout << "Unexpected end of file'" << mtxFile << "'." << endl;
 		return false;
 	}
 	if (*nor != PD_n) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Incorrect number of rows in'" << mtxFile << "'.\n";
+			cout << "Incorrect number of rows in'" << mtxFile << "'.\n";
 		return false;
 	}
 	if (*noc != 1) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Incorrect number of columnws in'" << mtxFile << "'.\n";
+			cout << "Incorrect number of columnws in'" << mtxFile << "'.\n";
 		return false;
 	}
 
 	for (int j = 0; j < PD_n; j++) {
 		if (fscanf(stream, "%s", str) < 1) {
 			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-				cout
-				<< "Unexpected end of file '" << mtxFile << "'." << endl;
+				cout << "Unexpected end of file '" << mtxFile << "'." << endl;
 			return false;
 		}
 		PD_hi[j] = strtod(str, &chr);
@@ -1005,28 +966,24 @@ inline bool MTX_Load_c(
 
 	if (stream == NULL) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Failure of opening file '" << mtxFile << "'.\n";
+			cout << "Failure of opening file '" << mtxFile << "'.\n";
 		return false;
 	}
 
 	SkipComments(stream);
 	if (fscanf(stream, "%d%d", nor, noc) < 2) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Unexpected end of file'" << mtxFile << "'." << endl;
+			cout << "Unexpected end of file'" << mtxFile << "'." << endl;
 		return false;
 	}
 	if (*nor != PD_n) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Incorrect number of rows in'" << mtxFile << "'.\n";
+			cout << "Incorrect number of rows in'" << mtxFile << "'.\n";
 		return false;
 	}
 	if (*noc != 1) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Incorrect number of columnws in'" << mtxFile << "'.\n";
+			cout << "Incorrect number of columnws in'" << mtxFile << "'.\n";
 		return false;
 	}
 
@@ -1062,28 +1019,24 @@ inline bool MTX_Load_u0(
 
 	if (stream == NULL) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Failure of opening file '" << mtxFile << "'.\n";
+			cout << "Failure of opening file '" << mtxFile << "'.\n";
 		return false;
 	}
 
 	SkipComments(stream);
 	if (fscanf(stream, "%d%d", nor, noc) < 2) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Unexpected end of file'" << mtxFile << "'." << endl;
+			cout << "Unexpected end of file'" << mtxFile << "'." << endl;
 		return false;
 	}
 	if (*nor != PD_n) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Incorrect number of rows in'" << mtxFile << "'.\n";
+			cout << "Incorrect number of rows in'" << mtxFile << "'.\n";
 		return false;
 	}
 	if (*noc != 1) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Incorrect number of columnws in'" << mtxFile << "'.\n";
+			cout << "Incorrect number of columnws in'" << mtxFile << "'.\n";
 		return false;
 	}
 
@@ -1443,18 +1396,6 @@ inline double PolytopeResidual(PT_vector_T x) { // Measure of distance from poin
 	return sum;
 }
 
-inline double ProblemScale() {
-	double problemScale = 0;
-	for (int i = 0; i < PD_m; i++) {
-		for (int j = 0; j < PD_n; j++) {
-			if (fabs(PD_A[i][j]) < PP_EPS_ZERO)
-				continue;
-			problemScale = PF_MAX(problemScale, fabs(PD_b[i] / PD_A[i][j]));
-		}
-	}
-	return problemScale;
-}
-
 inline double relativeError(double trueValue, double calcValue) {
 	if (fabs(trueValue) >= PP_EPS_ZERO)
 		return fabs(calcValue - trueValue) / fabs(trueValue);
@@ -1503,18 +1444,18 @@ inline void Print_Number_of_subsets(PT_vector_T x) {
 			mh++;
 	}
 	K = (int)pow(2, (double)mh) - 1;
-	cout << K << " " << endl;
+	cout << K << endl;
 }
 
 inline void Preparation_for_Movement(PT_vector_T u) {
 	MakeHyperplaneList(u, &PD_mh);
-	if (!MakeHyperplaneSubsetCodeList(PD_mh, &PD_K)) {
+	PD_K = (int)pow(2, (double)PD_mh) - 1;
+	if (PD_K > PP_KK) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout
-			<< "Number of subsets PD_K = " << PD_K << " must be less than or equal to " << PP_KK << "\n";
+			cout << "Parameter PP_KK = " << PP_KK << " must be greater than or equal to " << PD_K << "\n";
 		abort();
 	}
-
+	MakeHyperplaneSubsetCodeList(PD_mh, &PD_K);
 	PD_objF_u = ObjF(PD_u);
 	PD_objF_initialValue = PD_objF_u;
 }
