@@ -14,7 +14,7 @@ bool	Conversion();
 void	DirVectorCleanup(PT_vector_T x, double eps);
 double	Distance(PT_vector_T x, PT_vector_T y);
 void	MakeHyperplaneList(PT_vector_T u, int* mh);
-void	MakeHyperplaneSubsetCodeList(int mh, int* K);
+void	MakeHyperplaneSubsetCodeList(int* K);
 void	MakeObjVector(PT_vector_T c, double length, PT_vector_T objVector);
 bool	MovingOnSurface(PT_vector_T directionVector, PT_vector_T point);
 bool	MTX_Load__Problem();

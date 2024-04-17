@@ -10,7 +10,7 @@ This source code has been produced with using BSF-skeleton
 #include "../_Problems05-1.h"
 
 //-------------------------- Compilation Modes -----------------------
-#define PP_DEBUG
+//#define PP_DEBUG
 #define PP_MATRIX_OUTPUT	// To output Matrix
 //#define PP_SAVE_RESULT
 // No MPI

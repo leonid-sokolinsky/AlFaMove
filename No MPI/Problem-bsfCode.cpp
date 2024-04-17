@@ -424,7 +424,7 @@ inline void MakeHyperplaneList(PT_vector_T u, int* mh) {
 	}
 }
 
-inline void MakeHyperplaneSubsetCodeList(int mh, int* K) {
+inline void MakeHyperplaneSubsetCodeList(int* K) {
 	int index;
 
 	for (int k = 0; k < PP_KK; k++) {
@@ -432,7 +432,7 @@ inline void MakeHyperplaneSubsetCodeList(int mh, int* K) {
 	}
 
 	for (int k = 1; k <= *K; k++) {
-		index = rand() % *K;
+		index = rand() % PP_KK;
 		if (PD_hyperplaneSubsetCodeList[index] == 0)
 			PD_hyperplaneSubsetCodeList[index] = k;
 		else {
@@ -1455,7 +1455,7 @@ inline void Preparation_for_Movement(PT_vector_T u) {
 			cout << "Parameter PP_KK = " << PP_KK << " must be greater than or equal to " << PD_K << "\n";
 		abort();
 	}
-	MakeHyperplaneSubsetCodeList(PD_mh, &PD_K);
+	MakeHyperplaneSubsetCodeList(&PD_K);
 	PD_objF_u = ObjF(PD_u);
 	PD_objF_initialValue = PD_objF_u;
 }
