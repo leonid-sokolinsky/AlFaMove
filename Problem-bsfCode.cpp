@@ -30,6 +30,9 @@ void PC_bsf_Init(bool* success) {
 		*success = false;
 		return;
 	}
+
+	Preparation_for_Movement(PD_u);
+	PD_iterNo = 0;
 }
 
 void PC_bsf_SetListSize(int* listSize) {
@@ -205,12 +208,13 @@ void PC_bsf_ProcessResults(
 		*exit = false;
 		CodeToSubset(reduceResult->subsetCode, PD_index_activeHalfspaces, &PD_ma);
 		cout << "________________________________________________________________________________________________________________" << endl;
+		PD_iterNo++;
 		PD_objF_u = ObjF(PD_u);
-		cout << "Code:" << reduceResult->subsetCode << " Face dimension: " << PD_n - PD_ma << ".\tGenerating hyperplanes: {";
+		cout << "Code:" << reduceResult->subsetCode << "\tFace dimension: " << PD_n - PD_ma << "\tGenerating hyperplanes: {";
 		for (int i = 0; i < PD_ma - 1; i++)
 			cout << PD_index_activeHalfspaces[i] << ", ";
 		cout << PD_index_activeHalfspaces[PD_ma - 1]
-			<< "}.\tShift = " << PD_shiftLength << "\tF(x) = " << PD_objF_u << endl;
+			<< "}\tShift = " << PD_shiftLength << "\tF(x) = " << PD_objF_u << endl;
 
 		cout << "Surface point:\t";
 		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++) cout << setw(PP_SETW) << PD_u[j];
@@ -218,6 +222,7 @@ void PC_bsf_ProcessResults(
 		cout << endl;
 
 		Vector_Copy(PD_u, parameter->x);
+		Preparation_for_Movement(PD_u);
 	}
 	else {
 		*exit = true;
@@ -366,6 +371,7 @@ void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, 
 
 	cout << "=============================================" << endl;
 	cout << "Elapsed time: " << t << endl;
+	cout << "Number of iterations: " << PD_iterNo << endl;
 	cout << "Current objective value: " << setprecision(16) << PD_objF_u << endl;
 	cout << "Optimal objective value: " << PP_OPTIMAL_OBJ_VALUE << endl;
 	cout << "Relative error = " << setprecision(PP_SETW / 2) << relativeError(PP_OPTIMAL_OBJ_VALUE, PD_objF_u) << endl;
@@ -432,7 +438,7 @@ inline void MakeHyperplaneSubsetCodeList(int* K) {
 	}
 
 	for (int k = 1; k <= *K; k++) {
-		index = rand() % *K;
+		index = rand() % PP_KK;
 		if (PD_hyperplaneSubsetCodeList[index] == 0)
 			PD_hyperplaneSubsetCodeList[index] = k;
 		else {

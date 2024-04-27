@@ -11,6 +11,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #pragma once
 
 //=========================== Method Parameters =========================
+#define PP_KK 31								// Maximal number of faces that include surface point:  2^5-1
 #define PP_EPS_ZERO						1E-8	// Accuracy for comparison with zero
 #define PP_EPS_P_PROJ_ON_FACE			1E-12	// Precision for calculating pseudoprojection onto face
 #define PP_EPS_P_PROJ_ON_POLYTOPE		1E-9	// Precision for calculating pseudoprojection onto polytope

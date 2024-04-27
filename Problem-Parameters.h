@@ -7,18 +7,22 @@ Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
 This source code has been produced with using BSF-skeleton
 ==============================================================================*/
 
+/**/
 #include "_Problems05-1.h"
+#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"/**/
+
+/**
+#include "_Problems-Klee-Minty-Cube.h"
+#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Klee-Minty-Cube/"/**/
 
 //-------------------------- Compilation Modes -----------------------
 //#define PP_DEBUG
-#define PP_MATRIX_OUTPUT	// To output Matrix
+//#define PP_MATRIX_OUTPUT	// To output Matrix
 //#define PP_SAVE_RESULT
 //#define PP_PATH "Problems/"
-#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
 
 //=========================== Problem Parameters =========================
 #define PP_MM (2*PP_M+PP_N)	// Maximal number of inequalities
-#define PP_KK 31			// Maximal number of faces that include surface point: 2^17 = 131072
 #define PP_MAX_ITER_COUNT	10000000000 // Maximal count of iterations
 #define PP_DBL_MAX			1E+308		// Highest value
 //-------------------------- Input/Outpoot Parameters ---------------------------
