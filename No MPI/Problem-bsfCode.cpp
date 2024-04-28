@@ -80,7 +80,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 
 	Vector_Addition(u, PD_objVector, v);
 
-	PseudoprojectionOnFace(v, w, PP_EPS_P_PROJ_ON_FACE);
+	PseudoprojectionOnFace(v, w);
 
 	objF_w = ObjF(w);
 
@@ -487,7 +487,7 @@ inline void PseudoprojectionOnPolytope(PT_vector_T v, PT_vector_T w) {
 	} while (maxResidual >= PP_EPS_P_PROJ_ON_POLYTOPE);
 }
 
-inline void PseudoprojectionOnFace(PT_vector_T v, PT_vector_T w, double eps) {
+inline void PseudoprojectionOnFace(PT_vector_T v, PT_vector_T w) {
 	double maxResidual;
 	PT_vector_T sum_r;
 
@@ -501,18 +501,17 @@ inline void PseudoprojectionOnFace(PT_vector_T v, PT_vector_T w, double eps) {
 			int ia = PD_index_activeHalfspaces[i];
 			PT_vector_T r;
 			double hyperplaneResidual =
-				Vector_OrthogonalProjectionOntoHyperplane(w, PD_A[ia], PD_b[ia], r, eps);
+				Vector_OrthogonalProjectionOntoHyperplane(w, PD_A[ia], PD_b[ia], r);
 			Vector_PlusEquals(sum_r, r);
 			maxResidual = PF_MAX(maxResidual, hyperplaneResidual);
 		}
 
-		Vector_Round(sum_r, eps * 10);
-		if (Vector_NormSquare(sum_r) == 0)
+		if (Vector_Is_Tiny(sum_r, PP_EPS_PPROJ_ON_FACE_DIR))
 			break;
 
 		Vector_DivideEquals(sum_r, PD_ma);
 		Vector_PlusEquals(w, sum_r);
-	} while (maxResidual >= eps);
+	} while (maxResidual >= PP_EPS_PPROJ_ON_FACE_RESIDUAL);
 }
 
 inline void AddOppositeInequality(int hyperplaneIndex, int m) {
@@ -545,6 +544,13 @@ inline double Vector_NormSquare(PT_vector_T x) {
 inline void Vector_Zero(PT_vector_T x) {
 	for (int j = 0; j < PD_n; j++)
 		x[j] = 0;
+}
+
+inline bool Vector_Is_Tiny(PT_vector_T x, double eps) {
+	for (int j = 0; j < PD_n; j++)
+		if (fabs(x[j]) >= eps)
+			return false;
+	return true;
 }
 
 inline bool PointInPolytope(PT_vector_T x) { // If the point belongs to the polytope with prescigion of eps
@@ -1254,12 +1260,12 @@ Vector_OrthogonalProjectionOntoHalfspace(PT_vector_T z, PT_vector_T a, double b,
 
 // Vector r of orthogonal projection of point z onto hyperplane <a,x> = b
 inline double // maxResidual
-Vector_OrthogonalProjectionOntoHyperplane(PT_vector_T z, PT_vector_T a, double b, PT_vector_T r, double eps) {
+Vector_OrthogonalProjectionOntoHyperplane(PT_vector_T z, PT_vector_T a, double b, PT_vector_T r) {
 	double factor;
 	double aNormSquare = Vector_NormSquare(a); // ||a||^2
 	double a_dot_z_minus_b = Vector_DotProduct(a, z) - b; // <a,z> - b
 
-	assert(sqrt(aNormSquare) >= eps);
+	assert(sqrt(aNormSquare) >= PP_EPS_PPROJ_ON_FACE_RESIDUAL);
 
 	factor = -a_dot_z_minus_b / aNormSquare; // (b - <z,a>) / ||a||^2
 	Vector_MultiplyByNumber(a, factor, r);
