@@ -15,14 +15,14 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_EPS_ZERO						1E-8	// Accuracy for comparison with zero
 #define PP_EPS_PPROJ_ON_FACE_RESIDUAL	1E-12	// Residual precision for calculating pseudoprojection onto face
 #define PP_EPS_PPROJ_ON_FACE_DIR		1E-10	// Direction precision for calculating pseudoprojection onto face
-#define PP_EPS_P_PROJ_ON_POLYTOPE		1E-9	// Precision for calculating pseudoprojection onto polytope
+#define PP_EPS_PPROJ_ON_POLYTOPE		1E-9	// Precision for calculating pseudoprojection onto polytope
 #define PP_OBJECTIVE_VECTOR_LENGTH		100000	// Starting length of Objective Vector
 #define PP_EPS_MAKE_H_PLANE_LIST		1E-5	// Precision for MakeHyperplaneList()
 #define PP_MAX_B_NO_CORRECT				200		// Maximum b that does not require correction
 #define PP_RND_EPS_POINT_IN_POLYTOPE	1E-6	// Precision for random inequality in PointInPolytope()
 #define PP_PROBE_LENGTH					0.003	// length of probe shift
 
-/*============================== rnd5-0 LP problem ==============================*
+/*============================== rnd5-0 LP problem ==============================*/
 // Start point:	200               0             0            0             0
 // Exact solution:   100   200   200   200   200
 // Face dimension: 4.      Generating hyperplanes: {0}.			Shift = 97979.59        F(x) = 2360
@@ -88,7 +88,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_OPTIMAL_OBJ_VALUE 2626.4731647
 //------------------------------------------------------------------/**/
 
-/*============================== rnd5-1-6 LP problem ==============================*/
+/*============================== rnd5-1-6 LP problem ==============================*
 // Start point:	200           200           200             0             0
 // Face dimension: 2.      Generating hyperplanes: {0, 1, 2}.      Shift = 31072.332       F(x) = 2608.4395
 // Face dimension: 1.      Generating hyperplanes: {0, 1, 2, 5}.   Shift = 54925.396       F(x) = 2675.352

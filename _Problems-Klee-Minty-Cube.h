@@ -11,8 +11,8 @@ This include file is part of Problem-Parameters.h
 //=========================== Method Parameters =========================
 #define PP_EPS_ZERO						1E-8	// Accuracy for comparison with zero
 #define PP_EPS_PPROJ_ON_FACE_RESIDUAL	1E-12	// Residual precision for calculating pseudoprojection onto face
-#define PP_EPS_PPROJ_ON_FACE_DIR		1E-10	// Direction precision for calculating pseudoprojection onto face
-#define PP_EPS_P_PROJ_ON_POLYTOPE		1E-9	// ! Precision for calculating pseudoprojection onto polytope
+#define PP_EPS_PPROJ_ON_FACE_DIR		1E-10	// ! Direction precision for calculating pseudoprojection onto face
+#define PP_EPS_PPROJ_ON_POLYTOPE		1E-9	// Precision for calculating pseudoprojection onto polytope
 #define PP_OBJECTIVE_VECTOR_LENGTH		5000000	// ! Starting length of Objective Vector
 #define PP_EPS_MAKE_H_PLANE_LIST		1E-5	// Precision for MakeHyperplaneList()
 #define PP_MAX_B_NO_CORRECT				1E+308	// Maximum b that does not require correction

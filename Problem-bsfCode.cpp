@@ -470,7 +470,7 @@ inline void PseudoprojectionOnPolytope(PT_vector_T v, PT_vector_T w) {
 			int exitcode;
 			PT_vector_T r;
 			double halfspaceResidual =
-				Vector_OrthogonalProjectionOntoHalfspace(w, PD_A[i], PD_b[i], r, PP_EPS_P_PROJ_ON_POLYTOPE, &exitcode);
+				Vector_OrthogonalProjectionOntoHalfspace(w, PD_A[i], PD_b[i], r, PP_EPS_PPROJ_ON_POLYTOPE, &exitcode);
 			assert(exitcode != PP_EXITCODE_DEGENERATE_INEQUALITY);
 			if (exitcode == PP_EXITCODE_NATURAL_PROJECTING) {
 				for (int j = 0; j < PD_n; j++) {
@@ -484,7 +484,7 @@ inline void PseudoprojectionOnPolytope(PT_vector_T v, PT_vector_T w) {
 		if (nonZeroCounter > 0)
 			Vector_DivideEquals(sum_r, nonZeroCounter);
 		Vector_PlusEquals(w, sum_r);
-	} while (maxResidual >= PP_EPS_P_PROJ_ON_POLYTOPE);
+	} while (maxResidual >= PP_EPS_PPROJ_ON_POLYTOPE);
 }
 
 inline void PseudoprojectionOnFace(PT_vector_T v, PT_vector_T w) {
