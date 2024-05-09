@@ -289,8 +289,14 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 #endif
 	cout << "Before conversion: m =\t" << PP_M << "\tn = " << PP_N << endl;
 	cout << "After conversion:  m =\t" << PD_m << "\tn = " << PD_n << endl;
-	cout << "Eps Zero:\t\t" << PP_EPS_ZERO << endl;
-	cout << "Obj Vector Length:\t" << PP_OBJECTIVE_VECTOR_LENGTH << endl;
+	cout << "PP_EPS_ZERO:\t\t\t" << PP_EPS_ZERO << endl;
+	cout << "PP_EPS_PPROJ_ON_FACE_RESIDUAL:\t" << PP_EPS_PPROJ_ON_FACE_RESIDUAL << endl;
+	cout << "PP_EPS_PPROJ_ON_FACE_TINY_VEC:\t" << PP_EPS_PPROJ_ON_FACE_TINY_VEC << endl;
+	cout << "PP_EPS_PPROJ_ON_POLYTOPE:\t" << PP_EPS_PPROJ_ON_POLYTOPE << endl;
+	cout << "PP_EPS_POINT_IN_HALFSPACE:\t" << PP_EPS_POINT_IN_HALFSPACE << endl;
+	cout << "PP_EPS_MAKE_H_PLANE_LIST:\t" << PP_EPS_MAKE_H_PLANE_LIST << endl;
+	cout << "PP_OBJECTIVE_VECTOR_LENGTH:\t" << PP_OBJECTIVE_VECTOR_LENGTH << endl;
+	cout << "PP_PROBE_LENGTH:\t\t" << PP_PROBE_LENGTH << endl;
 	cout << "--------------- Data ---------------\n";
 #ifdef PP_MATRIX_OUTPUT
 	cout << "------- Matrix PD_A & Column PD_b -------" << endl;
@@ -362,13 +368,7 @@ void PC_bsf_IterOutput_3(PT_bsf_reduceElem_T_3* reduceResult, int reduceCounter,
 void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, PT_bsf_parameter_T parameter, double t) {
 	cout << setprecision(PP_SETW / 2);
 
-	PT_vector_T refined_u;
-	PseudoprojectionOnPolytope(PD_u, refined_u);
-	Vector_Round(refined_u, PP_EPS_ZERO);
-	Vector_Copy(refined_u, PD_u);
-
 	PD_objF_u = ObjF(PD_u);
-
 	cout << "=============================================" << endl;
 	cout << "Elapsed time: " << t << endl;
 	cout << "Number of iterations: " << PD_iterNo << endl;
@@ -506,7 +506,7 @@ inline void PseudoprojectionOnFace(PT_vector_T v, PT_vector_T w) {
 			maxResidual = PF_MAX(maxResidual, hyperplaneResidual);
 		}
 
-		if (Vector_Is_Tiny(sum_r, PP_EPS_PPROJ_ON_FACE_DIR))
+		if (Vector_Is_Tiny(sum_r, PP_EPS_PPROJ_ON_FACE_TINY_VEC))
 			break;
 
 		Vector_DivideEquals(sum_r, PD_ma);
@@ -559,7 +559,7 @@ inline bool PointInPolytope(PT_vector_T x) { // If the point belongs to the poly
 		if (PD_b[i] > PP_MAX_B_NO_CORRECT)
 			eps = PP_RND_EPS_POINT_IN_POLYTOPE;
 		else
-			eps = PP_EPS_ZERO;
+			eps = PP_EPS_POINT_IN_HALFSPACE;
 
 		if (!PointInHalfspace(x, PD_A[i], PD_b[i], eps))
 			return false;
@@ -1240,8 +1240,8 @@ Vector_OrthogonalProjectionOntoHalfspace(PT_vector_T z, PT_vector_T a, double b,
 		return -1;
 	}
 
-	if (a_dot_z_minus_b <= -eps * 10) {
-		*exitCode = PP_EXITCODE_INSIDE_HALFSPACE;
+	if (a_dot_z_minus_b <= -PP_EPS_POINT_IN_HALFSPACE) {
+			*exitCode = PP_EXITCODE_INSIDE_HALFSPACE;
 		Vector_Zero(r);
 		return 0;
 	};
