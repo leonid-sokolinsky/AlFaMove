@@ -202,11 +202,20 @@ void PC_bsf_ProcessResults(
 	int* nextJob,
 	bool* exit // "true" if Stopping Criterion is satisfied, and "false" otherwise
 ) {
+	CodeToSubset(reduceResult->subsetCode, PD_index_activeHalfspaces, &PD_ma);
+#ifdef PP_MONOTONICALLY_DECREASING_FACE_DIMENSION
+	static int previous_face_dimension = 2147483647;
+	int next_face_dimension = PD_n - PD_ma;
+	if (next_face_dimension > previous_face_dimension) {
+		*exit = true;
+		return;
+	}
+	previous_face_dimension = next_face_dimension;
+#endif // PP_MONOTONICALLY_DECREASING_FACE_DIMENSION
 	bool success;
 	success = MovingOnSurface(reduceResult->d, PD_u);
 	if (success) {
 		*exit = false;
-		CodeToSubset(reduceResult->subsetCode, PD_index_activeHalfspaces, &PD_ma);
 		cout << "________________________________________________________________________________________________________________" << endl;
 		PD_iterNo++;
 		PD_objF_u = ObjF(PD_u);
@@ -290,7 +299,7 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	cout << "Before conversion: m =\t" << PP_M << "\tn = " << PP_N << endl;
 	cout << "After conversion:  m =\t" << PD_m << "\tn = " << PD_n << endl;
 	cout << "PP_EPS_ZERO:\t\t\t" << PP_EPS_ZERO << endl;
-	cout << "PP_EPS_TINY_PPROJ_VEC:\t" << PP_EPS_TINY_PPROJ_VEC << endl;
+	cout << "PP_EPS_TINY_PPROJ_VEC:\t\t" << PP_EPS_TINY_PPROJ_VEC << endl;
 	cout << "PP_EPS_POINT_IN_HALFSPACE:\t" << PP_EPS_POINT_IN_HALFSPACE << endl;
 	cout << "PP_EPS_MAKE_H_PLANE_LIST:\t" << PP_EPS_MAKE_H_PLANE_LIST << endl;
 	cout << "PP_OBJECTIVE_VECTOR_LENGTH:\t" << PP_OBJECTIVE_VECTOR_LENGTH << endl;
