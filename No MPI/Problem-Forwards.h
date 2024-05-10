@@ -34,7 +34,6 @@ void	Print_VectorOnActiveHyperplanes(PT_vector_T x);
 void	Print_VectorOnHyperplanes(PT_vector_T x);
 void	Preparation_for_Movement(PT_vector_T u);
 void	PseudoprojectionOnFace(PT_vector_T v, PT_vector_T w);
-void	PseudoprojectionOnPolytope(PT_vector_T v, PT_vector_T w);
 double	relativeError(double trueValue, double calcValue);
 void	Shift(PT_vector_T basePoint, PT_vector_T direction, double PD_shiftLength, PT_vector_T endPoint);
 void	SkipComments(FILE* stream);
