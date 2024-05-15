@@ -62,3 +62,4 @@ void	Vector_Zero(PT_vector_T x);
 //====================== Macros ================================
 #define PF_MIN(x,y) (x<y?x:y)
 #define PF_MAX(x,y) (x>y?x:y)
+#define PF_MAP_LIST_INDEX (BSF_sv_addressOffset + BSF_sv_numberInSublist)

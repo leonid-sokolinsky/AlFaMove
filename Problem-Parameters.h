@@ -28,9 +28,10 @@ This source code has been produced with using BSF-skeleton
 //#define PP_PATH "Problems/"
 
 //=========================== Problem Parameters =========================
-#define PP_MM (2*PP_M+PP_N)	// Maximal number of inequalities
-#define PP_MAX_ITER_COUNT	10000000000 // Maximal count of iterations
-#define PP_DBL_MAX			1E+308		// Highest value
+#define PP_MM					(2*PP_M+PP_N)	// Maximal number of inequalities
+#define PP_MAX_ITER_COUNT		10000000000		// Maximal count of iterations
+#define PP_DBL_MAX				1E+308			// Highest value
+#define PP_START_SHIFT_LENGTH	100
 //-------------------------- Input/Outpoot Parameters ---------------------------
 #define PP_OUTPUT_LIMIT	30	// Number of Elements to output
 #define PP_SETW 16

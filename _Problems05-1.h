@@ -14,7 +14,6 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_KK							31		// Maximal number of faces that include surface point:  2^5-1
 #define PP_EPS_ZERO						1E-8	// Accuracy for comparison with zero
 #define PP_EPS_TINY_PPROJ_VEC	1E-10	// Tiny pseudoprojection vector
-
 #define PP_EPS_POINT_IN_HALFSPACE		1E-10	// Precision for point to be in halfspace
 #define PP_OBJECTIVE_VECTOR_LENGTH		100000	// Length of Objective Vector
 #define PP_EPS_MAKE_H_PLANE_LIST		1E-5	// Precision for MakeHyperplaneList()
