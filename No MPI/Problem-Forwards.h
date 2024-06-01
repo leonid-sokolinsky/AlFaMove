@@ -8,7 +8,6 @@ This source code has been produced with using BSF-skeleton
 #include "Problem-bsfTypes.h"
 #include "Problem-Types.h"
 //====================== Problem Functions ===========================
-void	AddOppositeInequality(int hyperplaneIndex, int m);
 void	CodeToSubset(int code, int subset[PP_MM], int* ma);
 bool	Conversion();
 void	DirVectorCleanup(PT_vector_T x, double eps);
@@ -30,8 +29,7 @@ bool	PointInHalfspace(PT_vector_T point, PT_vector_T a, double b, double eps);
 bool	PointInPolytope(PT_vector_T x);
 double	PolytopeResidual(PT_vector_T x);
 void	Print_Number_of_subsets(PT_vector_T x);
-void	Print_VectorOnActiveHyperplanes(PT_vector_T x);
-void	Print_VectorOnHyperplanes(PT_vector_T x);
+void	Print_PointOnHyperplanes(PT_vector_T x);
 void	Preparation_for_Movement(PT_vector_T u);
 void	PseudoprojectionOnFace(PT_vector_T v, PT_vector_T w);
 double	relativeError(double trueValue, double calcValue);

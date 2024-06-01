@@ -25,7 +25,7 @@ This include file is part of Problem-Parameters.h
 #define PP_M PP_D		// Number of equations (number of rows in *.mtx)
 #define PP_N (2*PP_D)	// Number of variables (number of cols in *.mtx)
 #define PP_KK 31		// Maximal number of faces that include surface point 2^m-1
-#define PP_OPTIMAL_OBJ_VALUE 3125
+#define PP_MAX_OBJ_VALUE 3125
 //---------------------------------- Method parameters ------------------------
 #define PP_EPS_TINY_PPROJ_VEC		1E-10	// Tiny pseudoprojection vector
 #define PP_EPS_POINT_IN_HALFSPACE	1E-5	// Precision for point to be in halfspace
@@ -41,7 +41,7 @@ This include file is part of Problem-Parameters.h
 #define PP_M PP_D		// Number of equations (number of rows in *.mtx)
 #define PP_N (2*PP_D)	// Number of variables (number of cols in *.mtx)
 #define PP_KK 63	// Maximal number of faces that include surface point 2^m-1
-#define PP_OPTIMAL_OBJ_VALUE 15625
+#define PP_MAX_OBJ_VALUE 15625
 //---------------------------------- Method parameters ------------------------
 #define PP_EPS_TINY_PPROJ_VEC		1E-10	// Tiny pseudoprojection vector
 #define PP_EPS_POINT_IN_HALFSPACE	1E-5	// Precision for point to be in halfspace
@@ -57,7 +57,7 @@ This include file is part of Problem-Parameters.h
 #define PP_M PP_D		// Number of equations (number of rows in *.mtx)
 #define PP_N (2*PP_D)	// Number of variables (number of cols in *.mtx)
 #define PP_KK 127	// Maximal number of faces that include surface point 2^m-1
-#define PP_OPTIMAL_OBJ_VALUE 78125
+#define PP_MAX_OBJ_VALUE 78125
 //---------------------------------- Method parameters ------------------------
 #define PP_EPS_TINY_PPROJ_VEC		1E-10	// Tiny pseudoprojection vector
 #define PP_EPS_POINT_IN_HALFSPACE	1E-5	// Precision for point to be in halfspace
@@ -73,7 +73,7 @@ This include file is part of Problem-Parameters.h
 #define PP_M PP_D		// Number of equations (number of rows in *.mtx)
 #define PP_N (2*PP_D)	// Number of variables (number of cols in *.mtx)
 #define PP_KK 255	// Maximal number of faces that include surface point 2^m-1
-#define PP_OPTIMAL_OBJ_VALUE 390625
+#define PP_MAX_OBJ_VALUE 390625
 //---------------------------------- Method parameters ------------------------
 #define PP_EPS_TINY_PPROJ_VEC		1E-9	// Tiny pseudoprojection vector
 #define PP_EPS_POINT_IN_HALFSPACE	1E-3	// Precision for point to be in halfspace
@@ -89,7 +89,7 @@ This include file is part of Problem-Parameters.h
 #define PP_M PP_D		// Number of equations (number of rows in *.mtx)
 #define PP_N (2*PP_D)	// Number of variables (number of cols in *.mtx)
 #define PP_KK 511		// Maximal number of faces that include surface point 2^m-1
-#define PP_OPTIMAL_OBJ_VALUE 1953125
+#define PP_MAX_OBJ_VALUE 1953125
 //---------------------------------- Method parameters ------------------------
 #define PP_EPS_TINY_PPROJ_VEC		1E-8	// Tiny pseudoprojection vector
 #define PP_EPS_POINT_IN_HALFSPACE	1E-2	// Precision for point to be in halfspace

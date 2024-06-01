@@ -8,9 +8,13 @@ This source code has been produced with using BSF-skeleton
 ==============================================================================*/
 
 /*----------------------------- Problems -------------------------------*/
-/**/
+/**
 #include "../_Problems05-1.h"
-#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"/**/
+#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
+
+/**/
+#include "../_Problems20-1.h"
+#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
 
 /**
 #include "../_Problems-Cone-LP.h"
@@ -25,10 +29,11 @@ This source code has been produced with using BSF-skeleton
 #define PP_DEBUG
 //#define PP_MATRIX_OUTPUT	// To output Matrix
 //#define PP_SAVE_RESULT
+//#define PP_COS_MODE
 // No MPI
 
 //=========================== Problem Parameters =========================
-#define PP_MM					(2*PP_M+PP_N)	// Maximal number of inequalities
+#define PP_MM					(2*PP_M+2*PP_N)	// Maximal number of inequalities
 #define PP_MAX_ITER_COUNT		10000000000		// Maximal count of iterations
 #define PP_DBL_MAX				1E+308			// Highest value
 #define PP_START_SHIFT_LENGTH	100

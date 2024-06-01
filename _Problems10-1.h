@@ -31,7 +31,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_N 21		// Number of variables (number of cols in *.mtx)
 //------------------------------------------------------------------
 
-#define PP_OPTIMAL_OBJ_VALUE		10900			// Exact maximum value of objective function
+#define PP_MAX_OBJ_VALUE		10900			// Exact maximum value of objective function
 
 
 //------------------------------------------------------------------/**/
@@ -45,7 +45,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_N 21		// Number of variables (number of cols in *.mtx)
 //------------------------------------------------------------------
 
-#define PP_OPTIMAL_OBJ_VALUE		9551.38289		// Exact maximum value of objective function
+#define PP_MAX_OBJ_VALUE		9551.38289		// Exact maximum value of objective function
 
 
 //------------------------------------------------------------------/**/
@@ -60,7 +60,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_N 21		// Number of variables (number of cols in *.mtx)
 //------------------------------------------------------------------
 
-#define PP_OPTIMAL_OBJ_VALUE		9123.804558373	// Exact maximum value of objective function
+#define PP_MAX_OBJ_VALUE		9123.804558373	// Exact maximum value of objective function
 
 
 //------------------------------------------------------------------/**/
@@ -74,7 +74,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_N 21		// Number of variables (number of cols in *.mtx)
 //------------------------------------------------------------------
 
-#define PP_OPTIMAL_OBJ_VALUE		9960.7893		// Exact maximum value of objective function
+#define PP_MAX_OBJ_VALUE		9960.7893		// Exact maximum value of objective function
 
 
 //------------------------------------------------------------------/**/
@@ -88,7 +88,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_N 21		// Number of variables (number of cols in *.mtx)
 //------------------------------------------------------------------
 
-#define PP_OPTIMAL_OBJ_VALUE		9430.597672		// Exact maximum value of objective function
+#define PP_MAX_OBJ_VALUE		9430.597672		// Exact maximum value of objective function
 
 
 //------------------------------------------------------------------/**/
@@ -103,7 +103,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_N 21		// Number of variables (number of cols in *.mtx)
 //------------------------------------------------------------------
 
-#define PP_OPTIMAL_OBJ_VALUE		10248.35532		// Exact maximum value of objective function
+#define PP_MAX_OBJ_VALUE		10248.35532		// Exact maximum value of objective function
 
 
 //------------------------------------------------------------------/**/
@@ -116,7 +116,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_M 11		// Number of equations (number of rows in *.mtx)
 #define PP_N 21		// Number of variables (number of cols in *.mtx)
 
-#define PP_OPTIMAL_OBJ_VALUE 	10022.935663
+#define PP_MAX_OBJ_VALUE 	10022.935663
 
 
 //------------------------------------------------------------------/**/

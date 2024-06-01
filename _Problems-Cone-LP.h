@@ -28,5 +28,5 @@ LP problems were obtained using BSF-LPP-Generator.
 #define PP_PROBLEM_NAME	"cone3-0"
 #define PP_M 11		// Number of equations (number of rows in *.mtx)
 #define PP_N 14		// Number of variables (number of cols in *.mtx)
-#define PP_OPTIMAL_OBJ_VALUE 132.5
+#define PP_MAX_OBJ_VALUE 132.5
 //-----------------------------------------------------------------------------/**/

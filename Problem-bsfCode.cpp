@@ -33,6 +33,9 @@ void PC_bsf_Init(bool* success) {
 
 	Preparation_for_Movement(PD_u);
 	PD_iterNo = 0;
+#ifdef PP_COS_MODE
+	PD_normPrevious_p = 0;
+#endif // PP_COS_MODE
 }
 
 void PC_bsf_SetListSize(int* listSize) {
@@ -230,7 +233,6 @@ void PC_bsf_ProcessResults(
 		cout << endl;
 
 		Vector_Copy(PD_u, parameter->x);
-		Preparation_for_Movement(PD_u);
 	}
 	else {
 		*exit = true;
@@ -326,7 +328,7 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	cout << "\tF(x) = " << setw(PP_SETW) << ObjF(PD_u);
 	cout << endl;
 #ifdef PP_DEBUG
-	cout << "u0 on hyperplanes: "; Print_VectorOnHyperplanes(PD_u);
+	cout << "u0 on hyperplanes: "; Print_PointOnHyperplanes(PD_u);
 #endif // PP_DEBUG
 	if (!PointInPolytope(PD_u))
 		cout << "u0 is outside feasible polytope!!!\n";
@@ -340,6 +342,9 @@ void PC_bsf_CopyParameter(PT_bsf_parameter_T parameterIn, PT_bsf_parameter_T* pa
 	for (int j = 0; j < PD_n; j++)
 		parameterOutP->x[j] = parameterIn.x[j];
 	Preparation_for_Movement(parameterOutP->x);
+#ifdef PP_COS_MODE
+	PD_normPrevious_p = 0;
+#endif // PP_COS_MODE
 }
 
 void PC_bsf_IterOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, PT_bsf_parameter_T parameter,
@@ -378,9 +383,9 @@ void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, 
 	cout << "=============================================" << endl;
 	cout << "Elapsed time: " << t << endl;
 	cout << "Number of iterations: " << PD_iterNo << endl;
-	cout << "Current objective value: " << setprecision(16) << PD_objF_u << endl;
-	cout << "Optimal objective value: " << PP_OPTIMAL_OBJ_VALUE << endl;
-	cout << "Relative error = " << setprecision(PP_SETW / 2) << relativeError(PP_OPTIMAL_OBJ_VALUE, PD_objF_u) << endl;
+	cout << "Computed objective value: " << setprecision(16) << PD_objF_u << endl;
+	cout << "Maximal objective value: " << PP_MAX_OBJ_VALUE << endl;
+	cout << "Relative error = " << setprecision(PP_SETW / 2) << relativeError(PP_MAX_OBJ_VALUE, PD_objF_u) << endl;
 	cout << "=============================================" << endl;
 
 	cout << "Solution point:\t";
@@ -459,30 +464,39 @@ inline void MakeHyperplaneSubsetCodeList(int* K) {
 }
 
 inline void PseudoprojectionOnFace(PT_vector_T v, PT_vector_T w) {
-	PT_vector_T sum_r;
+	PT_vector_T p; // Pseudoprojecting vector
 
 	Vector_Copy(v, w);
 
 	do {
-		Vector_Zero(sum_r);
+		Vector_Zero(p);
 
 		for (int i = 0; i < PD_ma; i++) {
 			int ia = PD_index_activeHalfspaces[i];
 			PT_vector_T r;
 				Vector_OrthogonalProjectionOntoHyperplane(w, PD_A[ia], PD_b[ia], r);
-			Vector_PlusEquals(sum_r, r);
+			Vector_PlusEquals(p, r);
+		}
+#ifdef PP_COS_MODE
+		double cos = 0;				// Cosine between previous and next projecting vectors
+		double norm_p = Vector_Norm(p);
+
+		if (PD_normPrevious_p != 0) {
+			cos = Vector_DotProduct(PD_previous_p, p) / (PD_normPrevious_p * norm_p);
 		}
 
-		Vector_DivideEquals(sum_r, PD_ma);
-		Vector_PlusEquals(w, sum_r);
-	} while (!Vector_Is_Tiny(sum_r, PP_EPS_TINY_PPROJ_VEC));
-}
+		Vector_Copy(p, PD_previous_p);
+		PD_normPrevious_p = norm_p;
 
-inline void AddOppositeInequality(int hyperplaneIndex, int m) {
-	for (int j = 0; j < PD_n; j++) {
-		PD_A[m][j] = -PD_A[hyperplaneIndex][j];
-	}
-	PD_b[m] = -PD_b[hyperplaneIndex];
+#ifdef PP_DEBUG
+		cout << "cos = " << cos << endl;
+#endif // PP_DEBUG /**/
+
+#endif // PP_COS_MODE
+
+		Vector_DivideEquals(p, PD_ma);
+		Vector_PlusEquals(w, p);
+	} while (!Vector_Is_Tiny(p, PP_EPS_TINY_PPROJ_VEC));
 }
 
 inline double Vector_DotProduct(PT_vector_T x, PT_vector_T y) {
@@ -1393,21 +1407,11 @@ inline void CodeToSubset(int code, int subset[PP_MM], int* ma) {
 	}
 };
 
-inline void Print_VectorOnHyperplanes(PT_vector_T x) {
+inline void Print_PointOnHyperplanes(PT_vector_T x) {
 	for (int i = 0; i < PD_m; i++) {
 			double residual;
 		if (Vector_OnHyperplane(x, PD_A[i], PD_b[i], PP_EPS_MAKE_H_PLANE_LIST, &residual))
 			cout << i << " ";
-	}
-	cout << endl;
-}
-
-inline void Print_VectorOnActiveHyperplanes(PT_vector_T x) {
-	double residual;
-	for (int i = 0; i < PD_ma; i++) {
-		int ia = PD_index_activeHalfspaces[i];
-		if (Vector_OnHyperplane(x, PD_A[ia], PD_b[ia], PP_EPS_ZERO, &residual))
-			cout << ia << " ";
 	}
 	cout << endl;
 }

@@ -14,11 +14,15 @@ using namespace std;
 int main(int argc, char* argv[]) {
 	char emptystring[] = "";
 	char* message = emptystring;
-	unsigned success;
+	unsigned send_success;
+	unsigned recv_success;
+	bool success;
 	BC_MpiRun();
 	BD_success = true;
 	PC_bsf_Init(&BD_success);
-	MPI_Allreduce(&BD_success, &success, 1, MPI_UNSIGNED, MPI_LAND, MPI_COMM_WORLD);
+	send_success = (unsigned)BD_success;
+	MPI_Allreduce(&send_success, &recv_success, 1, MPI_UNSIGNED, MPI_PROD, MPI_COMM_WORLD);
+	success = (bool)recv_success;
 	if (!success) {
 		if (BD_rank == BD_masterRank) 
 			cout << "Error: PC_bsf_Init failed!" << endl;
