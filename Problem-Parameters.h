@@ -12,7 +12,7 @@ This source code has been produced with using BSF-skeleton
 #include "_Problems-Simple.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/LP-Simple/"
 
-/**
+/**/
 #include "_Problems05-1.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
 
@@ -24,7 +24,7 @@ This source code has been produced with using BSF-skeleton
 #include "_Problems-Klee-Minty-Cube.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/LP-Klee-Minty-Cube/"
 
-/**/
+/**
 #include "_Problems10-1.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
 
