@@ -1,5 +1,5 @@
 /*==============================================================================
-Project: LiFe
+Project: LiFe - New Linear Programming Solvers
 Theme: Surface movement method (No MPI)
 Module: BSF-Forwards.h (Problem Independent Function Forwards)
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky 

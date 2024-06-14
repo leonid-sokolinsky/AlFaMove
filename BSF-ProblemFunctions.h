@@ -48,7 +48,9 @@ void PC_bsf_JobDispatcher(
 	bool* exit,
 	double t
 );
-//
+void PC_bsf_MapInit(
+	PT_bsf_parameter_T parameter
+);
 void PC_bsf_MapF(
 	PT_bsf_mapElem_T* mapElem, 
 	PT_bsf_reduceElem_T* reduceElem, 

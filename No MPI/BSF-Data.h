@@ -1,5 +1,5 @@
 /*==============================================================================
-Project: LiFe
+Project: LiFe - New Linear Programming Solvers
 Theme: Surface movement method (No MPI)
 Module: BSF-Data.h (Problem Independent Variables & Data Structures)
 Prefix: BD

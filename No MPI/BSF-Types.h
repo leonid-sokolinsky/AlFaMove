@@ -1,5 +1,5 @@
 /*==============================================================================
-Project: LiFe
+Project: LiFe - New Linear Programming Solvers
 Theme: Surface movement method (No MPI)
 Module: BSF-Types.h (Problem Independent Types)
 Prefix: BT

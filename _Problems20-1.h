@@ -1,5 +1,5 @@
 /*==============================================================================
-Project: LiFe
+Project: LiFe - New Linear Programming Solvers
 Theme: Surface movement method (MPI)
 Module: Problems20-1.h (LP problems of dimension 20 with 1 randome inequality)
 Prefix: PP

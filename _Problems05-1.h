@@ -1,5 +1,5 @@
 /*==============================================================================
-Project: LiFe
+Project: LiFe - New Linear Programming Solvers
 Theme: Surface movement method (MPI)
 Module: Problems05-1.h (LP problems of dimension 5 with 1 randome inequality)
 Prefix: PP
@@ -10,21 +10,32 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 ==============================================================================*/
 #pragma once
 
-//============================== Method Parameters ============================
-#define PP_KK							31		// Maximal number of faces that include surface point:  2^5-1
-#define PP_EPS_ZERO						1E-8	// Accuracy for comparison with zero
-#define PP_EPS_TINY_PPROJ_VEC			1E-10	// Tiny pseudoprojection vector
-#define PP_EPS_POINT_IN_HALFSPACE		1E-10	// Precision for point to be in halfspace
-#define PP_EPS_MAKE_H_PLANE_LIST		1E-5	// Precision for MakeHyperplaneList()
-#define PP_EPS_COS						1E-8	// Precision for cos == 1
-#define PP_OBJECTIVE_VECTOR_LENGTH		100000	// Length of Objective Vector
-#define PP_PROBE_LENGTH					0.003	// length of probe shift
-//-----------------------------------------------------------------------------
-#define PP_MAX_B_NO_CORRECT				200		// Maximum b that does not require correction
-#define PP_RND_EPS_POINT_IN_POLYTOPE	1E-6	// Precision for random inequality in PointInPolytope()
-//=============================================================================
+//=========================== problem Parameters ========================
+// PP_OBJECTIVE_VECTOR_LENGTH - direct dependence on dimension PD_n.
+// P_EPS_ZERO - inverse dependence on PP_OBJECTIVE_VECTOR_LENGTH.
+// PP_EPS_VECTOR_ROUND - inverse dependence on PP_OBJECTIVE_VECTOR_LENGTH. 
+//						This parameter affects terminate condition when 
+//						calculating pseudoprojection.
+//-----------------------------------------------------------------------
+#define PP_KK						31					// Maximal number of faces that include surface point (compilator limit: 2 147 483 647)
+#define PP_EPS_ZERO					1E-9				// Accuracy for comparison with zero
+#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO			// Precision for point to be in halfspace
+#define PP_EPS_MOVING_BOUNDS		(PP_EPS_ZERO/10)	// Precision for mooving bounds
+#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)	// Precision for mooving on polytope (affects Shift = 0)
+#define PP_EPS_VECTOR_ROUND			1E-7				// Precision of rounding vector r
+#define PP_OBJECTIVE_VECTOR_LENGTH	1E+9				// Length of Objective Vector
+#define PP_PROBE_LENGTH				1					// Length of probe shift
+#define PP_START_SHIFT_LENGTH		100
+//-------------------------------------------------------------------------------
 
-/*============================== rnd5-100 LP problem ============================*
+/*============================== rnd3-10 LP problem =============================*
+#define PP_PROBLEM_NAME	"rnd3-10"
+#define PP_M 13		// Number of equations (number of rows in *.mtx)
+#define PP_N 16		// Number of variables (number of cols in *.mtx)
+#define PP_MAX_OBJ_VALUE 		852.0289179009677
+//-------------------------------------------------------------------------------
+
+/*============================== rnd5-100 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd5-100"
 #define PP_M 105		// Number of equations (number of rows in *.mtx)
 #define PP_N 110		// Number of variables (number of cols in *.mtx)
@@ -32,77 +43,77 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 //-------------------------------------------------------------------------------
 
 /*============================== rnd5-0 LP problem ==============================*
-// Start point:	200               0             0            0             0
-// Exact solution:   100   200   200   200   200
-// Face dimension: 4.      Generating hyperplanes: {0}.			Shift = 97979.59        F(x) = 2360
-// Face dimension: 3.      Generating hyperplanes: {0, 4}.		Shift = 17950.549       F(x) = 2650
-// Face dimension: 2.      Generating hyperplanes: {0, 3, 4}.	Shift = 12018.504       F(x) = 2780
-// Face dimension: 2.      Generating hyperplanes: {3, 4, 5}.	Shift = 9428.0902       F(x) = 2820
-// Face dimension: 1.      Generating hyperplanes: {2, 3, 4, 5}.Shift = 37712.362       F(x) = 2900
+// Starting point:	200		0	0	0	0
+// Exact solution:	100   200   200   200   200
+// Dimension: 4.      Hyperplanes: {0}.			Shift = 97979.59        F(x) = 2360
+// Dimension: 3.      Hyperplanes: {0, 4}.		Shift = 17950.549       F(x) = 2650
+// Dimension: 2.      Hyperplanes: {0, 3, 4}.	Shift = 12018.504       F(x) = 2780
+// Dimension: 2.      Hyperplanes: {3, 4, 5}.	Shift = 9428.0902       F(x) = 2820
+// Dimension: 1.      Hyperplanes: {2, 3, 4, 5}.Shift = 37712.362       F(x) = 2900
 #define PP_PROBLEM_NAME	"rnd5-0"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 11		// Number of variables (number of cols in *.mtx)
 #define PP_MAX_OBJ_VALUE 		2900
-//------------------------------------------------------------------/**/
+//-------------------------------------------------------------------------------
 
 /*============================== rnd5-1-1 LP problem ==============================*
 // Start point:	200               0               0             200             200
-// Face dimension: 2.      Generating hyperplanes: {0, 3, 4}.      Shift = 26721.7		F(x) = 2579.2546
-// Face dimension: 1.      Generating hyperplanes: {0, 3, 4, 5}.   Shift = 54967.646	F(x) = 2584.3495
+// Dimension: 2.      Hyperplanes: {0, 3, 4}.      Shift = 26721.7		F(x) = 2579.2546
+// Dimension: 1.      Hyperplanes: {0, 3, 4, 5}.   Shift = 54967.646	F(x) = 2584.3495
 #define PP_PROBLEM_NAME	"rnd5-1-1"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 11		// Number of variables (number of cols in *.mtx)
-#define PP_MAX_OBJ_VALUE	2584.3495
+#define PP_MAX_OBJ_VALUE 2584.349489709188
 //------------------------------------------------------------------/**/
 
-/*============================== rnd5-1-2 LP problem ==============================*
+/*============================== rnd5-1-2 LP problem ==============================*/
 // Start point:	0       199.99694       183.63843       188.16601       191.28208
-// Face dimension: 3.      Generating hyperplanes: {5, 6}.		Shift = 1.0520607       F(x) = 2647.8187
-// Face dimension: 2.      Generating hyperplanes: {1, 5, 6}.	Shift = 3497.6578       F(x) = 2652.9365
-// Face dimension: 1.      Generating hyperplanes: {1, 4, 5, 6}.Shift = 12053.422       F(x) = 2657.5256
+// Dimension: 3.      Hyperplanes: {5, 6}.		Shift = 1.0520607       F(x) = 2647.8187
+// Dimension: 2.      Hyperplanes: {1, 5, 6}.	Shift = 3497.6578       F(x) = 2652.9365
+// Dimension: 1.      Hyperplanes: {1, 4, 5, 6}.Shift = 12053.422       F(x) = 2657.5256
 #define PP_PROBLEM_NAME	"rnd5-1-2"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 11		// Number of variables (number of cols in *.mtx)
-#define PP_MAX_OBJ_VALUE 			2657.5256116
+#define PP_MAX_OBJ_VALUE 2657.525612539946
 //------------------------------------------------------------------/**/
 
 /*============================== rnd5-1-3 LP problem ==============================*
 // Start point:	200           200           200             0             0
-// Face dimension: 2.      Generating hyperplanes: {0, 1, 2}.      Shift = 21948.028       F(x) = 2408.2173
-// Face dimension: 1.      Generating hyperplanes: {0, 1, 2, 5}.   Shift = 8096.5775       F(x) = 2424.9192
+// Dimension: 2.      Hyperplanes: {0, 1, 2}.      Shift = 21948.028       F(x) = 2408.2173
+// Dimension: 1.      Hyperplanes: {0, 1, 2, 5}.   Shift = 8096.5775       F(x) = 2424.9192
 #define PP_PROBLEM_NAME	"rnd5-1-3"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 11		// Number of variables (number of cols in *.mtx)
-#define PP_MAX_OBJ_VALUE 2424.9191538
+#define PP_MAX_OBJ_VALUE 2424.919153811913
 //------------------------------------------------------------------/**/
 
 /*============================== rnd5-1-4 LP problem ==============================*
 // Start point:	200             0             0           200           200
-// Face dimension: 2.      Generating hyperplanes: {0, 3, 4}.      Shift = 22190.147       F(x) = 2274.477
-// Face dimension: 1.      Generating hyperplanes: {0, 3, 4, 5}.   Shift = 6409.9716       F(x) = 2300.1128
+// Dimension: 2.      Hyperplanes: {0, 3, 4}.      Shift = 22190.147       F(x) = 2274.477
+// Dimension: 1.      Hyperplanes: {0, 3, 4, 5}.   Shift = 6409.9716       F(x) = 2300.1128
 #define PP_PROBLEM_NAME	"rnd5-1-4"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 11		// Number of variables (number of cols in *.mtx)
-#define PP_MAX_OBJ_VALUE 2300.1127587
+#define PP_MAX_OBJ_VALUE 2300.112758698174
 //------------------------------------------------------------------/**/
 
 /*============================== rnd5-1-5 LP problem ==============================*
 // Start point:	0           200           200             0             0
-// Face dimension: 3.      Generating hyperplanes: {1, 2}.			Shift = 65129.188       F(x) = 2531.0733
-// Face dimension: 2.      Generating hyperplanes: {1, 2, 5}.		Shift = 21689.588       F(x) = 2618.1681
-// Face dimension: 1.      Generating hyperplanes: {1, 2, 5, 10}.	Shift = 27943.645       F(x) = 2626.4732
+// Dimension: 3.      Hyperplanes: {1, 2}.			Shift = 65129.188       F(x) = 2531.0733
+// Dimension: 2.      Hyperplanes: {1, 2, 5}.		Shift = 21689.588       F(x) = 2618.1681
+// Dimension: 1.      Hyperplanes: {1, 2, 5, 10}.	Shift = 27943.645       F(x) = 2626.4732
 #define PP_PROBLEM_NAME	"rnd5-1-5"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 11		// Number of variables (number of cols in *.mtx)
-#define PP_MAX_OBJ_VALUE 2626.4731647
+#define PP_MAX_OBJ_VALUE 2626.473236207306
 //------------------------------------------------------------------/**/
 
 /*============================== rnd5-1-6 LP problem ==============================*
 // Start point:	200           200           200             0             0
-// Face dimension: 2.      Generating hyperplanes: {0, 1, 2}.      Shift = 31072.332       F(x) = 2608.4395
-// Face dimension: 1.      Generating hyperplanes: {0, 1, 2, 5}.   Shift = 54925.396       F(x) = 2675.352
+// Dimension: 2.      Hyperplanes: {0, 1, 2}.      Shift = 31072.332       F(x) = 2608.4395
+// Dimension: 1.      Hyperplanes: {0, 1, 2, 5}.   Shift = 54925.396       F(x) = 2675.352
 #define PP_PROBLEM_NAME	"rnd5-1-6"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 11		// Number of variables (number of cols in *.mtx)
-#define PP_MAX_OBJ_VALUE 2675.351984
+#define PP_MAX_OBJ_VALUE 2675.351994186643
 //------------------------------------------------------------------/**/

@@ -14,6 +14,9 @@ void PC_bsf_CopyParameter(
 void PC_bsf_Init(
 	bool* success
 );
+void PC_bsf_MapInit(
+	PT_bsf_parameter_T parameter
+);
 void PC_bsf_IterOutput(
 	PT_bsf_reduceElem_T* reduceResult, 
 	int reduceCounter, 

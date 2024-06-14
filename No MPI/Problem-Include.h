@@ -1,5 +1,5 @@
 /*==============================================================================
-Project: LiFe
+Project: LiFe - New Linear Programming Solvers
 Theme: Surface movement method (No MPI)
 Module: Problem-Include.h ("Includ" Files of the Problem)
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
