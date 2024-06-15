@@ -1,8 +1,10 @@
 ﻿/*==============================================================================
-Project: LiFe
+Project: LiFe - New Linear Programming Solvers
 Theme: Surface movement method (MPI)
 Module: Problem-bsfCode.cpp (Implementation of Problem Code)
-Prefix: PC
+Prefix:	PC_bsf	- BSF Predefined Problem Functions
+		CF		- Common Functionc
+		PF		- Private Functions
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
 This source code has been produced with using BSF-skeleton
 ==============================================================================*/
@@ -10,7 +12,6 @@ This source code has been produced with using BSF-skeleton
 #include "Problem-Forwards.h"		// Problem Function Forwards
 #include "Problem-bsfParameters.h"	// BSF-skeleton parameters
 #include "BSF-SkeletonVariables.h"	// Skeleton Variables
-
 using namespace std;
 
 void PC_bsf_CopyParameter(PT_bsf_parameter_T parameterIn, PT_bsf_parameter_T* parameterOutP) {
@@ -231,7 +232,6 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	cout << "After conversion:  m =\t" << PD_m << "\tn = " << PD_n << endl;
 	cout << "PP_EPS_ZERO\t" << PP_EPS_ZERO << endl;
 	cout << "PP_EPS_POINT_IN_HALFSPACE\t" << PP_EPS_POINT_IN_HALFSPACE << endl;
-	cout << "PP_EPS_MOVING_BOUNDS\t\t" << PP_EPS_MOVING_BOUNDS << endl;
 	cout << "PP_EPS_MOVING_ON_POLYTOPE\t" << PP_EPS_MOVING_ON_POLYTOPE << endl;
 	cout << "PP_EPS_VECTOR_ROUND\t\t" << PP_EPS_VECTOR_ROUND << endl;
 	cout << "PP_OBJECTIVE_VECTOR_LENGTH\t" << PP_OBJECTIVE_VECTOR_LENGTH << endl;
@@ -261,6 +261,8 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, PT_bsf_parameter_T parameter, double t) {
 	cout << setprecision(PP_SETW / 2);
 
+	SF_Vector_Round(PD_u, PP_EPS_ZERO * 10);
+
 	PD_objF_u = SF_ObjF(PD_u);
 
 	cout << "=============================================" << endl;
@@ -276,7 +278,6 @@ void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, 
 		cout << "Calculated solution point is saved into file *.so" << endl;
 #endif // PP_SAVE_RESULT
 
-	SF_Vector_Round(PD_u, PP_EPS_ZERO);
 	cout << "Solution point:\t";
 	SF_Print_Vector(PD_u);	cout << endl;
 #ifdef PP_DEBUG
@@ -305,7 +306,9 @@ void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter,
 		return;
 	}
 
-	SF_MovingOnPolytope(PD_u, reduceResult->d, u_moved, PP_EPS_MOVING_BOUNDS, PP_EPS_MOVING_ON_POLYTOPE);
+	SF_MovingOnPolytope(PD_u, reduceResult->d, u_moved, PP_EPS_MOVING_ON_POLYTOPE);
+
+	assert(PD_shiftLength >= PP_EPS_ZERO);
 
 	SF_Vector_Copy(u_moved, PD_u);
 	SF_Vector_Round(PD_u, PP_EPS_VECTOR_ROUND);
@@ -534,19 +537,19 @@ inline void SF_MakeColumnOfNorms(PT_matrix_T A, PT_column_T norm_a) {
 		norm_a[i] = SF_Vector_Norm(A[i]);
 }
 
-inline void SF_MovingOnPolytope(PT_vector_T startPoint, PT_vector_T directionVector, PT_vector_T finishPoint, double epsBounds, double epsInPolytope) {
+inline void SF_MovingOnPolytope(PT_vector_T startPoint, PT_vector_T directionVector, PT_vector_T finishPoint, double epsMoving) {
 	double leftBound = 0;
 	double rightBound = PP_DBL_MAX;
 	double factor;
 
-	assert(SF_Vector_Norm(directionVector) >= epsBounds);
+	assert(SF_Vector_Norm(directionVector) >= PP_EPS_ZERO);
 
 	PD_shiftLength = PP_START_SHIFT_LENGTH;
 	factor = PD_shiftLength;
 
-	while (rightBound - leftBound >= epsBounds && factor > 0) {
+	while (rightBound - leftBound >= PP_EPS_ZERO && factor > 0) {
 		SF_Shift(startPoint, directionVector, PD_shiftLength, finishPoint);
-		if (SF_PointBelongsPolytope(finishPoint, epsInPolytope)) {
+		if (SF_PointBelongsPolytope(finishPoint, PP_EPS_POINT_IN_HALFSPACE)) {
 			leftBound = PD_shiftLength;
 			PD_shiftLength += factor;
 		}
@@ -557,8 +560,12 @@ inline void SF_MovingOnPolytope(PT_vector_T startPoint, PT_vector_T directionVec
 		}
 	}
 
-	PD_shiftLength -= factor;
 	SF_Shift(startPoint, directionVector, PD_shiftLength, finishPoint);
+	while (!SF_PointBelongsPolytope(finishPoint, epsMoving)) {
+		PD_shiftLength -= epsMoving;
+		epsMoving *= 2;
+		SF_Shift(startPoint, directionVector, PD_shiftLength, finishPoint);
+	}
 }
 
 inline void SF_MovingTowardsPolytope(PT_vector_T point, PT_vector_T directionVector, double eps) {
@@ -1484,21 +1491,70 @@ inline void PF_CodeToSubset(int code, int subset[PP_MM], int* ma) {
 	}
 }
 
-inline void PF_MakeFaceList(int* K) {
+inline void PF_MakeFaceList(int K) {
 	int index;
+
+	if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
+		cout << "List of faces in random order is generated...\n";
 
 	for (int k = 0; k < PP_KK; k++) {
 		PD_faceCodeList[k] = 0;
 	}
 
-	for (int k = 1; k <= *K; k++) {
-		index = rand() % PP_KK;
+	if (PP_KK <= RAND_MAX) {
+		for (int k = 1; k <= K; k++) {
+			index = rand() % PP_KK;
+			if (PD_faceCodeList[index] == 0)
+				PD_faceCodeList[index] = k;
+			else {
+				for (int ki = 1; ki < K; ki++) {
+					if (PD_faceCodeList[(index + ki) % PP_KK] == 0) {
+						PD_faceCodeList[(index + ki) % PP_KK] = k;
+						break;
+					}
+				}
+			}
+		}
+		return;
+	}
+
+	assert(PP_KK % RAND_MAX == 0);
+	assert(K <= PP_KK);
+
+	int segmentCount = PP_KK / RAND_MAX;
+	int segmentK = K / segmentCount;
+	int remainderK = K % segmentCount;
+
+	for (int l = 0; l < segmentCount; l++) {
+		for (int k = 1 + l * segmentK; k <= (l + 1) * segmentK; k++) {
+			index = rand() + l * RAND_MAX;
+			if (PD_faceCodeList[index] == 0)
+				PD_faceCodeList[index] = k;
+			else {
+				for (int ki = 1; ki < RAND_MAX; ki++) {
+					if (PD_faceCodeList[(index + ki) % RAND_MAX] == 0) {
+						PD_faceCodeList[(index + ki) % RAND_MAX] = k;
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	if (remainderK == 0)
+		return;
+
+	assert(1 + segmentCount * segmentK <= K);
+	assert(segmentCount * RAND_MAX + 1 == PP_KK);
+
+	for (int k = 1 + segmentCount * segmentK; k <= K; k++) {
+		index = rand() + segmentCount * RAND_MAX;
 		if (PD_faceCodeList[index] == 0)
 			PD_faceCodeList[index] = k;
 		else {
-			for (int ki = 1; ki < *K; ki++) {
-				if (PD_faceCodeList[(index + ki) % *K] == 0) {
-					PD_faceCodeList[(index + ki) % *K] = k;
+			for (int ki = 1; ki < RAND_MAX; ki++) {
+				if (PD_faceCodeList[(index + ki) % RAND_MAX] == 0) {
+					PD_faceCodeList[(index + ki) % RAND_MAX] = k;
 					break;
 				}
 			}
@@ -1519,10 +1575,10 @@ inline void PF_MakeHyperplaneList(PT_vector_T u, int* index_includingHyperplanes
 inline void PF_PreparationForIteration(PT_vector_T u) {
 
 #ifdef PP_DEBUG
-	if (!SF_PointBelongsPolytope(u, PP_EPS_ZERO)) {
+	if (!SF_PointBelongsPolytope(u, PP_EPS_POINT_IN_HALFSPACE)) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster) {
 			cout << "Point does not belong to the feasible polytope with precision PP_EPS_ZERO = "
-				<< PP_EPS_ZERO << "!!!\n";
+				<< PP_EPS_POINT_IN_HALFSPACE << "!!!\n";
 			abort();
 		}
 	}
@@ -1535,7 +1591,7 @@ inline void PF_PreparationForIteration(PT_vector_T u) {
 			cout << "Parameter PP_KK = " << PP_KK << " must be greater than or equal to " << PD_K << "\n";
 		abort();
 	}
-	PF_MakeFaceList(&PD_K);
+	PF_MakeFaceList(PD_K);
 	PD_objF_u = SF_ObjF(PD_u);
 	PD_objF_initialValue = PD_objF_u;
 }

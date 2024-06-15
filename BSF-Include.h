@@ -1,5 +1,5 @@
 /*==============================================================================
-Project: LiFe
+Project: LiFe - New Linear Programming Solvers
 Theme: Surface movement method (MPI)
 Module: BSF-Include.h (Problem Independent "Include" Files)
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky 

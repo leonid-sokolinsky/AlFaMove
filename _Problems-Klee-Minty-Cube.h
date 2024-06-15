@@ -31,8 +31,8 @@ This include file is part of Problem-Parameters.h
 //---------------------------------- Method parameters ------------------------
 #define PP_EPS_ZERO					1E-6					// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO				// Precision for point to be in halfspace
-#define PP_EPS_MOVING_BOUNDS		(PP_EPS_ZERO/10)		// Precision for mooving bounds
-#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)		// Precision for mooving on polytope
+#define 		(PP_EPS_ZERO/10)		// Precision for moving bounds
+#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)		// Precision for moving on polytope
 #define PP_EPS_VECTOR_ROUND			PP_EPS_ZERO			// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+8					// Length of Objective Vector
 // _________________________________________________ 1 _____________________________________________________
@@ -85,8 +85,8 @@ This include file is part of Problem-Parameters.h
 //---------------------------------- Method parameters ------------------------
 #define PP_EPS_ZERO					1E-7					// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO				// Precision for point to be in halfspace
-#define PP_EPS_MOVING_BOUNDS		(PP_EPS_ZERO/10)		// Precision for mooving bounds
-#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)		// Precision for mooving on polytope
+#define 		(PP_EPS_ZERO/10)		// Precision for moving bounds
+#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)		// Precision for moving on polytope
 #define PP_EPS_VECTOR_ROUND			1E-6				// Precision of rounding vector r
 
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+13					// Length of Objective Vector
@@ -104,8 +104,8 @@ This include file is part of Problem-Parameters.h
 //---------------------------------- Method parameters ------------------------
 #define PP_EPS_ZERO					1E-6					// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO				// Precision for point to be in halfspace
-#define PP_EPS_MOVING_BOUNDS		(PP_EPS_ZERO/10)		// Precision for mooving bounds
-#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)		// Precision for mooving on polytope
+#define 		(PP_EPS_ZERO/10)		// Precision for moving bounds
+#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)		// Precision for moving on polytope
 #define PP_EPS_VECTOR_ROUND			1E-4				// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+14					// Length of Objective Vector
 //=============================================================================
@@ -123,8 +123,8 @@ This include file is part of Problem-Parameters.h
 //---------------------------------- Method parameters ------------------------
 #define PP_EPS_ZERO					1E-2					// Accuracy for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO				// Precision for point to be in halfspace
-#define PP_EPS_MOVING_BOUNDS		(PP_EPS_ZERO/10)		// Precision for mooving bounds
-#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)		// Precision for mooving on polytope
+#define 		(PP_EPS_ZERO/10)		// Precision for moving bounds
+#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)		// Precision for moving on polytope
 #define PP_EPS_VECTOR_ROUND			9.999E-1				// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+22					// Length of Objective Vector
 //=============================================================================

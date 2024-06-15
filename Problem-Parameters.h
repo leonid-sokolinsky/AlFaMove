@@ -12,7 +12,7 @@ This source code has been produced with using BSF-skeleton
 #include "_Problems-Simple.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/LP-Simple/"
 
-/**/
+/**
 #include "_Problems05-1.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
 
@@ -28,6 +28,10 @@ This source code has been produced with using BSF-skeleton
 #include "_Problems10-1.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
 
+/**/
+#include "_Problems15-1.h"
+#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
+
 /**
 #include "_Problems20-1.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
@@ -36,7 +40,7 @@ This source code has been produced with using BSF-skeleton
 
 //-------------------------- Compilation Modes -----------------------
 #define PP_DEBUG
-#define PP_MATRIX_OUTPUT
+//#define PP_MATRIX_OUTPUT
 #define PP_SAVE_RESULT
 //#define PP_PATH "Problems/"
 

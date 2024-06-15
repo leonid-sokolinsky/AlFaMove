@@ -1,5 +1,5 @@
 /*==============================================================================
-Project: LiFe
+Project: LiFe - New Linear Programming Solvers
 Theme: Surface movement method (MPI)
 Module: Problem-Forwards.h (Problem Function Forwards)
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
@@ -9,7 +9,7 @@ This source code has been produced with using BSF-skeleton
 #include "Problem-Types.h"
 //====================== Problem Functions ===========================
 void	PF_CodeToSubset(int code, int subset[PP_MM], int* ma);
-void	PF_MakeFaceList(int* K);
+void	PF_MakeFaceList(int K);
 void	PF_MakeHyperplaneList(PT_vector_T u, int* index_includingHyperplanes, int* mh, double eps);
 void	PF_PreparationForIteration(PT_vector_T u);
 void	PF_Print_Number_of_faces(PT_vector_T x);
@@ -22,7 +22,7 @@ double	SF_Distance_PointToHyperplane_i(PT_vector_T x, int i);
 double	SF_Distance_PointToPoint(PT_vector_T x, PT_vector_T y);
 double	SF_Distance_PointToPolytope(PT_vector_T x);
 void	SF_MakeColumnOfNorms(PT_matrix_T A, PT_column_T norm_a);
-void	SF_MovingOnPolytope(PT_vector_T startPoint, PT_vector_T directionVector, PT_vector_T finishPoint, double epsBounds, double epsInPolytope);
+void	SF_MovingOnPolytope(PT_vector_T startPoint, PT_vector_T directionVector, PT_vector_T finishPoint, double epsMoving);
 void	SF_MovingTowardsPolytope(PT_vector_T point, PT_vector_T directionVector, double eps);
 bool	SF_MTX_Load__Problem();
 bool	SF_MTX_Load_A();
