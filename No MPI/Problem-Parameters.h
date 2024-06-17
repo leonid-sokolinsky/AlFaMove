@@ -11,15 +11,15 @@ This source code has been produced with using BSF-skeleton
 
 /**
 #include "../_Problems05-1.h"
-#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
+#define PP_PATH "D:/YandexDisk/_private/Programming/Set-of-LP-Problems/Rnd-LP/"
 
 /**
 #include "../_Problems10-1.h"
-#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
+#define PP_PATH "D:/YandexDisk/_private/Programming/Set-of-LP-Problems/Rnd-LP/"
 
 /**
 #include "../_Problems15-1.h"
-#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
+#define PP_PATH "D:/YandexDisk/_private/Programming/Set-of-LP-Problems/Rnd-LP/"
 
 /**
 // 20-dimension problems are unsolvable
@@ -27,11 +27,11 @@ This source code has been produced with using BSF-skeleton
 
 /**
 #include "../_Problems-Klee-Minty-Cube.h"
-#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Klee-Minty-Cube/"
+#define PP_PATH "D:/YandexDisk/_private/Programming/Set-of-LP-Problems/Klee-Minty-Cube/"
 
 /**/
 #include "../_Problems-Miscellaneous.h"
-#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Miscellaneous-Problems/"
+#define PP_PATH "D:/YandexDisk/_private/Programming/Set-of-LP-Problems/Miscellaneous-LP/"
 
 /*---------------------------------------------------------------------*/
 
