@@ -117,8 +117,16 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 
 	SF_Vector_Addition(u, PD_objVector, v);
 
-	PF_PseudoprojectionOnFace(v, w, PP_EPS_VECTOR_ROUND);
-	SF_Vector_Round(w, PP_EPS_VECTOR_ROUND * 10);
+	PF_PseudoprojectionOnFace(v, w, PP_EPS_PROJECTION_ROUND, success);
+	if (!*success) {
+		cout << "\n\nProcess " << BSF_sv_mpiRank
+			<< ". Error in PC_bsf_MapF: Exceeded the maximum number of iterations when calculating pseudoprojection (PP_MAX_PROJECTING_ITER = "
+			<< PP_MAX_PROJECTING_ITER << "). It is impossible to calculate Map function for element "
+			<< BSF_sv_addressOffset + BSF_sv_numberInSublist << "!\n";
+		return;
+	}
+
+	SF_Vector_Round(w, PP_EPS_PROJECTION_ROUND * 10);
 
 	objF_w = SF_ObjF(w);
 
@@ -136,7 +144,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	}
 
 	SF_Vector_MultiplyEquals((*reduceElem).d, PP_PROBE_LENGTH / norm_d);
-	SF_Vector_Round((*reduceElem).d, PP_EPS_VECTOR_ROUND);
+	SF_Vector_Round((*reduceElem).d, PP_EPS_PROJECTION_ROUND);
 
 	PT_vector_T p;
 	SF_Vector_Addition(u, (*reduceElem).d, p);
@@ -212,7 +220,7 @@ void PC_bsf_MapInit(PT_bsf_parameter_T parameter) {
 void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	cout << "=================================================== SMM ====================================================" << endl;
 	cout << "Problem name: " << PD_problemName << endl;
-	cout << "No MPI" << endl;
+	cout << "Number of Workers: " << BSF_sv_numOfWorkers << endl;
 #ifdef PP_BSF_OMP
 #ifdef PP_BSF_NUM_THREADS
 	cout << "Number of Threads: " << PP_BSF_NUM_THREADS << endl;
@@ -233,7 +241,7 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	cout << "PP_EPS_ZERO\t" << PP_EPS_ZERO << endl;
 	cout << "PP_EPS_POINT_IN_HALFSPACE\t" << PP_EPS_POINT_IN_HALFSPACE << endl;
 	cout << "PP_EPS_MOVING_ON_POLYTOPE\t" << PP_EPS_MOVING_ON_POLYTOPE << endl;
-	cout << "PP_EPS_VECTOR_ROUND\t\t" << PP_EPS_VECTOR_ROUND << endl;
+	cout << "PP_EPS_PROJECTION_ROUND\t\t" << PP_EPS_PROJECTION_ROUND << endl;
 	cout << "PP_OBJECTIVE_VECTOR_LENGTH\t" << PP_OBJECTIVE_VECTOR_LENGTH << endl;
 	cout << "PP_PROBE_LENGTH\t\t\t" << PP_PROBE_LENGTH << endl;
 	cout << "PP_START_SHIFT_LENGTH\t\t" << PP_START_SHIFT_LENGTH << endl;
@@ -254,24 +262,22 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	else
 		cout << "u0 is belongs feasible polytope.\n";
 	cout << "Including hyperplanes:\t"; SF_Print_HyperplanesIncludingPoint(PD_u, PP_EPS_POINT_IN_HALFSPACE); cout << endl;
-	cout << "Number of including faces = "; PF_Print_Number_of_faces(PD_u);
+	cout << "Including faces:\t"; PF_Print_Number_of_faces(PD_u);
 #endif // PP_DEBUG
 }
 
 void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, PT_bsf_parameter_T parameter, double t) {
 	cout << setprecision(PP_SETW / 2);
 
-	SF_Vector_Round(PD_u, PP_EPS_ZERO * 10);
-
 	PD_objF_u = SF_ObjF(PD_u);
 
-	cout << "=============================================" << endl;
-	cout << "Elapsed time: " << t << endl;
-	cout << "Number of iterations: " << PD_iterNo << endl;
-	cout << "Computed objective value: " << setprecision(16) << PD_objF_u << endl;
-	cout << "Maximal objective value:  " << PP_MAX_OBJ_VALUE << endl;
-	cout << "Relative error = " << setprecision(PP_SETW / 2) << SF_RelativeError(PP_MAX_OBJ_VALUE, PD_objF_u) << endl;
-	cout << "=============================================" << endl;
+	cout << "================================================" << endl;
+	cout << "// Elapsed time: " << t << endl;
+	cout << "// Number of iterations: " << PD_iterNo << endl;
+	cout << "// Computed objective value: " << setprecision(16) << PD_objF_u << endl;
+	cout << "// Maximal objective value:  " << PP_MAX_OBJ_VALUE << endl;
+	cout << "// Relative error = " << setprecision(3) << SF_RelativeError(PP_MAX_OBJ_VALUE, PD_objF_u) << setprecision(PP_SETW / 2) << endl;
+	cout << "================================================" << endl;
 
 #ifdef PP_SAVE_RESULT
 	if (SF_MTX_SavePoint(PD_u, PP_MTX_POSTFIX_SO))
@@ -311,7 +317,6 @@ void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter,
 	assert(PD_shiftLength >= PP_EPS_ZERO);
 
 	SF_Vector_Copy(u_moved, PD_u);
-	SF_Vector_Round(PD_u, PP_EPS_VECTOR_ROUND);
 
 	PD_iterNo++;
 
@@ -1577,8 +1582,8 @@ inline void PF_PreparationForIteration(PT_vector_T u) {
 #ifdef PP_DEBUG
 	if (!SF_PointBelongsPolytope(u, PP_EPS_POINT_IN_HALFSPACE)) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster) {
-			cout << "Point does not belong to the feasible polytope with precision PP_EPS_ZERO = "
-				<< PP_EPS_POINT_IN_HALFSPACE << "!!!\n";
+			cout << "\nPoint does not belong to the feasible polytope with precision PP_EPS_ZERO = "
+				<< PP_EPS_POINT_IN_HALFSPACE << "!!! You should decrease this parameter.\n";
 			abort();
 		}
 	}
@@ -1620,10 +1625,11 @@ inline void PF_Print_Number_of_faces(PT_vector_T x) {
 	//
 }
 
-inline void PF_PseudoprojectionOnFace(PT_vector_T v, PT_vector_T w, double eps) {
+static void PF_PseudoprojectionOnFace(PT_vector_T v, PT_vector_T w, double eps, int* success) {
 	PT_vector_T r;
 	PT_vector_T w_previous;
 	double dist;
+	int iterCount = 0;
 
 	SF_Vector_Copy(v, w);
 
@@ -1643,5 +1649,10 @@ inline void PF_PseudoprojectionOnFace(PT_vector_T v, PT_vector_T w, double eps) 
 		SF_Vector_PlusEquals(w, r);
 
 		dist = SF_Distance_PointToPoint(w, w_previous);
+		iterCount++;
+		if (iterCount > PP_MAX_PROJECTING_ITER) {
+			*success = false;
+			break;
+		}
 	} while (dist >= eps / 10);
 }

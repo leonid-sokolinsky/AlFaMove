@@ -13,7 +13,7 @@ void	PF_MakeFaceList(int K);
 void	PF_MakeHyperplaneList(PT_vector_T u, int* index_includingHyperplanes, int* mh, double eps);
 void	PF_PreparationForIteration(PT_vector_T u);
 void	PF_Print_Number_of_faces(PT_vector_T x);
-void	PF_PseudoprojectionOnFace(PT_vector_T v, PT_vector_T w, double eps);
+void	PF_PseudoprojectionOnFace(PT_vector_T v, PT_vector_T w, double eps, int* success);
 //====================== Shared Functions ===========================
 void	SF_Conversion();
 void	SF_ConversionSimple();

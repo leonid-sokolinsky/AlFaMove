@@ -8,33 +8,30 @@ This source code has been produced with using BSF-skeleton
 ==============================================================================*/
 
 /*----------------------------- Problems -------------------------------*/
-/**
-#include "../_Problems-Simple.h"
-#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Simple/"
 
 /**
 #include "../_Problems05-1.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
 
 /**
-#include "../_Problems-Cone-LP.h"
-#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Cone-Problems/"
+#include "../_Problems10-1.h"
+#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
+
+/**
+#include "../_Problems15-1.h"
+#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
+
+/**
+// 20-dimension problems are unsolvable
+//
 
 /**
 #include "../_Problems-Klee-Minty-Cube.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/LP-Klee-Minty-Cube/"
 
-/**
-#include "../_Problems10-1.h"
-#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
-
 /**/
-#include "../_Problems15-1.h"
-#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
-
-/**
-#include "../_Problems20-1.h"
-#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
+#include "../_Problems-Miscellaneous.h"
+#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Miscellaneous-Problems/"
 
 /*---------------------------------------------------------------------*/
 
