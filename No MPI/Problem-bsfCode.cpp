@@ -244,7 +244,6 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	cout << "PP_EPS_PROJECTION_ROUND\t\t" << PP_EPS_PROJECTION_ROUND << endl;
 	cout << "PP_OBJECTIVE_VECTOR_LENGTH\t" << PP_OBJECTIVE_VECTOR_LENGTH << endl;
 	cout << "PP_PROBE_LENGTH\t\t\t" << PP_PROBE_LENGTH << endl;
-	cout << "PP_START_SHIFT_LENGTH\t\t" << PP_START_SHIFT_LENGTH << endl;
 	cout << "--------------- Data ---------------\n";
 #ifdef PP_MATRIX_OUTPUT
 	cout << "------- Matrix PD_A & Column PD_b -------" << endl;
@@ -306,6 +305,7 @@ void PC_bsf_ProblemOutput_3(PT_bsf_reduceElem_T_3* reduceResult, int reduceCount
 
 void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, PT_bsf_parameter_T* parameter, int* nextJob, bool* exit) {
 	PT_vector_T u_moved;
+	double shiftLength;
 
 	if (SF_Vector_Norm(reduceResult->d) < PP_EPS_ZERO) {
 		*exit = true;
@@ -313,8 +313,7 @@ void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter,
 	}
 
 	SF_MovingOnPolytope(PD_u, reduceResult->d, u_moved, PP_EPS_MOVING_ON_POLYTOPE);
-
-	assert(PD_shiftLength >= PP_EPS_ZERO);
+	shiftLength = SF_Distance_PointToPoint(PD_u, u_moved);
 
 	SF_Vector_Copy(u_moved, PD_u);
 
@@ -332,7 +331,7 @@ void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter,
 	for (int i = 0; i < PD_ma - 1; i++)
 		cout << PD_index_activeHyperplanes[i] << ", ";
 	cout << PD_index_activeHyperplanes[PD_ma - 1]
-		<< "}.\tShift = " << PD_shiftLength << "\tF(x) = " << PD_objF_u << endl;
+		<< "}.\tShift = " << shiftLength << "\tF(x) = " << PD_objF_u << endl;
 
 	cout << "New surface point:\t";
 	SF_Print_Vector(PD_u);
@@ -407,7 +406,140 @@ void PC_bsfAssignSublistLength(int value) { BSF_sv_sublistLength = value; }
 
 //---------------------------------- Shared Functions -------------------------
 
-static void SF_Conversion() { // Transformation to inequalities & dimensionality reduction
+inline double SF_Distance_PointToHalfspace_i(PT_vector_T x, int i) {
+	double a_dot_z_minus_b = SF_Vector_DotProduct(PD_A[i], x) - PD_b[i];
+
+	if (PD_norm_a[i] < PP_EPS_ZERO) //Degenerate equation
+		return 0;
+
+	if (a_dot_z_minus_b < 0) // Point belongs to halfspace
+		return 0;
+
+	return a_dot_z_minus_b / PD_norm_a[i];
+}
+
+inline double SF_Distance_PointToHyperplane_i(PT_vector_T x, int i) {
+	if (PD_norm_a[i] < PP_EPS_ZERO) //Degenerate equation
+		return 0;
+	else
+		return fabs(SF_Vector_DotProduct(PD_A[i], x) - PD_b[i]) / PD_norm_a[i];
+}
+
+inline double SF_Distance_PointToPoint(PT_vector_T x, PT_vector_T y) {
+	PT_vector_T z;
+	SF_Vector_Subtraction(x, y, z);
+	return SF_Vector_Norm(z);
+}
+
+inline double SF_Distance_PointToPolytope(PT_vector_T x) { // Measure of distance from point to polytope
+	double maxDistance = 0;
+	double distance;
+
+	for (int i = 0; i < PD_m; i++) {
+		distance = SF_Distance_PointToHalfspace_i(x, i);
+		if (distance > 0)
+			maxDistance = PF_MAX(maxDistance, distance);
+	}
+	return maxDistance;
+}
+
+inline void SF_MakeColumnOfNorms(PT_matrix_T A, PT_column_T norm_a) {
+	for (int i = 0; i < PD_m; i++)
+		norm_a[i] = SF_Vector_Norm(A[i]);
+}
+
+inline void SF_MovingOnPolytope(PT_vector_T startPoint, PT_vector_T directionVector, PT_vector_T finishPoint, double epsMoving) {
+	double leftBound = 0;
+	double rightBound = PP_DBL_MAX;
+	double factor = 1;
+	double delta;
+
+	assert(SF_Vector_Norm(directionVector) >= PP_EPS_ZERO);
+
+	delta = factor / 2;
+
+	while (rightBound - leftBound >= PP_EPS_ZERO && delta > 0) {
+		SF_Shift(startPoint, directionVector, factor, finishPoint);
+		if (SF_PointBelongsPolytope(finishPoint, PP_EPS_POINT_IN_HALFSPACE)) {
+			leftBound = factor;
+			delta *= 2;
+			factor += delta;
+		}
+		else {
+			rightBound = factor;
+			delta /= 2;
+			factor -= delta;
+		}
+	}
+
+	SF_Shift(startPoint, directionVector, factor, finishPoint);
+	delta = epsMoving;
+	while (!SF_PointBelongsPolytope(finishPoint, epsMoving) && delta > 0) {
+		factor -= delta;
+		delta *= 2;
+		SF_Shift(startPoint, directionVector, factor, finishPoint);
+	}
+}
+
+inline void SF_MovingToPolytope(PT_vector_T startPoint, PT_vector_T directionVector, PT_vector_T finishPoint, double epsMoving) {
+	double leftBound = 0;
+	double rightBound = PP_DBL_MAX;
+	double factor = 1;
+	double delta;
+	static int outerHalspace_i[PP_MM];	// Index of out half-spaces
+	int mo;								// Number of out half-spaces
+	bool pointInsideCone;
+
+	assert(SF_Vector_Norm(directionVector) >= PP_EPS_ZERO);
+
+	mo = 0;
+	for (int i = 0; i < PD_m; i++)
+		if (!SF_PointBelongsHalfspace_i(startPoint, i, PP_EPS_POINT_IN_HALFSPACE)) {
+			outerHalspace_i[mo] = i;
+			mo++;
+		}
+
+	delta = factor / 2;
+
+	while (rightBound - leftBound >= PP_EPS_ZERO && delta > 0) {
+		SF_Shift(startPoint, directionVector, factor, finishPoint);
+
+		pointInsideCone = true;
+		for (int i = 0; i < mo; i++)
+			if (SF_PointBelongsHalfspace_i(finishPoint, outerHalspace_i[i], PP_EPS_POINT_IN_HALFSPACE)) {
+				pointInsideCone = false;
+				break;
+			}
+		if (pointInsideCone) {
+			leftBound = factor;
+			delta *= 2;
+			factor += delta;
+		}
+		else {
+			rightBound = factor;
+			delta /= 2;
+			factor -= delta;
+			assert(factor > 0);
+		}
+	}
+
+	SF_Shift(startPoint, directionVector, factor, finishPoint);
+	delta = epsMoving;
+	do {
+		pointInsideCone = false;
+		for (int i = 0; i < mo; i++)
+			if (!SF_PointBelongsHalfspace_i(finishPoint, outerHalspace_i[i], epsMoving)) {
+				pointInsideCone = true;
+				factor -= delta;
+				delta *= 2;
+				assert(factor > 0);
+				SF_Shift(startPoint, directionVector, factor, finishPoint);
+				break;
+			}
+	} while (pointInsideCone && delta > 0 && delta > 0);
+}
+
+static void SF_MTX_Conversion() { // Transformation to inequalities & dimensionality reduction
 	int m_equation = PD_m;
 	int m_inequality;
 	int m_lowerBound;
@@ -455,7 +587,7 @@ static void SF_Conversion() { // Transformation to inequalities & dimensionality
 	cout << "-----------------------------------------------------\n";
 	cout << "PD_c: "; SF_Print_Vector(PD_c); cout << endl;/**/
 
-	SF_RemoveFreeVariables(m_equation, m_inequality, m_lowerBound, m_higherBound);
+	SF_MTX_RemoveFreeVariables(m_equation, m_inequality, m_lowerBound, m_higherBound);
 
 	/**
 	cout << "-----------------------------------------------------\n";
@@ -463,7 +595,7 @@ static void SF_Conversion() { // Transformation to inequalities & dimensionality
 	cout << "-----------------------------------------------------\n";/**/
 }
 
-inline void SF_ConversionSimple() { // Transformation to inequalities
+inline void SF_MTX_ConversionSimple() { // Transformation to inequalities
 	int m_equation = PD_m;
 
 	for (int i = 0; i < m_equation; i++) { // Conversion to inequalities
@@ -500,131 +632,6 @@ inline void SF_ConversionSimple() { // Transformation to inequalities
 	}
 }
 
-inline double SF_Distance_PointToHalfspace_i(PT_vector_T x, int i) {
-	double a_dot_z_minus_b = SF_Vector_DotProduct(PD_A[i], x) - PD_b[i];
-
-	if (PD_norm_a[i] < PP_EPS_ZERO) //Degenerate equation
-		return 0;
-
-	if (a_dot_z_minus_b < 0) // Point belongs to halfspace
-		return 0;
-
-	return a_dot_z_minus_b / PD_norm_a[i];
-}
-
-inline double SF_Distance_PointToHyperplane_i(PT_vector_T x, int i) {
-	if (PD_norm_a[i] < PP_EPS_ZERO) //Degenerate equation
-		return 0;
-	else
-		return fabs(SF_Vector_DotProduct(PD_A[i], x) - PD_b[i]) / PD_norm_a[i];
-}
-
-inline double SF_Distance_PointToPoint(PT_vector_T x, PT_vector_T y) {
-	PT_vector_T z;
-	SF_Vector_Subtraction(x, y, z);
-	return SF_Vector_Norm(z);
-}
-
-inline double SF_Distance_PointToPolytope(PT_vector_T x) { // Measure of distance from point to polytope
-	double maxDistance = 0;
-	double distance;
-
-	for (int i = 0; i < PD_m; i++) {
-		distance = SF_Distance_PointToHalfspace_i(x, i);
-		if (distance > 0)
-			maxDistance = PF_MAX(maxDistance, distance);
-	}
-	return maxDistance;
-}
-
-inline void SF_MakeColumnOfNorms(PT_matrix_T A, PT_column_T norm_a) {
-	for (int i = 0; i < PD_m; i++)
-		norm_a[i] = SF_Vector_Norm(A[i]);
-}
-
-inline void SF_MovingOnPolytope(PT_vector_T startPoint, PT_vector_T directionVector, PT_vector_T finishPoint, double epsMoving) {
-	double leftBound = 0;
-	double rightBound = PP_DBL_MAX;
-	double factor;
-
-	assert(SF_Vector_Norm(directionVector) >= PP_EPS_ZERO);
-
-	PD_shiftLength = PP_START_SHIFT_LENGTH;
-	factor = PD_shiftLength;
-
-	while (rightBound - leftBound >= PP_EPS_ZERO && factor > 0) {
-		SF_Shift(startPoint, directionVector, PD_shiftLength, finishPoint);
-		if (SF_PointBelongsPolytope(finishPoint, PP_EPS_POINT_IN_HALFSPACE)) {
-			leftBound = PD_shiftLength;
-			PD_shiftLength += factor;
-		}
-		else {
-			rightBound = PD_shiftLength;
-			factor /= 2;
-			PD_shiftLength -= factor;
-		}
-	}
-
-	SF_Shift(startPoint, directionVector, PD_shiftLength, finishPoint);
-	while (!SF_PointBelongsPolytope(finishPoint, epsMoving)) {
-		PD_shiftLength -= epsMoving;
-		epsMoving *= 2;
-		SF_Shift(startPoint, directionVector, PD_shiftLength, finishPoint);
-	}
-}
-
-inline void SF_MovingTowardsPolytope(PT_vector_T point, PT_vector_T directionVector, double eps) {
-	double leftBound = 0;
-	double rightBound = PP_DBL_MAX;
-	double factor;
-	double vectorLength;
-	PT_vector_T shiftedPoint;
-	PT_vector_T unitDirectionVector;
-	static int outerHalspace_i[PP_MM];	// Index of out half-spaces
-	int mo;								// Number of out half-spaces
-	bool pointInsideCone;
-
-	mo = 0;
-	for (int i = 0; i < PD_m; i++)
-		if (!SF_PointBelongsHalfspace_i(point, i, eps)) {
-			outerHalspace_i[mo] = i;
-			mo++;
-		}
-
-	vectorLength = SF_Vector_Norm(directionVector);
-	if (vectorLength < eps)
-		return;
-
-	SF_Vector_DivideByNumber(directionVector, SF_Vector_Norm(directionVector), unitDirectionVector);
-
-	PD_shiftLength = PP_START_SHIFT_LENGTH;
-	factor = PD_shiftLength;
-
-	while (rightBound - leftBound >= eps) {
-		SF_Shift(point, unitDirectionVector, PD_shiftLength, shiftedPoint);
-
-		pointInsideCone = true;
-		for (int i = 0; i < mo; i++)
-			if (SF_PointBelongsHalfspace_i(shiftedPoint, outerHalspace_i[i], eps)) {
-				pointInsideCone = false;
-				break;
-			}
-
-		if (pointInsideCone) {
-			leftBound = PD_shiftLength;
-			PD_shiftLength += factor;
-		}
-		else {
-			rightBound = PD_shiftLength;
-			factor /= 2;
-			PD_shiftLength -= factor;
-		}
-	}
-
-	PD_shiftLength -= factor;
-	SF_Shift(point, unitDirectionVector, PD_shiftLength, point);
-}
-
 static bool SF_MTX_Load__Problem() {
 
 	//--------------- Reading A ------------------
@@ -649,9 +656,9 @@ static bool SF_MTX_Load__Problem() {
 
 	//---------- Conversion to inequalities -----------
 #ifdef PP_SIMPLE_CONVERSION
-	SF_ConversionSimple();
+	SF_MTX_ConversionSimple();
 #else
-	SF_Conversion();
+	SF_MTX_Conversion();
 #endif
 
 	/**
@@ -1017,6 +1024,130 @@ inline bool SF_MTX_LoadPoint(PT_vector_T x, string postfix) {
 	return true;
 }
 
+inline void SF_MTX_RemoveFreeVariables(int m_equation, int m_inequality, int m_lowerBound, int m_higherBound) {
+	int freeVariable_j_col[PP_M];
+	int m_freeVariable_j_col = 0;
+	int rowToDelete_i[PP_MM];
+	int m_rowToDelete = 0;
+	bool unique;
+	bool ok;
+
+	// Find free variables
+	for (int j_col = 0; j_col < PD_n; j_col++) { // Find zero element in PD_c
+		if (PD_c[j_col] != 0)
+			continue;
+		for (int i_row = 0; i_row < m_equation; i_row++) { // Find PD_A i_row with nonzero element in column j_col
+			if (PD_A[i_row][j_col] == 0)
+				continue;
+
+			// Check uniqueness in column j_col
+			unique = true;
+			for (int i = 0; i < m_equation; i++) {
+				if (i == i_row)
+					continue;
+				if (PD_A[i][j_col] != 0) {
+					unique = false;
+					break;
+				}
+			}
+			if (!unique)
+				continue;
+
+			// Check lower bound
+			ok = true;
+			for (int i_lowerBound = m_inequality; i_lowerBound < m_lowerBound; i_lowerBound++) {
+				if (PD_A[i_lowerBound][j_col] == 0)
+					continue;
+				if (PD_A[i_lowerBound][j_col] != -1) {
+					ok = false;
+					break;
+				}
+				if (PD_b[i_lowerBound] != 0) {
+					ok = false;
+					break;
+				}
+				rowToDelete_i[m_rowToDelete] = i_lowerBound;
+				m_rowToDelete++; assert(m_rowToDelete <= PP_MM);
+				break;
+			}
+			if (!ok)
+				continue;
+
+			// Check higher bound
+			ok = true;
+			for (int i_higherBound = m_lowerBound; i_higherBound < m_higherBound; i_higherBound++) {
+				if (PD_A[i_higherBound][j_col] != 0) {
+					ok = false;
+					m_rowToDelete--;
+					break;
+				}
+			}
+			if (!ok)
+				continue;
+
+			freeVariable_j_col[m_freeVariable_j_col] = j_col;
+			m_freeVariable_j_col++; assert(m_freeVariable_j_col <= PP_M);
+			rowToDelete_i[m_rowToDelete] = m_equation + i_row;
+			m_rowToDelete++; assert(m_rowToDelete <= PP_MM);
+			// Check sign of free variable
+			if (PD_A[i_row][j_col] < 0) {
+				// Change sign of inequality
+				for (int j = 0; j < PD_n; j++)
+					PD_A[i_row][j] = -PD_A[i_row][j];
+				PD_b[i_row] = -PD_b[i_row];
+			}
+			break;
+		}
+	}
+
+	{// Eliminate columns with free variables
+		static bool colToDeleteLable[PP_N];
+		for (int j = 0; j < m_freeVariable_j_col; j++) {
+			assert(freeVariable_j_col[j] < PP_N);
+			colToDeleteLable[freeVariable_j_col[j]] = true;
+		}
+
+		for (int j = 0; j < PD_n; j++) {
+			if (colToDeleteLable[j]) {
+				for (int i = 0; i < PD_m; i++)
+					PD_A[i][j] = PD_A[i][PD_n - 1];
+				PD_c[j] = PD_c[PD_n - 1];
+				colToDeleteLable[j] = colToDeleteLable[PD_n - 1];
+				j--; assert(j >= 0);
+				PD_n--; assert(PD_n >= 0);
+
+				/**
+				cout << "-----------------------------------------------------\n";
+				SF_Print_Inequalities();
+				cout << "-----------------------------------------------------\n";/**/
+
+			}
+		}
+	}
+
+	{// Eliminate rows corresponding to free variables
+		static bool rowToDeleteLable[PP_MM];
+		for (int i = 0; i < m_rowToDelete; i++) {
+			rowToDeleteLable[rowToDelete_i[i]] = true;
+		}
+		for (int i = 0; i < PD_m; i++) {
+			if (rowToDeleteLable[i]) {
+				for (int j = 0; j < PD_n; j++)
+					PD_A[i][j] = PD_A[PD_m - 1][j];
+				PD_b[i] = PD_b[PD_m - 1];
+				rowToDeleteLable[i] = rowToDeleteLable[PD_m - 1];
+				i--; assert(i >= 0);
+				PD_m--; assert(PD_m >= 0);
+
+				/**
+				cout << "-----------------------------------------------------\n";
+				SF_Print_Inequalities();
+				cout << "-----------------------------------------------------\n";/**/
+			}
+		}
+	}
+}
+
 static bool SF_MTX_SavePoint(PT_vector_T x, string postfix) {
 	const char* mtxFile;
 	FILE* stream;// Input stream
@@ -1241,133 +1372,9 @@ inline double SF_RelativeError(double trueValue, double calculatedValue) {
 		return fabs(calculatedValue - trueValue);
 }
 
-inline void SF_RemoveFreeVariables(int m_equation, int m_inequality, int m_lowerBound, int m_higherBound) {
-	int freeVariable_j_col[PP_M];
-	int m_freeVariable_j_col = 0;
-	int rowToDelete_i[PP_MM];
-	int m_rowToDelete = 0;
-	bool unique;
-	bool ok;
-
-	// Find free variables
-	for (int j_col = 0; j_col < PD_n; j_col++) { // Find zero element in PD_c
-		if (PD_c[j_col] != 0)
-			continue;
-		for (int i_row = 0; i_row < m_equation; i_row++) { // Find PD_A i_row with nonzero element in column j_col
-			if (PD_A[i_row][j_col] == 0)
-				continue;
-
-			// Check uniqueness in column j_col
-			unique = true;
-			for (int i = 0; i < m_equation; i++) {
-				if (i == i_row)
-					continue;
-				if (PD_A[i][j_col] != 0) {
-					unique = false;
-					break;
-				}
-			}
-			if (!unique)
-				continue;
-
-			// Check lower bound
-			ok = true;
-			for (int i_lowerBound = m_inequality; i_lowerBound < m_lowerBound; i_lowerBound++) {
-				if (PD_A[i_lowerBound][j_col] == 0)
-					continue;
-				if (PD_A[i_lowerBound][j_col] != -1) {
-					ok = false;
-					break;
-				}
-				if (PD_b[i_lowerBound] != 0) {
-					ok = false;
-					break;
-				}
-				rowToDelete_i[m_rowToDelete] = i_lowerBound;
-				m_rowToDelete++; assert(m_rowToDelete <= PP_MM);
-				break;
-			}
-			if (!ok)
-				continue;
-
-			// Check higher bound
-			ok = true;
-			for (int i_higherBound = m_lowerBound; i_higherBound < m_higherBound; i_higherBound++) {
-				if (PD_A[i_higherBound][j_col] != 0) {
-					ok = false;
-					m_rowToDelete--;
-					break;
-				}
-			}
-			if (!ok)
-				continue;
-
-			freeVariable_j_col[m_freeVariable_j_col] = j_col;
-			m_freeVariable_j_col++; assert(m_freeVariable_j_col <= PP_M);
-			rowToDelete_i[m_rowToDelete] = m_equation + i_row;
-			m_rowToDelete++; assert(m_rowToDelete <= PP_MM);
-			// Check sign of free variable
-			if (PD_A[i_row][j_col] < 0) {
-				// Change sign of inequality
-				for (int j = 0; j < PD_n; j++)
-					PD_A[i_row][j] = -PD_A[i_row][j];
-				PD_b[i_row] = -PD_b[i_row];
-			}
-			break;
-		}
-	}
-
-	{// Eliminate columns with free variables
-		static bool colToDeleteLable[PP_N];
-		for (int j = 0; j < m_freeVariable_j_col; j++) {
-			assert(freeVariable_j_col[j] < PP_N);
-			colToDeleteLable[freeVariable_j_col[j]] = true;
-		}
-
-		for (int j = 0; j < PD_n; j++) {
-			if (colToDeleteLable[j]) {
-				for (int i = 0; i < PD_m; i++)
-					PD_A[i][j] = PD_A[i][PD_n - 1];
-				PD_c[j] = PD_c[PD_n - 1];
-				colToDeleteLable[j] = colToDeleteLable[PD_n - 1];
-				j--; assert(j >= 0);
-				PD_n--; assert(PD_n >= 0);
-
-				/**
-				cout << "-----------------------------------------------------\n";
-				SF_Print_Inequalities();
-				cout << "-----------------------------------------------------\n";/**/
-
-			}
-		}
-	}
-
-	{// Eliminate rows corresponding to free variables
-		static bool rowToDeleteLable[PP_MM];
-		for (int i = 0; i < m_rowToDelete; i++) {
-			rowToDeleteLable[rowToDelete_i[i]] = true;
-		}
-		for (int i = 0; i < PD_m; i++) {
-			if (rowToDeleteLable[i]) {
-				for (int j = 0; j < PD_n; j++)
-					PD_A[i][j] = PD_A[PD_m - 1][j];
-				PD_b[i] = PD_b[PD_m - 1];
-				rowToDeleteLable[i] = rowToDeleteLable[PD_m - 1];
-				i--; assert(i >= 0);
-				PD_m--; assert(PD_m >= 0);
-
-				/**
-				cout << "-----------------------------------------------------\n";
-				SF_Print_Inequalities();
-				cout << "-----------------------------------------------------\n";/**/
-			}
-		}
-	}
-}
-
-inline void SF_Shift(PT_vector_T point, PT_vector_T unitVector, double shiftLength, PT_vector_T shiftedPoint) {
+inline void SF_Shift(PT_vector_T point, PT_vector_T shiftVector, double factor, PT_vector_T shiftedPoint) {
 	for (int j = 0; j < PD_n; j++)
-		shiftedPoint[j] = point[j] + unitVector[j] * shiftLength;
+		shiftedPoint[j] = point[j] + shiftVector[j] * factor;
 }
 
 inline void SF_Vector_Addition(PT_vector_T x, PT_vector_T y, PT_vector_T z) {  // z = x + y

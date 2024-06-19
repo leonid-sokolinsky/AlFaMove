@@ -9,7 +9,7 @@ This source code has been produced with using BSF-skeleton
 
 /*----------------------------- Problems -------------------------------*/
 
-/**
+/**/
 #include "../_Problems05-1.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/Set-of-LP-Problems/Rnd-LP/"
 
@@ -29,7 +29,7 @@ This source code has been produced with using BSF-skeleton
 #include "../_Problems-Klee-Minty-Cube.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/Set-of-LP-Problems/Klee-Minty-Cube/"
 
-/**/
+/**
 #include "../_Problems-Miscellaneous.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/Set-of-LP-Problems/Miscellaneous-LP/"
 

@@ -24,10 +24,9 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_KK						2047			// Maximal number of faces that include surface point (compilator limit: 2 147 483 647)
 #define PP_MAX_PROJECTING_ITER		1E+7			// Maximum acceptable number of iterations in PF_PseudoprojectionOnFace()
 #define PP_PROBE_LENGTH				1				// Length of probe shift
-#define PP_START_SHIFT_LENGTH		100
 //-------------------------------------------------------------------------------
 
-/*============================== simple1 LP problem =============================*
+/*============================== simple1 LP problem =============================*/
 #define PP_PROBLEM_NAME	"simple1"
 #define PP_M 4		// Number of equations (number of rows in *.mtx)
 #define PP_N 7		// Number of variables (number of cols in *.mtx)
@@ -92,7 +91,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_MAX_OBJ_VALUE 		3000
 //-------------------------------------------------------------------------------
 
-/*============================== angle04 LP problem =============================*/
+/*============================== angle04 LP problem =============================*
 #define PP_PROBLEM_NAME	"angle04"
 #define PP_M 3		// Number of equations (number of rows in *.mtx)
 #define PP_N 7		// Number of variables (number of cols in *.mtx)

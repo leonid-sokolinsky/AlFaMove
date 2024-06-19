@@ -17,7 +17,6 @@ static int PD_K;					// Number of faces of all possible dimensions
 static int PD_iterNo;				// Number of iterations
 static double PD_objF_initialValue; // Initial value of objective function
 static double PD_objF_u;			// Current value of objective function
-static double PD_shiftLength;		// Shift length
 //========================== Problem structures ====================================
 static PT_matrix_T PD_A;	// Matrix of coefficients of inequalities
 static PT_column_T PD_b;	// Column of the constant terms of the system Ax <= PD_b

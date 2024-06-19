@@ -28,7 +28,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_N	31		// Number of variables (number of cols in *.mtx)
 #define PP_MAX_PROJECTING_ITER	1E+7	// Maximum acceptable number of iterations in PF_PseudoprojectionOnFace()
 #define PP_PROBE_LENGTH			0.1		// Length of probe shift
-#define PP_START_SHIFT_LENGTH	100
+#define 	100
 //=============================================================================
 
 /*============================== rnd15-0 LP problem =========================*

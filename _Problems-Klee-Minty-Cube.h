@@ -17,7 +17,7 @@ This include file is part of Problem-Parameters.h
 //-----------------------------------------------------------------------
 #define PP_MAX_PROJECTING_ITER		1E+7	// Maximum acceptable number of iterations in PF_PseudoprojectionOnFace()
 #define PP_PROBE_LENGTH				1		// Length of probe shift
-#define PP_START_SHIFT_LENGTH		100
+
 //=============================================================================
 
 /*============================== Klee-Minty5 LP problem =======================*/
