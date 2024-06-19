@@ -31,20 +31,19 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 3125
 //---------------------------------- Method parameters ------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	1E-7			// Precision for PF_MakeHyperplaneList()
-#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/10)// Precision for moving on polytope
-#define PP_EPS_PROJECTION_ROUND		1E-9			// Precision of rounding pseudoprojecting vectors
-#define PP_OBJECTIVE_VECTOR_LENGTH	1E+9			// Length of Objective Vector
+#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO		// Precision for point to be in halfspace
+#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)// Precision for moving on polytope
+#define PP_EPS_PROJECTION_ROUND		1E-7			// Precision of rounding pseudoprojecting vectors
+#define PP_OBJECTIVE_VECTOR_LENGTH	1E+10			// Length of Objective Vector
 //-----------------------------------------------------------------------------
-// Elapsed time: 0.2794484
+// Elapsed time: 0.2348548
 // Number of iterations: 9
-// Computed objective value: 3125.000000598362
+// Computed objective value: 3124.999999985131
 // Maximal objective value:  3125
-// Relative error = 1.91e-10
-//=============================================================================
+// Relative error = 4.76e-12
+//==========================================================================
 
 /*============================== Klee-Minty6 LP problem =======================*
-// Start point:	   0 ... 0
 // Exact solution: 0 ... 0	15625
 #define PP_PROBLEM_NAME	"Klee-Minty6"
 #define PP_KK 63		// Maximal number of faces that include surface point 2^m-1
@@ -54,17 +53,17 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 15625
 //---------------------------------- Method parameters ------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	1E-7			// Precision for point to be in halfspace
-#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/10)// Precision for moving on polytope
+#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO		// Precision for point to be in halfspace
+#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)// Precision for moving on polytope
 #define PP_EPS_PROJECTION_ROUND		1E-6			// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+13			// Length of Objective Vector
 //-----------------------------------------------------------------------------
-// Elapsed time: 1.6808084
+// Elapsed time: 1.5836397
 // Number of iterations: 11
-// Computed objective value: 15625.00001247148
+// Computed objective value: 15624.99999997016
 // Maximal objective value:  15625
-// Relative error = 7.98e-10
-//=============================================================================
+// Relative error = 1.91e-12
+//==========================================================================
 
 /*============================== Klee-Minty7 LP problem =======================*
 // Start point:	   0 ... 0
@@ -76,21 +75,20 @@ This include file is part of Problem-Parameters.h
 #define PP_KK 127		// Maximal number of faces that include surface point 2^m-1
 #define PP_MAX_OBJ_VALUE 78125
 //---------------------------------- Method parameters ------------------------
-#define PP_EPS_ZERO					1E-6			// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	1E-6			// Precision for point to be in halfspace
-#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/10)// Precision for moving on polytope
+#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
+#define PP_EPS_POINT_IN_HALFSPACE	1E-8			// Precision for point to be in halfspace
+#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)// Precision for moving on polytope
 #define PP_EPS_PROJECTION_ROUND		1E-4			// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+14			// Length of Objective Vector
 //-----------------------------------------------------------------------------
-// Elapsed time: 8.8617283
+// Elapsed time: 6.8138184
 // Number of iterations: 13
-// Computed objective value: 78125.00024711063
+// Computed objective value: 78124.9999991611
 // Maximal objective value:  78125
-// Relative error = 3.16e-09
+// Relative error = 1.07e-11
 //=============================================================================
 
 /*============================== Klee-Minty8 LP problem =======================*
-// Not solved!
 // Start point:	   0 ... 0
 // Exact solution: 0 ... 0	390625
 #define PP_PROBLEM_NAME	"Klee-Minty8"
@@ -101,19 +99,19 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 390625
 //---------------------------------- Method parameters ------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	1E-6			// Precision for point to be in halfspace
-#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/10)// Precision for moving on polytope
-#define PP_EPS_PROJECTION_ROUND		1E-1			// Precision of rounding vector r
+#define PP_EPS_POINT_IN_HALFSPACE	1E-7			// Precision for point to be in halfspace
+#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)// Precision for moving on polytope
+#define PP_EPS_PROJECTION_ROUND		1E-2			// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+17			// Length of Objective Vector
 //-----------------------------------------------------------------------------
-// Elapsed time: 32.748673
-// Number of iterations: 20
-// Computed objective value: 385891.9469352126
+// Elapsed time: 22.15734
+// Number of iterations: 15
+// Computed objective value: 390624.999989941
 // Maximal objective value:  390625
-// Relative error = 0.0121
+// Relative error = 2.58e-11
 //=============================================================================
 
-/*============================== Klee-Minty9 LP problem =======================*
+/*============================== Klee-Minty9 LP problem ==========================*
 // Start point:	   0 ... 0
 // Exact solution: 0 ... 0	1953125
 #define PP_PROBLEM_NAME	"Klee-Minty9"
@@ -123,12 +121,17 @@ This include file is part of Problem-Parameters.h
 #define PP_KK 511		// Maximal number of faces that include surface point 2^m-1
 #define PP_MAX_OBJ_VALUE 1953125
 //---------------------------------- Method parameters ------------------------
-#define PP_EPS_TINY_PPROJ_VEC		1E-8	// Tiny pseudoprojection vector
-#define PP_EPS_POINT_IN_HALFSPACE	1E-2	// Precision for point to be in halfspace
-#define PP_EPS_MAKE_H_PLANE_LIST	1E-2	// Precision for MakeHyperplaneList()
-#define PP_OBJECTIVE_VECTOR_LENGTH	1E+9	// Length of Objective Vector
+#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
+#define PP_EPS_POINT_IN_HALFSPACE	1E-6			// Precision for point to be in halfspace
+#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)// Precision for moving on polytope
+#define PP_EPS_PROJECTION_ROUND		1E-2			// Precision of rounding vector r
+#define PP_OBJECTIVE_VECTOR_LENGTH	1E+19			// Length of Objective Vector
 //-----------------------------------------------------------------------------
-// Not solved!!!
+// Elapsed time: 28.290836
+// Number of iterations: 15
+// Computed objective value: 1152343.729285838
+// Maximal objective value:  1953125
+// Relative error = 0.41
 //=============================================================================
 
 /*=============================================================================*/
