@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: Surface movement method (MPI)
+Theme: AlFaMove - Along Faces Movement (MPI)
 Module: Problems05-1.h (LP problems of dimension 5 with 1 randome inequality)
 Prefix: PP
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
@@ -26,7 +26,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_KK						31		// Maximal number of faces that include surface point (compilator limit: 2 147 483 647)
 #define PP_M						6		// Number of equations (number of rows in *.mtx)
 #define PP_N						11		// Number of variables (number of cols in *.mtx)
-#define PP_MAX_PROJECTING_ITER		1E+7	// Maximum acceptable number of iterations in PF_PseudoprojectionOnFace()
+#define PP_MAX_PROJECTING_ITER		1E+7	// Maximum acceptable number of iterations in PseudoprojectionOnFace()
 #define PP_PROBE_LENGTH				0.1		// Length of probe shift
 
 //-------------------------------------------------------------------------------
@@ -37,12 +37,12 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_MAX_OBJ_VALUE 		2900
 //-------------------------------------------------------------------------------
 
-/*============================== rnd5-1-1 LP problem ============================*
+/*============================== rnd5-1-1 LP problem ============================*/
 #define PP_PROBLEM_NAME	"rnd5-1-1"
 #define PP_MAX_OBJ_VALUE 2584.349489711176
 //-------------------------------------------------------------------------------
 
-/*============================== rnd5-1-2 LP problem ============================*/
+/*============================== rnd5-1-2 LP problem ============================*
 #define PP_PROBLEM_NAME	"rnd5-1-2"
 #define PP_MAX_OBJ_VALUE 2657.525612546482
 //-------------------------------------------------------------------------------

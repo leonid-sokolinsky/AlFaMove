@@ -1,9 +1,9 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: AlEM method - Along Edges Movement (No MPI)
+Theme: AlFaMove - Along Faces Movement Method (No MPI)
 Module: _Problems-Miscellaneous.h (Miscellaneous LP problems)
 Prefix: PP
-Authors: Alexandr E. Zhulev & Leonid B. Sokolinsky
+Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
 This include file is part of Problem-Parameters.h
 Initial surface points for these problems were calculated using BSF-Apex-Quest.
 ==============================================================================*/
@@ -16,13 +16,13 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 //						This parameter affects terminate condition when 
 //						calculating pseudoprojection.
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO		// Precision for PF_MakeHyperplaneList()
+#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO		// Precision for MakePointHyperplaneList()
 #define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/10)// Precision for moving on polytope
 #define PP_EPS_PROJECTION_ROUND		PP_EPS_ZERO		// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7			// Length of Objective Vector
 //-----------------------------------------------------------------------
 #define PP_KK						2047			// Maximal number of faces that include surface point (compilator limit: 2 147 483 647)
-#define PP_MAX_PROJECTING_ITER		1E+7			// Maximum acceptable number of iterations in PF_PseudoprojectionOnFace()
+#define PP_MAX_PROJECTING_ITER		1E+7			// Maximum acceptable number of iterations in PseudoprojectionOnFace()
 #define PP_PROBE_LENGTH				1				// Length of probe shift
 //-------------------------------------------------------------------------------
 

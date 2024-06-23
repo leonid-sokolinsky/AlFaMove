@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: Surface movement method (No MPI)
+Theme: AlFaMove - Along Faces Movement Method (No MPI)
 Module: Problem-Parameters.h (Problem Parameters)
 Prefix: PP
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
@@ -9,7 +9,7 @@ This source code has been produced with using BSF-skeleton
 
 /*----------------------------- Problems -------------------------------*/
 
-/**/
+/**
 #include "../_Problems05-1.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/Set-of-LP-Problems/Rnd-LP/"
 
@@ -25,7 +25,7 @@ This source code has been produced with using BSF-skeleton
 // 20-dimension problems are unsolvable
 //
 
-/**
+/**/
 #include "../_Problems-Klee-Minty-Cube.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/Set-of-LP-Problems/Klee-Minty-Cube/"
 
@@ -35,10 +35,13 @@ This source code has been produced with using BSF-skeleton
 
 /*---------------------------------------------------------------------*/
 
+#define PP_METHOD_NAME "AlFaMove"
+
 //-------------------------- Compilation Modes -----------------------
 #define PP_DEBUG
-//#define PP_MATRIX_OUTPUT
+#define PP_MATRIX_OUTPUT
 #define PP_SAVE_RESULT
+#define PP_NO_MPI
 //#define PP_PATH "Problems/"
 
 //================================ Problem Paramrters ===========================

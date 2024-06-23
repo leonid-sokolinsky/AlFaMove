@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: Surface movement method (No MPI)
+Theme: AlFaMove - Along Faces Movement Method (No MPI)
 Module: BSF-SceletonVariables.h (Skeleton Variables)
 Prefix: BSF_sv
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky

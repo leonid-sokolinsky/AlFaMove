@@ -1,6 +1,6 @@
 /*==============================================================================
-Project: LiFe - New Linear Programming Solvers - New Linear Programming Solvers
-Theme: Surface movement method (No MPI)
+Project: LiFe - New Linear Programming Solvers
+Theme: AlFaMove - Along Faces Movement Method (No MPI)
 Module: _Problems-Klee-Minty-Cube.h (Problems from the LP-Klee-Minty-Cube Set)
 Prefix: PP
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
@@ -15,7 +15,7 @@ This include file is part of Problem-Parameters.h
 //						This parameter affects terminate condition when 
 //						calculating pseudoprojection.
 //-----------------------------------------------------------------------
-#define PP_MAX_PROJECTING_ITER		1E+7	// Maximum acceptable number of iterations in PF_PseudoprojectionOnFace()
+#define PP_MAX_PROJECTING_ITER		1E+7	// Maximum acceptable number of iterations in PseudoprojectionOnFace()
 #define PP_PROBE_LENGTH				1		// Length of probe shift
 
 //=============================================================================

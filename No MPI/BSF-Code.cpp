@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: Surface movement method (No MPI)
+Theme: AlFaMove - Along Faces Movement Method (No MPI)
 Module: BSF-Code.cpp (Problem Independent Code)
 Prefix: BC
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
@@ -249,7 +249,7 @@ static bool BC_WorkerMap() { // Performs the Map function
 	PC_bsfAssignSublistLength(BD_listSize);
 	PC_bsfAssignAddressOffset(0);
 	PC_bsfAssignParameter(BD_order.parameter);
-	PC_bsf_MapInit(BD_order.parameter);
+	PC_bsf_IterInit(BD_order.parameter);
 #ifdef PP_BSF_OMP
 #ifdef PP_BSF_NUM_THREADS
 #pragma omp parallel for num_threads(PP_BSF_NUM_THREADS)

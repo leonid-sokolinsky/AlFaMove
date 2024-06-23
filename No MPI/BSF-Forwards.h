@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: Surface movement method (No MPI)
+Theme: AlFaMove - Along Faces Movement Method (No MPI)
 Module: BSF-Forwards.h (Problem Independent Function Forwards)
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky 
 This source code is a part of BSF Skeleton (https://github.com/leonid-sokolinsky/BSF-skeleton)

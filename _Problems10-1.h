@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: Surface movement method (MPI)
+Theme: AlFaMove - Along Faces Movement Method (MPI)
 Module: Problems10-1.h (LP problems of dimension 10 with 1 randome inequality)
 Prefix: PP
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
@@ -26,7 +26,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_KK	1023	// Maximal number of faces that include surface point (compilator limit: 2 147 483 647)
 #define PP_M	11		// Number of equations (number of rows in *.mtx)
 #define PP_N	21		// Number of variables (number of cols in *.mtx)
-#define PP_MAX_PROJECTING_ITER	1E+7	// Maximum acceptable number of iterations in PF_PseudoprojectionOnFace()
+#define PP_MAX_PROJECTING_ITER	1E+7	// Maximum acceptable number of iterations in PseudoprojectionOnFace()
 #define PP_PROBE_LENGTH			0.1		// Length of probe shift
 
 //-------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: Surface movement method (No MPI)
+Theme: AlFaMove - Along Faces Movement Method (No MPI)
 Module: BSF-Types.h (Problem Independent Types)
 Prefix: BT
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky 

@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: Surface movement method (MPI)
+Theme: AlFaMove - Along Faces Movement Method (MPI)
 Module: Problem-Types.h (BSF Types)
 Prefix: PT
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky

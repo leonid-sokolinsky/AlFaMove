@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe
-Theme: Surface movement method (No MPI)
+Theme: AlFaMove - Along Faces Movement Method (No MPI)
 Module: BSF-ProblemFunctions.h (Predefined Problem Function Forwards)
 Authors: Nikolay A. Olkhovsky & Leonid B. Sokolinsky
 This source code is a part of BSF Skeleton (https://github.com/leonid-sokolinsky/BSF-skeleton)
@@ -14,7 +14,7 @@ void PC_bsf_CopyParameter(
 void PC_bsf_Init(
 	bool* success
 );
-void PC_bsf_MapInit(
+void PC_bsf_IterInit(
 	PT_bsf_parameter_T parameter
 );
 void PC_bsf_IterOutput(
