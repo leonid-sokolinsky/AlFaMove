@@ -23,7 +23,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_EPS_PROJECTION_ROUND		1E-8				// Precision of rounding pseudoprojecting vectors
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+9				// Length of Objective Vector
 //-------------------------------------------------------------------------------
-#define PP_KK	1023	// Maximal number of faces that include surface point (compilator limit: 2 147 483 647)
+#define PP_KK	1024	// Maximal number of faces that include surface point (compilator limit: 2^24 = 16 777 216)
 #define PP_M	11		// Number of equations (number of rows in *.mtx)
 #define PP_N	21		// Number of variables (number of cols in *.mtx)
 #define PP_MAX_PROJECTING_ITER	1E+7	// Maximum acceptable number of iterations in PseudoprojectionOnFace()

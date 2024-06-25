@@ -105,7 +105,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	cout << "------------------------------------ Map(" << PF_MAP_LIST_INDEX << ") ------------------------------------" << endl;
 #endif // PP_DEBUG /**/
 
-// Condition for breakpoint: PD_iterNo == 2 && (BSF_sv_addressOffset + BSF_sv_numberInSublist == 2)
+	// Condition for breakpoint: PD_iterNo == 2 && (BSF_sv_addressOffset + BSF_sv_numberInSublist == 2)
 	Vector_Copy(BSF_sv_parameter.x, u);
 	double objF_u = ObjF(u);
 	reduceElem->faceCode = faceCode;
@@ -114,7 +114,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 
 	/*DEBUG PC_bsf_MapF**
 #ifdef PP_DEBUG
-		cout << "Face hyperplanes: {";
+	cout << "Face hyperplanes: {";
 	for (int i = 0; i < PD_ma - 1; i++) {
 		cout << PD_faceHyperplanes[i] << ", ";
 	}
@@ -1596,17 +1596,12 @@ namespace PF {
 	inline void MakeFaceList(int* faceCodeList, int K) {
 		int index;
 
-#ifdef PP_DEBUG
-		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout << "List of faces in random order is generated...\n";
-#endif // PP_DEBUG
-
 		for (int k = 0; k < PP_KK; k++) {
 			faceCodeList[k] = 0;
 		}
 
-		if (PP_KK <= RAND_MAX) {
-			for (int k = 1; k <= K; k++) {
+		if (PP_KK <= (RAND_MAX + 1)) {
+			for (int k = 0; k < K; k++) {
 				index = rand() % PP_KK;
 				if (faceCodeList[index] == 0)
 					faceCodeList[index] = k;
@@ -1619,67 +1614,38 @@ namespace PF {
 					}
 				}
 			}
-			//
-			//
-			//
-			//
-			//
-			//
-			//
-			//
 			return;
 		}
 
-		assert(PP_KK % RAND_MAX == 0);
 		assert(K <= PP_KK);
 
-		int segmentCount = PP_KK / RAND_MAX;
+		int segmentCount = PP_KK / (RAND_MAX + 1); // RAND_MAX = 32767
+		assert(PP_KK % (RAND_MAX + 1) == 0);
+
+		if (K < segmentCount) {
+			for (int k = 1; k < K; k++)
+				faceCodeList[(k - 1) * (RAND_MAX + 1)] = k;
+			return;
+		}
+
 		int segmentK = K / segmentCount;
-		int remainderK = K % segmentCount;
+		assert(K % segmentK == 0);
 
 		for (int l = 0; l < segmentCount; l++) {
-			for (int k = 1 + l * segmentK; k <= (l + 1) * segmentK; k++) {
-				index = rand() + l * RAND_MAX;
+			for (int k = l * segmentK; k < (l + 1) * segmentK; k++) {
+				index = rand() + l * (RAND_MAX + 1);
 				if (faceCodeList[index] == 0)
 					faceCodeList[index] = k;
 				else {
-					for (int ki = 1; ki < RAND_MAX; ki++) {
-						if (faceCodeList[(index + ki) % RAND_MAX] == 0) {
-							faceCodeList[(index + ki) % RAND_MAX] = k;
+					for (int ki = 1; ki < (RAND_MAX + 1); ki++) {
+						if (faceCodeList[l * (RAND_MAX + 1) + (index + ki) % (RAND_MAX + 1)] == 0) {
+							faceCodeList[l * (RAND_MAX + 1) + (index + ki) % (RAND_MAX + 1)] = k;
 							break;
 						}
 					}
 				}
 			}
 		}
-
-		if (remainderK == 0) return;
-
-		assert(1 + segmentCount * segmentK <= K);
-		assert(segmentCount * RAND_MAX + 1 == PP_KK);
-
-		for (int k = 1 + segmentCount * segmentK; k <= K; k++) {
-			index = rand() + segmentCount * RAND_MAX;
-			if (faceCodeList[index] == 0)
-				faceCodeList[index] = k;
-			else {
-				for (int ki = 1; ki < RAND_MAX; ki++) {
-					if (faceCodeList[(index + ki) % RAND_MAX] == 0) {
-						faceCodeList[(index + ki) % RAND_MAX] = k;
-						break;
-					}
-				}
-			}
-		}
-//
-//
-// 
-// 
-// 
-// 
-// 
-// 
-// 
 	}
 
 	inline void PreparationForIteration(PT_vector_T u) {
@@ -1694,7 +1660,7 @@ namespace PF {
 			}
 		}
 
-		PD_K = (int)pow(2, (double)PD_mh) - 1;
+		PD_K = (int)pow(2, (double)PD_mh);
 		if (PD_K > PP_KK) {
 			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
 				cout << "Parameter PP_KK = " << PP_KK << " must be greater than or equal to " << PD_K << "\n";
