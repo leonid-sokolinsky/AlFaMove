@@ -1600,7 +1600,7 @@ namespace PF {
 			faceCodeList[k] = 0;
 		}
 
-		if (PP_KK <= (RAND_MAX + 1)) {
+		if (PP_KK <= (PP_RND_MAX + 1)) {
 			for (int k = 0; k < K; k++) {
 				index = rand() % PP_KK;
 				if (faceCodeList[index] == 0)
@@ -1619,12 +1619,12 @@ namespace PF {
 
 		assert(K <= PP_KK);
 
-		int segmentCount = PP_KK / (RAND_MAX + 1); // RAND_MAX = 32767
-		assert(PP_KK % (RAND_MAX + 1) == 0);
+		int segmentCount = PP_KK / (PP_RND_MAX + 1);
+		assert(PP_KK % (PP_RND_MAX + 1) == 0);
 
 		if (K < segmentCount) {
 			for (int k = 1; k < K; k++)
-				faceCodeList[(k - 1) * (RAND_MAX + 1)] = k;
+				faceCodeList[(k - 1) * (PP_RND_MAX + 1)] = k;
 			return;
 		}
 
@@ -1633,13 +1633,13 @@ namespace PF {
 
 		for (int l = 0; l < segmentCount; l++) {
 			for (int k = l * segmentK; k < (l + 1) * segmentK; k++) {
-				index = rand() + l * (RAND_MAX + 1);
+				index = rand() % (PP_RND_MAX + 1) + l * (PP_RND_MAX + 1);
 				if (faceCodeList[index] == 0)
 					faceCodeList[index] = k;
 				else {
-					for (int ki = 1; ki < (RAND_MAX + 1); ki++) {
-						if (faceCodeList[l * (RAND_MAX + 1) + (index + ki) % (RAND_MAX + 1)] == 0) {
-							faceCodeList[l * (RAND_MAX + 1) + (index + ki) % (RAND_MAX + 1)] = k;
+					for (int ki = 1; ki < (PP_RND_MAX + 1); ki++) {
+						if (faceCodeList[l * (PP_RND_MAX + 1) + (index + ki) % (PP_RND_MAX + 1)] == 0) {
+							faceCodeList[l * (PP_RND_MAX + 1) + (index + ki) % (PP_RND_MAX + 1)] = k;
 							break;
 						}
 					}

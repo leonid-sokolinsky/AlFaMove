@@ -9,7 +9,9 @@ This source code has been produced with using BSF-skeleton
 
 /*----------------------------- Problems -------------------------------*/
 
-/**
+//#define PP_PATH "Problems/"
+
+/**/
 #include "../_Problems05-1.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/Set-of-LP-Problems/Rnd-LP/"
 
@@ -21,7 +23,7 @@ This source code has been produced with using BSF-skeleton
 #include "../_Problems15-1.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/Set-of-LP-Problems/Rnd-LP/"
 
-/**/
+/**
 #include "../_Problems20-1.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/Set-of-LP-Problems/Rnd-LP/"
 
@@ -40,14 +42,14 @@ This source code has been produced with using BSF-skeleton
 //-------------------------- Compilation Modes -----------------------
 #define PP_DEBUG
 //#define PP_MATRIX_OUTPUT
-#define PP_SAVE_RESULT
+//#define PP_SAVE_RESULT
 #define PP_NO_MPI
-//#define PP_PATH "Problems/"
 
 //================================ Problem Paramrters ===========================
 #define PP_MM					(2*PP_M+2*PP_N)	// Maximal number of inequalities
 #define PP_MAX_ITER_COUNT		10000000000		// Maximal count of iterations
 #define PP_DBL_MAX				1E+308			// Highest value
+#define PP_RND_MAX				32767			// This is necessary for compatibility with different compilers
 //-------------------------- Input/Outpoot Parameters ---------------------------
 #define PP_OUTPUT_LIMIT	30	// Number of Elements to output
 #define PP_SETW 16

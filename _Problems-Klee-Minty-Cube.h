@@ -65,7 +65,7 @@ This include file is part of Problem-Parameters.h
 // Relative error = 1.91e-12
 //==========================================================================
 
-/*============================== Klee-Minty7 LP problem =======================*/
+/*============================== Klee-Minty7 LP problem =======================*
 // Start point:	   0 ... 0
 // Exact solution: 0 ... 0	78125
 #define PP_PROBLEM_NAME	"Klee-Minty7"
@@ -111,7 +111,7 @@ This include file is part of Problem-Parameters.h
 // Relative error = 2.58e-11
 //=============================================================================
 
-/*============================== Klee-Minty9 LP problem =======================*
+/*============================== Klee-Minty9 LP problem =======================*/
 // Start point:	   0 ... 0
 // Exact solution: 0 ... 0	1953125
 #define PP_PROBLEM_NAME	"Klee-Minty9"
