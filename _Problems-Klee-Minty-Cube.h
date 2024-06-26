@@ -15,16 +15,16 @@ This include file is part of Problem-Parameters.h
 //						This parameter affects terminate condition when 
 //						calculating pseudoprojection.
 //-----------------------------------------------------------------------
-#define PP_MAX_PROJECTING_ITER		1E+7	// Maximum acceptable number of iterations in PseudoprojectionOnFace()
+#define PP_MAX_PROJECTING_ITER		1E+9	// Maximum acceptable number of iterations in PseudoprojectionOnFace()
 #define PP_PROBE_LENGTH				1		// Length of probe shift
 
 //=============================================================================
 
-/*============================== Klee-Minty5 LP problem =======================*/
+/*============================== Klee-Minty5 LP problem =======================*
 // Starting point:	0 ... 0
 // Exact solution:	0 ... 0	3125
 #define PP_PROBLEM_NAME	"Klee-Minty5"
-#define PP_KK 31		// Maximal number of faces that include surface point 2^m-1
+#define PP_KK 32		// Maximal number of faces that include surface point 2^m
 #define PP_D 5			// Space dimension
 #define PP_M PP_D		// Number of equations (number of rows in *.mtx)
 #define PP_N (2*PP_D)	// Number of variables (number of cols in *.mtx)
@@ -46,7 +46,7 @@ This include file is part of Problem-Parameters.h
 /*============================== Klee-Minty6 LP problem =======================*
 // Exact solution: 0 ... 0	15625
 #define PP_PROBLEM_NAME	"Klee-Minty6"
-#define PP_KK 63		// Maximal number of faces that include surface point 2^m-1
+#define PP_KK 64		// Maximal number of faces that include surface point 2^m
 #define PP_D 6			// Space dimension
 #define PP_M PP_D		// Number of equations (number of rows in *.mtx)
 #define PP_N (2*PP_D)	// Number of variables (number of cols in *.mtx)
@@ -58,21 +58,21 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_PROJECTION_ROUND		1E-6			// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+13			// Length of Objective Vector
 //-----------------------------------------------------------------------------
-// Elapsed time: 1.5836397
+// Elapsed time: 1.6791758
 // Number of iterations: 11
 // Computed objective value: 15624.99999997016
 // Maximal objective value:  15625
 // Relative error = 1.91e-12
 //==========================================================================
 
-/*============================== Klee-Minty7 LP problem =======================*
+/*============================== Klee-Minty7 LP problem =======================*/
 // Start point:	   0 ... 0
 // Exact solution: 0 ... 0	78125
 #define PP_PROBLEM_NAME	"Klee-Minty7"
+#define PP_KK 128		// Maximal number of faces that include surface point 2^m
 #define PP_D 7			// Space dimension
 #define PP_M PP_D		// Number of equations (number of rows in *.mtx)
 #define PP_N (2*PP_D)	// Number of variables (number of cols in *.mtx)
-#define PP_KK 127		// Maximal number of faces that include surface point 2^m-1
 #define PP_MAX_OBJ_VALUE 78125
 //---------------------------------- Method parameters ------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
@@ -81,7 +81,7 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_PROJECTION_ROUND		1E-4			// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+14			// Length of Objective Vector
 //-----------------------------------------------------------------------------
-// Elapsed time: 6.8138184
+// Elapsed time: 6.1532229
 // Number of iterations: 13
 // Computed objective value: 78124.9999991611
 // Maximal objective value:  78125
@@ -92,10 +92,10 @@ This include file is part of Problem-Parameters.h
 // Start point:	   0 ... 0
 // Exact solution: 0 ... 0	390625
 #define PP_PROBLEM_NAME	"Klee-Minty8"
+#define PP_KK 256		// Maximal number of faces that include surface point 2^m
 #define PP_D 8			// Space dimension
 #define PP_M PP_D		// Number of equations (number of rows in *.mtx)
 #define PP_N (2*PP_D)	// Number of variables (number of cols in *.mtx)
-#define PP_KK 255	// Maximal number of faces that include surface point 2^m-1
 #define PP_MAX_OBJ_VALUE 390625
 //---------------------------------- Method parameters ------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
@@ -104,21 +104,21 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_PROJECTION_ROUND		1E-2			// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+17			// Length of Objective Vector
 //-----------------------------------------------------------------------------
-// Elapsed time: 22.15734
+// Elapsed time: 310.2361
 // Number of iterations: 15
 // Computed objective value: 390624.999989941
 // Maximal objective value:  390625
 // Relative error = 2.58e-11
 //=============================================================================
 
-/*============================== Klee-Minty9 LP problem ==========================*
+/*============================== Klee-Minty9 LP problem =======================*
 // Start point:	   0 ... 0
 // Exact solution: 0 ... 0	1953125
 #define PP_PROBLEM_NAME	"Klee-Minty9"
+#define PP_KK 512		// Maximal number of faces that include surface point 2^m
 #define PP_D 9			// Space dimension
 #define PP_M PP_D		// Number of equations (number of rows in *.mtx)
 #define PP_N (2*PP_D)	// Number of variables (number of cols in *.mtx)
-#define PP_KK 511		// Maximal number of faces that include surface point 2^m-1
 #define PP_MAX_OBJ_VALUE 1953125
 //---------------------------------- Method parameters ------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
@@ -127,11 +127,11 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_PROJECTION_ROUND		1E-2			// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+19			// Length of Objective Vector
 //-----------------------------------------------------------------------------
-// Elapsed time: 28.290836
-// Number of iterations: 15
-// Computed objective value: 1152343.729285838
+// Elapsed time: 655.64446
+// Number of iterations: 17
+// Computed objective value: 1953124.999629887
 // Maximal objective value:  1953125
-// Relative error = 0.41
+// Relative error = 1.89e-10
 //=============================================================================
 
 /*=============================================================================*/

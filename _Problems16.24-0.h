@@ -76,10 +76,11 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 /*============================== rnd20-0 LP problem ===========================*
 // Solution:	100  200  ...  200
 #define PP_PROBLEM_NAME	"rnd20-0"
-#define PP_KK	1048576	// Maximal number of faces that include surface point 2^20 (compilator limit: 2^24 = 16 777 216) 
+#define PP_KK	1048576	// Maximal number of faces that include surface point 2^20 (compilator limit: 2^24 = 16 777 216)
 #define PP_M	21		// Number of equations (number of rows in *.mtx)
 #define PP_N	41		// Number of variables (number of cols in *.mtx)
 #define PP_MAX_OBJ_VALUE 41900
+//-----------------------------------------------------------------------------
 // Elapsed time: 140.7833
 // Number of iterations: 9
 // Computed objective value: 41899.9999999701
@@ -90,6 +91,23 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_PROBE_LENGTH				0.01					// Length of probe shift
 //-----------------------------------------------------------------------------
 
+/*============================== rnd22-0 LP problem ===========================*
+// Solution:	100  200  ...  200
+#define PP_PROBLEM_NAME	"rnd22-0"
+#define PP_KK	4194304	// Maximal number of faces that include surface point 2^22 (compilator limit: 2^24 = 16 777 216)
+#define PP_M	23		// Number of equations (number of rows in *.mtx)
+#define PP_N	45		// Number of variables (number of cols in *.mtx)
+#define PP_MAX_OBJ_VALUE 50500
+//-----------------------------------------------------------------------------
+// Elapsed time: 835.20186
+// Number of iterations: 10
+// Computed objective value: 50499.99999997041
+// Maximal objective value:  50500
+// Relative error = 5.86e-13//-----------------------------------------------------------------------------
+#define PP_OBJECTIVE_VECTOR_LENGTH	1E+4				// Length of Objective Vector
+#define PP_PROBE_LENGTH				0.001				// Length of probe shift
+//-----------------------------------------------------------------------------
+
 /*============================== rnd24-0 LP problem ===========================*/
 // Solution:	100  200  ...  200
 #define PP_PROBLEM_NAME	"rnd24-0"
@@ -98,8 +116,14 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_N	49		// Number of variables (number of cols in *.mtx)
 #define PP_MAX_OBJ_VALUE 59900
 //-----------------------------------------------------------------------------
-#define PP_OBJECTIVE_VECTOR_LENGTH	1E+3				// Length of Objective Vector
-#define PP_PROBE_LENGTH				0.01					// Length of probe shift
+// Elapsed time: 1471.8844
+// Number of iterations: 11
+// Computed objective value: 59899.99999996762
+// Maximal objective value:  59900
+// Relative error = 5.41e-13
+//-----------------------------------------------------------------------------
+#define PP_OBJECTIVE_VECTOR_LENGTH	1E+4				// Length of Objective Vector
+#define PP_PROBE_LENGTH				0.001					// Length of probe shift
 //-----------------------------------------------------------------------------
 
 /*=============================================================================*/
