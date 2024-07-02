@@ -25,7 +25,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_MAX_PROJECTING_ITER	1E+7	// Maximum acceptable number of iterations in PseudoprojectionOnFace()
 //=============================================================================
 
-/*============================== rnd16-0 LP problem =========================*
+/*============================== rnd16-0 LP problem =========================*/
 // Solution:	100  200  ...  200
 #define PP_PROBLEM_NAME	"rnd16-0"
 #define PP_KK	65536	// Maximal number of faces that include surface point 2^16 (compilator limit: 2^24 = 16 777 216)
@@ -108,7 +108,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_PROBE_LENGTH				0.001				// Length of probe shift
 //-----------------------------------------------------------------------------
 
-/*============================== rnd24-0 LP problem ===========================*/
+/*============================== rnd24-0 LP problem ===========================*
 // Solution:	100  200  ...  200
 #define PP_PROBLEM_NAME	"rnd24-0"
 #define PP_KK	16777216// Maximal number of faces that include surface point 2^24 (compilator limit: 2^24 = 16 777 216) 

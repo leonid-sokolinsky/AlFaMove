@@ -11,7 +11,7 @@ This source code has been produced with using BSF-skeleton
 
 //#define PP_PATH "Problems/"
 
-/**/
+/**
 #include "../_Problems05-1.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/Set-of-LP-Problems/Rnd-LP/"
 
@@ -31,7 +31,7 @@ This source code has been produced with using BSF-skeleton
 #include "../_Problems-Klee-Minty-Cube.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/Set-of-LP-Problems/Klee-Minty-Cube/"
 
-/**
+/**/
 #include "../_Problems-Miscellaneous.h"
 #define PP_PATH "D:/YandexDisk/_private/Programming/Set-of-LP-Problems/Miscellaneous-LP/"
 
@@ -41,7 +41,7 @@ This source code has been produced with using BSF-skeleton
 
 //-------------------------- Compilation Modes -----------------------
 #define PP_DEBUG
-//#define PP_MATRIX_OUTPUT
+#define PP_MATRIX_OUTPUT
 //#define PP_SAVE_RESULT
 #define PP_NO_MPI
 
