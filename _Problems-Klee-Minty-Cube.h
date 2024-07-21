@@ -15,7 +15,7 @@ This include file is part of Problem-Parameters.h
 //						This parameter affects terminate condition when 
 //						calculating pseudoprojection.
 //-----------------------------------------------------------------------
-#define PP_MAX_PROJECTING_ITER		1E+9	// Maximum acceptable number of iterations in PseudoprojectionOnFace()
+
 #define PP_PROBE_LENGTH				1		// Length of probe shift
 
 //=============================================================================
@@ -30,9 +30,9 @@ This include file is part of Problem-Parameters.h
 #define PP_N (2*PP_D)	// Number of variables (number of cols in *.mtx)
 #define PP_MAX_OBJ_VALUE 3125
 //---------------------------------- Method parameters ------------------------
-#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
+#define PP_EPS_ZERO					1E-9			// Precision for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO		// Precision for point to be in halfspace
-#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)// Precision for moving on polytope
+//#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)// Precision for moving on polytope
 #define PP_EPS_PROJECTION_ROUND		1E-7			// Precision of rounding pseudoprojecting vectors
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+10			// Length of Objective Vector
 //-----------------------------------------------------------------------------
@@ -43,7 +43,7 @@ This include file is part of Problem-Parameters.h
 // Relative error = 4.76e-12
 //==========================================================================
 
-/*============================== Klee-Minty6 LP problem =======================*
+/*============================== Klee-Minty6 LP problem =======================*/
 // Exact solution: 0 ... 0	15625
 #define PP_PROBLEM_NAME	"Klee-Minty6"
 #define PP_KK 64		// Maximal number of faces that include surface point 2^m
@@ -52,9 +52,9 @@ This include file is part of Problem-Parameters.h
 #define PP_N (2*PP_D)	// Number of variables (number of cols in *.mtx)
 #define PP_MAX_OBJ_VALUE 15625
 //---------------------------------- Method parameters ------------------------
-#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
+#define PP_EPS_ZERO					1E-9			// Precision for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO		// Precision for point to be in halfspace
-#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)// Precision for moving on polytope
+//#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)// Precision for moving on polytope
 #define PP_EPS_PROJECTION_ROUND		1E-6			// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+13			// Length of Objective Vector
 //-----------------------------------------------------------------------------
@@ -75,9 +75,9 @@ This include file is part of Problem-Parameters.h
 #define PP_N (2*PP_D)	// Number of variables (number of cols in *.mtx)
 #define PP_MAX_OBJ_VALUE 78125
 //---------------------------------- Method parameters ------------------------
-#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
+#define PP_EPS_ZERO					1E-9			// Precision for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	1E-8			// Precision for point to be in halfspace
-#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)// Precision for moving on polytope
+//#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)// Precision for moving on polytope
 #define PP_EPS_PROJECTION_ROUND		1E-4			// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+14			// Length of Objective Vector
 //-----------------------------------------------------------------------------
@@ -98,9 +98,9 @@ This include file is part of Problem-Parameters.h
 #define PP_N (2*PP_D)	// Number of variables (number of cols in *.mtx)
 #define PP_MAX_OBJ_VALUE 390625
 //---------------------------------- Method parameters ------------------------
-#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
+#define PP_EPS_ZERO					1E-9			// Precision for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	1E-7			// Precision for point to be in halfspace
-#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)// Precision for moving on polytope
+//#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)// Precision for moving on polytope
 #define PP_EPS_PROJECTION_ROUND		1E-2			// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+17			// Length of Objective Vector
 //-----------------------------------------------------------------------------
@@ -111,7 +111,7 @@ This include file is part of Problem-Parameters.h
 // Relative error = 2.58e-11
 //=============================================================================
 
-/*============================== Klee-Minty9 LP problem =======================*/
+/*============================== Klee-Minty9 LP problem =======================*
 // Start point:	   0 ... 0
 // Exact solution: 0 ... 0	1953125
 #define PP_PROBLEM_NAME	"Klee-Minty9"
@@ -121,9 +121,9 @@ This include file is part of Problem-Parameters.h
 #define PP_N (2*PP_D)	// Number of variables (number of cols in *.mtx)
 #define PP_MAX_OBJ_VALUE 1953125
 //---------------------------------- Method parameters ------------------------
-#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
+#define PP_EPS_ZERO					1E-9			// Precision for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	1E-6			// Precision for point to be in halfspace
-#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)// Precision for moving on polytope
+//#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)// Precision for moving on polytope
 #define PP_EPS_PROJECTION_ROUND		1E-2			// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+19			// Length of Objective Vector
 //-----------------------------------------------------------------------------

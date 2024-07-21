@@ -15,15 +15,14 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 // PP_EPS_PROJECTION_ROUND - inverse dependence on PP_OBJECTIVE_VECTOR_LENGTH. 
 //						This parameter affects terminate condition when 
 //						calculating pseudoprojection.
-#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
+#define PP_EPS_ZERO					1E-9			// Precision for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO		// Precision for MakePointHyperplaneList()
-#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/10)// Precision for moving on polytope
+//#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/10)// Precision for moving on polytope
 #define PP_EPS_PROJECTION_ROUND		PP_EPS_ZERO		// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7			// Length of Objective Vector
 //-----------------------------------------------------------------------
 #define PP_KK						2048			// Maximal number of faces that include surface point (compilator limit: 2^24 = 16 777 216)
-#define PP_MAX_PROJECTING_ITER		1E+7			// Maximum acceptable number of iterations in PseudoprojectionOnFace()
-#define PP_PROBE_LENGTH				0.1				// Length of probe shift
+#define PP_PROBE_LENGTH				0.001				// Length of probe shift
 //-------------------------------------------------------------------------------
 
 /*============================== simple1 LP problem =============================*
@@ -109,28 +108,28 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_PROBLEM_NAME	"rnd3-3-I"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 9		// Number of variables (number of cols in *.mtx)
-#define PP_MAX_OBJ_VALUE 		581.815325135909
+#define PP_MAX_OBJ_VALUE 		581.8153251359706
 //------------------------------------------------------------------------------
 
-/*============================== rnd3-3-II LP problem ============================*/
+/*============================== rnd3-3-II LP problem ============================*
 #define PP_PROBLEM_NAME	"rnd3-3-II"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 9		// Number of variables (number of cols in *.mtx)
-#define PP_MAX_OBJ_VALUE 		1018.672828132924
+#define PP_MAX_OBJ_VALUE 		1018.672828134234
 //------------------------------------------------------------------------------
 
 /*============================== rnd3-10 LP problem ============================*
 #define PP_PROBLEM_NAME	"rnd3-10"
 #define PP_M 13		// Number of equations (number of rows in *.mtx)
 #define PP_N 16		// Number of variables (number of cols in *.mtx)
-#define PP_MAX_OBJ_VALUE 		852.0289179009677
+#define PP_MAX_OBJ_VALUE 		852.0289179009727
 //------------------------------------------------------------------------------
 
-/*============================== rnd5-100 LP problem ===========================*
+/*============================== rnd5-100 LP problem ===========================*/
 #define PP_PROBLEM_NAME	"rnd5-100"
 #define PP_M 105		// Number of equations (number of rows in *.mtx)
 #define PP_N 110		// Number of variables (number of cols in *.mtx)
-#define PP_MAX_OBJ_VALUE	1848.437080587865
+#define PP_MAX_OBJ_VALUE	1848.437080568193
 //------------------------------------------------------------------------------
 
 /*==============================================================================*/
