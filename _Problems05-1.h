@@ -27,7 +27,6 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_M						6		// Number of equations (number of rows in *.mtx)
 #define PP_N						11		// Number of variables (number of cols in *.mtx)
 #define PP_PROBE_LENGTH				0.1		// Length of probe shift
-
 //-------------------------------------------------------------------------------
 
 /*============================== rnd5-0 LP problem ==============================*
@@ -38,32 +37,32 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 
 /*============================== rnd5-1-1 LP problem ============================*
 #define PP_PROBLEM_NAME	"rnd5-1-1"
-#define PP_MAX_OBJ_VALUE 2584.34948970906
+#define PP_MAX_OBJ_VALUE 2584.349489709197
 //-------------------------------------------------------------------------------
 
 /*============================== rnd5-1-2 LP problem ============================*
 #define PP_PROBLEM_NAME	"rnd5-1-2"
-#define PP_MAX_OBJ_VALUE 2657.525612539955
+#define PP_MAX_OBJ_VALUE 2657.525612539948
 //-------------------------------------------------------------------------------
 
 /*============================== rnd5-1-3 LP problem ============================*
 #define PP_PROBLEM_NAME	"rnd5-1-3"
-#define PP_MAX_OBJ_VALUE 2424.919153811913
+#define PP_MAX_OBJ_VALUE 2424.919153811911
 //-------------------------------------------------------------------------------
 
 /*============================== rnd5-1-4 LP problem ============================*
 #define PP_PROBLEM_NAME	"rnd5-1-4"
-#define PP_MAX_OBJ_VALUE 2300.112758698185
+#define PP_MAX_OBJ_VALUE 2300.112758698184
 //-------------------------------------------------------------------------------
 
 /*============================== rnd5-1-5 LP problem ============================*
 #define PP_PROBLEM_NAME	"rnd5-1-5"
-#define PP_MAX_OBJ_VALUE 2626.473236207369
+#define PP_MAX_OBJ_VALUE 2626.473236207309
 //-------------------------------------------------------------------------------
 
 /*============================== rnd5-1-6 LP problem ============================*/
 #define PP_PROBLEM_NAME	"rnd5-1-6"
-#define PP_MAX_OBJ_VALUE 2675.351994186643
+#define PP_MAX_OBJ_VALUE 2675.35199418665
 //-------------------------------------------------------------------------------
 
 /*===============================================================================*/
