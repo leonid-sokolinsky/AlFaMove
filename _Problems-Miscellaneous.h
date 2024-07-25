@@ -104,18 +104,32 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_MAX_OBJ_VALUE 		132.5
 //-------------------------------------------------------------------------------
 
-/*============================== rnd3-3-I LP problem ============================*
-#define PP_PROBLEM_NAME	"rnd3-3-I"
+/*============================== rnd3_3_Olkhovsky56 problem =====================*
+#define PP_PROBLEM_NAME	"rnd3_3_Olkhovsky56"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 9		// Number of variables (number of cols in *.mtx)
-#define PP_MAX_OBJ_VALUE 		581.8153251359699
+#define PP_MAX_OBJ_VALUE 		990.7971187553595
+//-------------------------------------------------------------------------------
+
+/*============================== rnd3_3_Olkhovsky289 LP problem =================*
+#define PP_PROBLEM_NAME	"rnd3_3_Olkhovsky289"
+#define PP_M 6		// Number of equations (number of rows in *.mtx)
+#define PP_N 9		// Number of variables (number of cols in *.mtx)
+#define PP_MAX_OBJ_VALUE 		671.9524948597967
 //------------------------------------------------------------------------------
 
-/*============================== rnd3-3-II LP problem ============================*
-#define PP_PROBLEM_NAME	"rnd3-3-II"
+/*============================== rnd3_3_Olkhovsky331 LP problem =================*
+#define PP_PROBLEM_NAME	"rnd3_3_Olkhovsky331"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 9		// Number of variables (number of cols in *.mtx)
-#define PP_MAX_OBJ_VALUE 		1018.672828134236
+#define PP_MAX_OBJ_VALUE 		714.535477965318
+//------------------------------------------------------------------------------
+
+/*============================== rnd3_3_Olkhovsky336 LP problem =================*/
+#define PP_PROBLEM_NAME	"rnd3_3_Olkhovsky336"
+#define PP_M 6		// Number of equations (number of rows in *.mtx)
+#define PP_N 9		// Number of variables (number of cols in *.mtx)
+#define PP_MAX_OBJ_VALUE 		998.1934486487394
 //------------------------------------------------------------------------------
 
 /*============================== rnd3-10 LP problem ============================*
@@ -125,7 +139,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_MAX_OBJ_VALUE 		852.0289179009729
 //------------------------------------------------------------------------------
 
-/*============================== rnd5-100 LP problem ===========================*/
+/*============================== rnd5-100 LP problem ===========================*
 #define PP_PROBLEM_NAME	"rnd5-100"
 #define PP_M 105		// Number of equations (number of rows in *.mtx)
 #define PP_N 110		// Number of variables (number of cols in *.mtx)
