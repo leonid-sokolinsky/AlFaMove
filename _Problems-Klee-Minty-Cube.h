@@ -20,7 +20,7 @@ This include file is part of Problem-Parameters.h
 
 //=============================================================================
 
-/*============================== Klee-Minty5 LP problem =======================*
+/*============================== Klee-Minty5 LP problem =======================*/
 // Starting point:	0 ... 0
 // Exact solution:	0 ... 0	3125
 #define PP_PROBLEM_NAME	"Klee-Minty5"
@@ -43,7 +43,7 @@ This include file is part of Problem-Parameters.h
 // Relative error = 4.76e-12
 //==========================================================================
 
-/*============================== Klee-Minty6 LP problem =======================*/
+/*============================== Klee-Minty6 LP problem =======================*
 // Exact solution: 0 ... 0	15625
 #define PP_PROBLEM_NAME	"Klee-Minty6"
 #define PP_KK 64		// Maximal number of faces that include surface point 2^m

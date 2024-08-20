@@ -43,7 +43,7 @@ void PC_bsf_Init(bool* success) {
 		return;
 	}
 	PD_iterNo = 0;
-	Vector_MakeLike(PD_c, 1, PD_e_c);
+	Vector_MakeLike(PD_c, PP_OBJECTIVE_VECTOR_LENGTH, PD_objVector);
 	PreparationForIteration(PD_u);
 }
 
@@ -91,7 +91,6 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	PT_vector_T u;		// current surface point
 	PT_vector_T v;		// v = u + PD_objVector (objVector = PP_OBJECTIVE_VECTOR_LENGTH*e_c)
 	PT_vector_T w;		// pseudiprojection of v
-	double objF_w = -PP_DBL_MAX; // F(w)
 
 	if (faceCode == 0) {
 		Vector_Zeroing((*reduceElem).d);
@@ -121,10 +120,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	cout << PD_faceHyperplanes[PD_ma - 1] << "}.\n";
 #endif // PP_DEBUG /**/
 
-	Vector_MultiplyByNumber(PD_e_c, PP_OBJECTIVE_VECTOR_LENGTH, PD_objVector);
-
 	Vector_Addition(u, PD_objVector, v);
-
 	PseudoprojectionOnFlat(PD_faceHyperplanes, PD_ma, v, PP_EPS_PROJECTION_ROUND, PP_MAX_PSEUDOPROJECTING_ITER, w, success);
 
 	if (!*success) {
