@@ -469,6 +469,8 @@ namespace SF {
 		double a_DoT_z_MinuS_b;
 		double minLengthSQR = PP_INFINITY;
 
+		Vector_Zeroing(o_min);
+
 		for (int i = 0; i < PD_m; i++) {
 			location_z = PointLocation_i(z, i, eps, &a_DoT_z_MinuS_b);
 			assert(location_z != PP_DEGENERATE_INEQUALITY);
