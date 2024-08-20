@@ -136,9 +136,6 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	}
 
 	Vector_Round(w, PP_EPS_PROJECTION_ROUND * 10);
-
-	objF_w = ObjF(w);
-
 	Vector_Subtraction(w, u, (*reduceElem).d);
 
 	double norm_d = Vector_Norm((*reduceElem).d);
