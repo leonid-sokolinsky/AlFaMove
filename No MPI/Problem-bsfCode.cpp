@@ -91,7 +91,6 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	PT_vector_T u;		// current surface point
 	PT_vector_T v;		// v = u + PD_objVector (objVector = PP_OBJECTIVE_VECTOR_LENGTH*e_c)
 	PT_vector_T w;		// pseudiprojection of v
-	double objF_w = -PP_DBL_MAX; // F(w)
 
 	if (faceCode == 0) {
 		Vector_Zeroing((*reduceElem).d);
@@ -136,9 +135,6 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	}
 
 	Vector_Round(w, PP_EPS_PROJECTION_ROUND * 10);
-
-	objF_w = ObjF(w);
-
 	Vector_Subtraction(w, u, (*reduceElem).d);
 
 	double norm_d = Vector_Norm((*reduceElem).d);
