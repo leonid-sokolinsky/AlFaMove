@@ -86,7 +86,7 @@ namespace SF {
 	void	Shift(PT_vector_T point, PT_vector_T shiftVector, double factor, PT_vector_T shiftedPoint);
 	void	TWIDDLE(int* x, int* y, int* z, int* p, bool* end);
 	void	TWIDDLE_CodeToSubset(int code, int* a, int* c, int n, int m, int* x, int* y, int* z, int* p, bool* end, int* nextElemI);
-	void	TWIDDLE_Make_p(int p[PP_MM + 2], int n, int m);
+	void	TWIDDLE_Make_p(int* p, int n, int m);
 	void	Vector_Addition(PT_vector_T x, PT_vector_T y, PT_vector_T z);
 	void	Vector_Copy(PT_vector_T x, PT_vector_T y);
 	void	Vector_DivideByNumber(PT_vector_T x, double r, PT_vector_T y);
