@@ -129,7 +129,8 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 #endif // PP_DEBUG /**/
 // Condition for breakpoint: PD_iterNo == 2 && (BSF_sv_addressOffset + BSF_sv_numberInSublist == 2)
 
-	TWIDDLE_CodeToSubset(faceCode, PD_pointNeHyperplanes, PD_facetNeHyperplanes, PD_mneh, PD_mnea);
+	TWIDDLE_CodeToSubset(faceCode, PD_pointNeHyperplanes, PD_facetNeHyperplanes, PD_mneh, PD_mnea,
+		&PD_TWIDDLE_x, &PD_TWIDDLE_x, &PD_TWIDDLE_z, PD_TWIDDLE_p, &PD_TWIDDLE_done, &PD_TWIDDLE_nextFacetI);
 
 	for (int i = 0; i < PD_mnea; i++)
 		PD_faceAllHyperplanes[PD_meq + i] = PD_facetNeHyperplanes[i];
@@ -286,7 +287,6 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	cout << "PP_EPS_POINT_IN_HALFSPACE\t" << PP_EPS_POINT_IN_HALFSPACE << endl;
 	cout << "PP_EPS_PROJECTION_ROUND\t\t" << PP_EPS_PROJECTION_ROUND << endl;
 	cout << "PP_OBJECTIVE_VECTOR_LENGTH\t" << PP_OBJECTIVE_VECTOR_LENGTH << endl;
-	cout << "PP_PROBE_LENGTH\t\t\t" << PP_PROBE_LENGTH << endl;
 	cout << "--------------- Data ---------------\n";
 	cout << "F(u0) = " << setw(PP_SETW) << ObjF(PD_u_cur) << endl;
 
@@ -2447,10 +2447,10 @@ namespace SF {
 	}
 
 	static inline void TWIDDLE // https://doi.org/10.1145/362384.362502
-	(int* x, int* y, int* z, int p[PP_N + 2], bool* done) {
+	(int* x, int* y, int* z, int* p, bool* end) {
 		int i, j, k;
 		j = 0;
-		*done = false;
+		*end = false;
 
 		do {
 			j++;
@@ -2492,7 +2492,7 @@ namespace SF {
 		}
 
 		if (i == p[0]) {
-			*done = true;
+			*end = true;
 			return;
 		}
 
@@ -2502,25 +2502,25 @@ namespace SF {
 		*y = i;
 	}
 
-	static inline void TWIDDLE_CodeToSubset(int code, int a[PP_MM], int c[PP_N - 1], int n, int m) {
-		if (PD_TWIDDLE_nextFacetI == 0) {
+	static inline void TWIDDLE_CodeToSubset(int code, int* a, int* c, int n, int m, int* x, int* y, int* z, int* p, bool* end, int* nextElemI) {
+		if ((*nextElemI) == 0) {
 			for (int k = 0; k < m; k++)
 				c[k] = a[n - m + k];
 			if (code == 0) {
-				PD_TWIDDLE_nextFacetI++;
+				(*nextElemI)++;
 				return;
 			}
 		}
 
 		do {
-			TWIDDLE(&PD_TWIDDLE_x, &PD_TWIDDLE_y, &PD_TWIDDLE_z, PD_TWIDDLE_p, &PD_TWIDDLE_done);
-			//assert(!PD_TWIDDLE_done);
+			TWIDDLE(x, y, z, p, end);
+			assert(!*end);
 			c[PD_TWIDDLE_z - 1] = a[PD_TWIDDLE_x - 1];
-			PD_TWIDDLE_nextFacetI++;
-		} while (PD_TWIDDLE_nextFacetI < code);
+			(*nextElemI)++;
+		} while ((*nextElemI) < code);
 	}
 
-	static inline void TWIDDLE_Make_p(int p[PP_MM + 2], int n, int m) {
+	static inline void TWIDDLE_Make_p(int* p, int n, int m) {
 		// p - auxiliary integer array for generating all combinations of m out of n objects.
 		assert(n >= m && m > 0);
 		p[0] = n + 1;

@@ -13,31 +13,31 @@ This source code has been produced with using BSF-skeleton
 
 /**
 #include "_Problems05-1.h"
-#define PP_PATH "../Set-of-LP-Problems/Rnd-LP/"
+#define PP_PATH "../../Set-of-LP-Problems/Rnd-LP/"
 
 /**
 #include "_Problems10-1.h"
-#define PP_PATH "../Set-of-LP-Problems/Rnd-LP/"
+#define PP_PATH "../../Set-of-LP-Problems/Rnd-LP/"
 
 /**
 #include "_Problems15-1.h"
-#define PP_PATH "../Set-of-LP-Problems/Rnd-LP/"
+#define PP_PATH "../../Set-of-LP-Problems/Rnd-LP/"
 
 /**
 #include "_Problems16.24-0.h"
-#define PP_PATH "../Set-of-LP-Problems/Rnd-LP/"
+#define PP_PATH "../../Set-of-LP-Problems/Rnd-LP/"
 
-/**/
+/**
 #include "_Problems-Klee-Minty-Cube.h"
 #define PP_PATH "../../Set-of-LP-Problems/Klee-Minty-Cube/"
 
-/**
+/**/
 #include "_Problems-Miscellaneous.h"
-#define PP_PATH "../Set-of-LP-Problems/Miscellaneous-LP/"
+#define PP_PATH "../../Set-of-LP-Problems/Miscellaneous-LP/"
 
 /**
 #include "_Problems-NetLib-LP.h"
-#define PP_PATH "../Set-of-LP-Problems/NetLib-LP/"
+#define PP_PATH "../../Set-of-LP-Problems/NetLib-LP/"
 
 /*---------------------------------------------------------------------*/
 

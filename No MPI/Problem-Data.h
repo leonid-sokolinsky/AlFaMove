@@ -36,9 +36,9 @@ static PT_vector_T PD_lo;			// Lower bound
 static PT_column_T PD_norm_a;		// Column of norms of matrix rows
 static PT_vector_T PD_objVector;	// Used for pseudoprojecting
 static int PD_pointNeHyperplanes[PP_MM];	// Index of inequality-hyperplanes that include surface point u
-static int PD_facetNeHyperplanes[PP_MM];		// Index of inequality-hyperplanes used for pseudoprojection
+static int PD_facetNeHyperplanes[PP_MM];	// Index of inequality-hyperplanes used for pseudoprojection
 static int PD_faceAllHyperplanes[PP_MM];	// Index of all hyperplanes used for pseudoprojection
-static int PD_facetCodes[PP_KK];				// Face codes
+static int PD_facetCodes[PP_KK];			// Face codes
 static int PD_TWIDDLE_p[PP_MM + 2];			// Auxiliary array for TWIDDLE algorithm
 //========================== Input/Output ====================================
 static string PD_problemName;
