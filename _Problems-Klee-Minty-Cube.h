@@ -32,8 +32,7 @@ This include file is part of Problem-Parameters.h
 //---------------------------------- Method parameters ------------------------
 #define PP_EPS_ZERO					1E-9			// Precision for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO		// Precision for point to be in halfspace
-//#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)// Precision for moving on polytope
-#define PP_EPS_PROJECTION_ROUND		1E-7			// Precision of rounding pseudoprojecting vectors
+#define PP_EPS_PROJECTION_ROUND		1E-6			// Precision of rounding pseudoprojecting vectors
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+10			// Length of Objective Vector
 //-----------------------------------------------------------------------------
 // Elapsed time: 0.2348548
@@ -54,8 +53,7 @@ This include file is part of Problem-Parameters.h
 //---------------------------------- Method parameters ------------------------
 #define PP_EPS_ZERO					1E-9			// Precision for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO		// Precision for point to be in halfspace
-//#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)// Precision for moving on polytope
-#define PP_EPS_PROJECTION_ROUND		1E-6			// Precision of rounding vector r
+#define PP_EPS_PROJECTION_ROUND		1E-3			// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+13			// Length of Objective Vector
 //-----------------------------------------------------------------------------
 // Elapsed time: 1.6791758
@@ -77,9 +75,8 @@ This include file is part of Problem-Parameters.h
 //---------------------------------- Method parameters ------------------------
 #define PP_EPS_ZERO					1E-9			// Precision for comparison with zero
 #define PP_EPS_POINT_IN_HALFSPACE	1E-8			// Precision for point to be in halfspace
-//#define PP_EPS_MOVING_ON_POLYTOPE	(PP_EPS_ZERO/100)// Precision for moving on polytope
-#define PP_EPS_PROJECTION_ROUND		1E-4			// Precision of rounding vector r
-#define PP_OBJECTIVE_VECTOR_LENGTH	1E+14			// Length of Objective Vector
+#define PP_EPS_PROJECTION_ROUND		1E-3			// Precision of rounding vector r
+#define PP_OBJECTIVE_VECTOR_LENGTH	1E+15			// Length of Objective Vector
 //-----------------------------------------------------------------------------
 // Elapsed time: 6.1532229
 // Number of iterations: 13

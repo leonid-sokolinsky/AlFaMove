@@ -10,7 +10,7 @@ This source code is a part of BSF Skeleton
 #include "Problem-Types.h"		// Problem Types 
 //=========================== BSF Types =========================
 struct PT_bsf_parameter_T {		// Type of Parameter for workers (current approximation)
-	PT_vector_T x;				// Current surface point
+	PT_vector_T u_cur;				// Current surface point
 };
 
 struct PT_bsf_mapElem_T {		// Type of map-list elements
@@ -18,9 +18,11 @@ struct PT_bsf_mapElem_T {		// Type of map-list elements
 };
 
 struct PT_bsf_reduceElem_T {	// Type of reduce-list elements for Job 0 (default)	
-	PT_vector_T d;		// d = PP_PROBE_LENGTH*(w-u)/||w-u||
-	double objF_p;	// F(p), where p=u+d
-	int faceCode;
+	PT_vector_T u_nex;	// Next vertex
+	double objF_nex;	// F(u_nex)
+#ifdef PP_GRADIENT
+	double objF_grd;	// Value of objective function after one unit movement
+#endif // PP_GRADIENT
 };
 
 struct PT_bsf_reduceElem_T_1 {	// Type of reduce-list elements for Job 1
