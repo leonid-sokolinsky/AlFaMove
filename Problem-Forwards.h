@@ -9,9 +9,9 @@ This source code has been produced with using BSF-skeleton
 #include "Problem-Types.h"
 //====================== Private Functions ===========================
 namespace PF {
-	void	MakeFacetList(int* faceCodeList, int K);
+	void	CalculateNumberOfFacets(int facetDim, int neq, int mneh_u, int* mfa_u);
+	void	MakeFacetList(int* FacetCodeList, int mfa_u);
 	void	PreparationForIteration(PT_vector_T u);
-	void	Print_Number_of_faces(PT_vector_T x, int facetDim);
 }
 //====================== Shared Functions ===========================
 namespace SF {
@@ -26,7 +26,7 @@ namespace SF {
 	void	JumpingOnPolytope(PT_vector_T startPoint, PT_vector_T directionVector, PT_vector_T finishPoint, double eps);
 	void	MakeColumnOfNorms(PT_matrix_T A, PT_column_T norm_a);
 	void	MakeListOfNotIncludingHalfspaces(PT_vector_T x, int* notIncludingHalfspacesList, double eps);
-	void	MakeNeHyperplaneList(PT_vector_T u, int* pointHyperplaneList, int* mneh, double eps);
+	void	MakeNeHyperplaneList(PT_vector_T u, int* neHyperplanes_u, int* mneh_u, double eps);
 	void	MovingToPolytope(PT_vector_T startPoint, PT_vector_T directionVector, PT_vector_T finishPoint, double epsMoving);
 	bool	MPS___Load_Problem();
 	bool	MPS__MakeProblem(PT_MPS_row_T* row, int n_row, PT_MPS_column_T* column, int n_col, double* loBound, PT_MPS_upBound_T* upBounds, int n_up, PT_MPS_fxVariable_T* fxVariable, int n_fx);
@@ -84,8 +84,8 @@ namespace SF {
 	void	Print_Vector(PT_vector_T x);
 	double	RelativeError(double trueValue, double calculatedValue);
 	void	Shift(PT_vector_T point, PT_vector_T shiftVector, double factor, PT_vector_T shiftedPoint);
-	void	TWIDDLE(int* x, int* y, int* z, int* p, bool* end);
-	void	TWIDDLE_CodeToSubset(int code, int* a, int* c, int n, int m, int* x, int* y, int* z, int* p, bool* end, int* nextElemI);
+	void	TWIDDLE(int* x, int* y, int* z, int* p, bool* done);
+	void	TWIDDLE_CodeToSubset(int code, int* a, int* c, int n, int m, int* x, int* y, int* z, int* p, bool* done, int* nextI);
 	void	TWIDDLE_Make_p(int* p, int n, int m);
 	void	Vector_Addition(PT_vector_T x, PT_vector_T y, PT_vector_T z);
 	void	Vector_Copy(PT_vector_T x, PT_vector_T y);

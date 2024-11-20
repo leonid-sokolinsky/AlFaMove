@@ -16,7 +16,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 //						This parameter affects terminate condition when 
 //						calculating pseudoprojection.
 #define PP_EPS_ZERO					1E-9			// Precision for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO		// Precision for MakeHyperplaneList()
+#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO		// Precision for MakeNeHyperplaneList()
 #define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO		// Accuracy of belonging to hyperplane
 #define PP_EPS_PROJECTION_ROUND		PP_EPS_ZERO		// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7			// Length of Objective Vector

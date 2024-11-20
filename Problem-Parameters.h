@@ -45,7 +45,7 @@ This source code has been produced with using BSF-skeleton
 
 //-------------------------- Compilation Modes -----------------------
 #define PP_DEBUG
-//#define PP_MATRIX_OUTPUT
+#define PP_MATRIX_OUTPUT
 //#define PP_SAVE_RESULT
 //#define PP_GRADIENT
 //#define BIPROJECTION
@@ -90,5 +90,4 @@ This source code has been produced with using BSF-skeleton
 #define PP_OUTSIDE_HALFSPACE		3
 #define PP_PARALLEL					4
 #define PP_RECESSIVE				5
-#define PP_ON_BOUNDARY				6
 #define PP_NONDEGENERATE_PROJECTING	9

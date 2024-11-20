@@ -19,7 +19,7 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 		-225494.96316238038228101176621492
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-7			// Precision for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeHyperplaneList()
+#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeNeHyperplaneList()
 #define PP_EPS_ON_HYPERPLANE		(PP_EPS_ZERO*10)// Accuracy of belonging to hyperplane
 #define PP_EPS_PROJECTION_ROUND		PP_EPS_ZERO		// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7			// Length of Objective Vector
@@ -35,7 +35,7 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 464.75314285714285714285714285714
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-7			// Precision for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeHyperplaneList()
+#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeNeHyperplaneList()
 #define PP_EPS_ON_HYPERPLANE		(PP_EPS_ZERO*10)// Accuracy of belonging to hyperplane
 #define PP_EPS_PROJECTION_ROUND		PP_EPS_ZERO		// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7			// Length of Objective Vector
@@ -52,7 +52,7 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE -33592.4858072
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-7			// Precision for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeHyperplaneList()
+#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeNeHyperplaneList()
 #define PP_EPS_ON_HYPERPLANE		(PP_EPS_ZERO*10)// Accuracy of belonging to hyperplane
 #define PP_EPS_PROJECTION_ROUND		PP_EPS_ZERO		// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7			// Length of Objective Vector
@@ -75,7 +75,7 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 30.812149845828220173774356124984	// Exact maximum value of objective function
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-3			// Precision for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeHyperplaneList()
+#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeNeHyperplaneList()
 #define PP_EPS_ON_HYPERPLANE		(PP_EPS_ZERO*10)// Accuracy of belonging to hyperplane
 #define PP_EPS_PROJECTION_ROUND		PP_EPS_ZERO		// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7			// Length of Objective Vector
@@ -93,7 +93,7 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 9146.3780924209269467749025024617	// Exact maximum value of objective function
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9	// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeHyperplaneList()
+#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeNeHyperplaneList()
 #define PP_EPS_ON_HYPERPLANE		(PP_EPS_ZERO*10)// Accuracy of belonging to hyperplane
 #define PP_EPS_PROJECTION_ROUND		PP_EPS_ZERO		// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7			// Length of Objective Vector
@@ -109,7 +109,7 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 896644.82186304572966200464196045	// Exact maximum value of objective function
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9	// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeHyperplaneList()
+#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeNeHyperplaneList()
 #define PP_EPS_ON_HYPERPLANE		(PP_EPS_ZERO*10)// Accuracy of belonging to hyperplane
 #define PP_EPS_PROJECTION_ROUND		PP_EPS_ZERO		// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7			// Length of Objective Vector
@@ -126,7 +126,7 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 1749.9001299062057129526866493726
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-7			// Precision for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeHyperplaneList()
+#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeNeHyperplaneList()
 #define PP_EPS_ON_HYPERPLANE		(PP_EPS_ZERO*10)// Accuracy of belonging to hyperplane
 #define PP_EPS_PROJECTION_ROUND		PP_EPS_ZERO		// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7			// Length of Objective Vector
@@ -143,7 +143,7 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 266.616 // Exact maximum value of objective function
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9			// Precision for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeHyperplaneList()
+#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeNeHyperplaneList()
 #define PP_EPS_ON_HYPERPLANE		(PP_EPS_ZERO*10)// Accuracy of belonging to hyperplane
 #define PP_EPS_PROJECTION_ROUND		PP_EPS_ZERO		// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7			// Length of Objective Vector
@@ -160,7 +160,7 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 64.575077058564509026860413914575	// Exact maximum value of objective function
 //-------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-7			// Precision for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeHyperplaneList()
+#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeNeHyperplaneList()
 #define PP_EPS_ON_HYPERPLANE		(PP_EPS_ZERO*10)// Accuracy of belonging to hyperplane
 #define PP_EPS_PROJECTION_ROUND		PP_EPS_ZERO		// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7			// Length of Objective Vector
@@ -183,7 +183,7 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 70	// Exact maximum value of objective function
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-7			// Precision for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeHyperplaneList()
+#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)// Precision for MakeNeHyperplaneList()
 #define PP_EPS_ON_HYPERPLANE		(PP_EPS_ZERO*10)// Accuracy of belonging to hyperplane
 #define PP_EPS_PROJECTION_ROUND		PP_EPS_ZERO		// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7			// Length of Objective Vector
@@ -213,7 +213,7 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 415.732240741419486545199108738 // Exact maximum value of objective function
 //--------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9				// Precision for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)	// Precision for MakeHyperplaneList()
+#define PP_EPS_POINT_IN_HALFSPACE	(PP_EPS_ZERO*10)	// Precision for MakeNeHyperplaneList()
 #define PP_EPS_ON_HYPERPLANE		(PP_EPS_ZERO*10)	// Accuracy of belonging to hyperplane
 #define PP_EPS_PROJECTION_ROUND		PP_EPS_ZERO			// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
