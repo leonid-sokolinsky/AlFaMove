@@ -58,7 +58,7 @@ This source code has been produced with using BSF-skeleton
 #define PP_MM							(PP_M+2*PP_N)		// Maximal number of constraints
 #endif // PP_MPS_FORMAT
 #define PP_MAX_ITER_COUNT				10000000000		// Maximal count of iterations
-#define PP_MAX_PSEUDOPROJECTING_ITER	1000000		// Maximum acceptable number of iterations in SF::Flat_BIProjection()
+#define PP_MAX_PSEUDOPROJECTING_ITER	1000000		// Maximum acceptable number of iterations in SF::Flat_BipProjection()
 #define PP_DBL_MAX						1E+308			// Highest value
 #define PP_RND_MAX						32767			// This is necessary for compatibility with different compilers
 //-------------------------- Input/Outpoot Parameters ---------------------------

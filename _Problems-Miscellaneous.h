@@ -28,7 +28,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_MPS_FORMAT
 #define PP_PROBLEM_NAME	"simpleCube"
 #ifdef PP_MPS_FORMAT
-#define PP_M 3		// Number of constrains
+#define PP_M 3		// Number of constraints
 #define PP_N 3		// Number of variables
 #else
 #define PP_M 3	// Number of rows in *.mtx
@@ -37,10 +37,10 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_MAX_OBJ_VALUE 		60000
 //-----------------------------------------------------------------------------
 
-/*============================== cubeInHyperplane LP problem ===================*
+/*============================== cubeInHyperplane LP problem ===================*/
 #define PP_MPS_FORMAT
 #define PP_PROBLEM_NAME	"cubeInHyperplane"
-#define PP_M 4		// Number of constrains
+#define PP_M 4		// Number of constraints
 #define PP_N 4		// Number of variables
 #define PP_MAX_OBJ_VALUE 		90000
 //-----------------------------------------------------------------------------
@@ -58,7 +58,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_PROBLEM_NAME	"simple1"
 #define PP_MPS_FORMAT
 #ifdef PP_MPS_FORMAT
-#define PP_M 4		// Number of constrains
+#define PP_M 4		// Number of constraints
 #define PP_N 3		// Number of variables
 #else
 #define PP_M 4		// Number of rows in *.mtx
@@ -80,7 +80,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_PROBLEM_NAME	"simple2"
 #define PP_MPS_FORMAT
 #ifdef PP_MPS_FORMAT
-#define PP_M 5		// Number of constrains
+#define PP_M 5		// Number of constraints
 #define PP_N 4		// Number of variables
 #else
 #define PP_M 5		// Number of rows in *.mtx
@@ -93,7 +93,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_PROBLEM_NAME	"simple3"
 #define PP_MPS_FORMAT
 #ifdef PP_MPS_FORMAT
-#define PP_M 5		// Number of constrains
+#define PP_M 5		// Number of constraints
 #define PP_N 5		// Number of variables
 #else
 #define PP_M 6		// Number of rows in *.mtx
@@ -186,7 +186,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_MAX_OBJ_VALUE 		852.0289179009729
 //------------------------------------------------------------------------------
 
-/*============================== rnd5-100 LP problem ===========================*/
+/*============================== rnd5-100 LP problem ===========================*
 #define PP_PROBLEM_NAME	"rnd5-100"
 #define PP_M 105		// Number of equations (number of rows in *.mtx)
 #define PP_N 110		// Number of variables (number of cols in *.mtx)

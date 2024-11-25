@@ -66,6 +66,7 @@ void PC_bsf_Init(bool* success) {
 	PD_iterNo = 0;
 	Vector_MakeLike(PD_c, PP_OBJECTIVE_VECTOR_LENGTH, PD_objVector);
 	PD_objF_cur = ObjF(PD_u_cur);
+	BSF_sv_parameter.facetDim = PD_facetDim;
 	PreparationForIteration(PD_u_cur);
 }
 
@@ -149,7 +150,7 @@ void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int
 	Vector_Addition(u_cur, PD_objVector, v);
 
 #ifdef BIPROJECTION
-	Flat_BIProjection(PD_facetAlHyperplanes, PD_meq + PD_mne_p, v, PP_EPS_PROJECTION_ROUND, PP_MAX_PSEUDOPROJECTING_ITER, w, success);
+	Flat_BipProjection(PD_facetAlHyperplanes, PD_meq + PD_mne_p, v, PP_EPS_PROJECTION_ROUND, PP_MAX_PSEUDOPROJECTING_ITER, w, success);
 #else
 	Flat_MaxProjection(PD_facetAlHyperplanes, PD_meq + PD_mne_p, v, PP_EPS_PROJECTION_ROUND, PP_MAX_PSEUDOPROJECTING_ITER, w, success);
 #endif // BIPROJECTION
@@ -514,7 +515,7 @@ namespace SF {
 		return Vector_NormSquare(z);
 	}
 
-	static inline void Flat_BIProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps, int maxProjectingIter, PT_vector_T w, int* success) {
+	static inline void Flat_BipProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps, int maxProjectingIter, PT_vector_T w, int* success) {
 		PT_vector_T r;
 		PT_vector_T w_previous;
 		double dist;
@@ -543,10 +544,10 @@ namespace SF {
 				break;
 			}
 			dist = Distance_PointToPoint(w, w_previous);
-		} while (dist >= eps);
+		} while (dist >= PP_EPS_ZERO);
 		/*DEBUG PC_bsf_MapF**
 #ifdef PP_DEBUG
-		cout << "Flat_BIProjection: iterCount = " << iterCount << endl;
+		cout << "Flat_BipProjection: iterCount = " << iterCount << endl;
 #endif // PP_DEBUG /**/
 	}
 
@@ -570,7 +571,7 @@ namespace SF {
 				PT_vector_T p;
 				OrthogonalProjectingVectorOntoHyperplane_i(w, flatHyperplanes[i], p);
 				dist = Vector_Norm(p);
-				if (dist >= max_dist + PP_EPS_ZERO) {
+				if (dist >= max_dist + eps) {
 					Vector_Addition(w, p, w_max);
 					max_dist = dist;
 					max_i = i;
@@ -2417,28 +2418,28 @@ namespace SF {
 	}
 
 	static inline void Print_Number_of_edges(PT_vector_T x) {
-		int mneh;
-		unsigned long long me;
+		int mne;
+		unsigned long long ull_mne;
 
-		mneh = 0;
+		mne = 0;
 		for (int i = 0; i < PD_m; i++) {
 			if (PD_isEquation[i])
 				continue;
 			if (PointBelongsHyperplane_i(x, i, PP_EPS_POINT_IN_HALFSPACE))
-				mneh++;
+				mne++;
 		}
 
-		if (mneh == PD_neq)
-			me = (unsigned long long) mneh;
+		if (mne == PD_neq)
+			ull_mne = (unsigned long long) mne;
 		else {
-			if (mneh > 62) {
-				cout << "Warning: Can't calculate binomial coefficient for number of including hyperplanes mneh = "
-					<< mneh << " > 62" << endl;
+			if (mne > 62) {
+				cout << "Warning: Can't calculate binomial coefficient for number of including hyperplanes mne = "
+					<< mne << " > 62" << endl;
 				return;
 			}
-			me = BinomialCoefficient(mneh, PD_neq - 1);
+			ull_mne = BinomialCoefficient(mne, PD_neq - 1);
 		}
-		cout << me << endl;
+		cout << ull_mne << endl;
 	}
 
 	static inline void Print_Vector(PT_vector_T x) {
@@ -2714,7 +2715,6 @@ namespace PF {
 				index++;
 			}
 		}
-		return;
 	}
 
 	static inline void PreparationForIteration(PT_vector_T u) {
