@@ -23,6 +23,13 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_KK						100				// Maximal number of edges that include surface point (compilator limit: 2 147 483 647)
 //-----------------------------------------------------------------------------
 
+/*============================== nguyen5 LP problem ============================*/
+#define PP_PROBLEM_NAME	"nguyen5"
+#define PP_MPS_FORMAT
+#define PP_M 4		// Number of constrains
+#define PP_N 5		// Number of variables
+#define PP_MAX_OBJ_VALUE 		21.45497290910011
+//------------------------------------------------------------------------------
 
 /*============================== simpleCube LP problem ==========================*
 #define PP_MPS_FORMAT
@@ -37,7 +44,7 @@ Initial surface points for these problems were calculated using BSF-Apex-Quest.
 #define PP_MAX_OBJ_VALUE 		60000
 //-----------------------------------------------------------------------------
 
-/*============================== cubeInHyperplane LP problem ===================*/
+/*============================== cubeInHyperplane LP problem ===================*
 #define PP_MPS_FORMAT
 #define PP_PROBLEM_NAME	"cubeInHyperplane"
 #define PP_M 4		// Number of constraints

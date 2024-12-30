@@ -10,7 +10,7 @@ This include file is part of Problem-Parameters.h
 
 #define PP_MPS_FORMAT
 
-/*============================== adlittle LP problem =======================*/
+/*============================== adlittle LP problem =======================*
 // Number of equations : 15
 // Subspace dimension : 82
 #define PP_PROBLEM_NAME		"adlittle"
@@ -23,10 +23,10 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ON_HYPERPLANE		(PP_EPS_ZERO*10)// Accuracy of belonging to hyperplane
 #define PP_EPS_PROJECTION_ROUND		PP_EPS_ZERO		// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7			// Length of Objective Vector
-#define PP_KK						82				// Maximal number of edges that include surface point (compilator limit: 2 147 483 647)
+#define PP_KK						1000000			// Maximal number of edges that include surface point (compilator limit: 2 147 483 647)
 //--------------------------------------------------------------------------
 
-/*============================== afiro LP problem ==========================*
+/*============================== afiro LP problem ==========================*/
 // Number of equations : 8
 // Subspace dimension : 24
 #define PP_PROBLEM_NAME	"afiro"
@@ -39,8 +39,13 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ON_HYPERPLANE		(PP_EPS_ZERO*10)// Accuracy of belonging to hyperplane
 #define PP_EPS_PROJECTION_ROUND		PP_EPS_ZERO		// Precision of rounding vector r
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7			// Length of Objective Vector
-#define PP_KK						32				// Maximal number of edges that include surface point (compilator limit: 2 147 483 647)
+#define PP_KK						1000000				// Maximal number of edges that include surface point (compilator limit: 2 147 483 647)
 //--------------------------------------------------------------------------
+// Elapsed time: 0.0013957
+// Number of iterations: 2
+// Computed objective value: 55000.00000000346
+// Maximal objective value:  55000
+// Relative error = 6.3e-14
 //--------------------------------------------------------------------------
 
 /*============================== beaconfd LP problem =======================*

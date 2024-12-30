@@ -361,7 +361,7 @@ void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter,
 	if (RelativeError(PD_objF_cur, reduceResult->objF_nex) < PP_EPS_ZERO) {
 		/*DEBUG PC_bsf_ProcessResults**
 #ifdef PP_DEBUG
-		//cout << "u_nex =\t    "; Print_Vector(reduceResult->u_nex); cout << "\t";
+		cout << "u_nex =\t    "; Print_Vector(reduceResult->u_nex); cout << "\t";
 		cout << "F(u_nex) = " << setw(PP_SETW) << reduceResult->objF_nex << endl;
 		cout << "|F(u_cur)-F(u_nex)|/|F(F(u_cur))| = " << RelativeError(PD_objF_cur, reduceResult->objF_nex) << " < PP_EPS_ZERO = " << PP_EPS_ZERO << " ===>>> movement is impossible.\n";
 #endif // PP_DEBUG /**/
@@ -372,7 +372,7 @@ void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter,
 
 #ifdef PP_DEBUG
 	cout << "_________________________________________________ " << PD_iterNo + 1 << " _____________________________________________________" << endl;
-	//cout << "u_nex:\t"; Print_Vector(reduceResult->u_nex);  cout << "\t";
+	cout << "u_nex:\t"; Print_Vector(reduceResult->u_nex);  cout << "\t";
 	cout << "F(u) = " << (reduceResult->objF_nex = ObjF(reduceResult->u_nex)) << endl;
 	cout << "Including hyperplanes:\t"; Print_HyperplanesIncludingPoint(reduceResult->u_nex, PP_EPS_POINT_IN_HALFSPACE); cout << endl;
 	cout << "Facet dimension: " << PD_facetDim << endl;

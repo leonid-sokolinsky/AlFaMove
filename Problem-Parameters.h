@@ -47,7 +47,7 @@ This source code has been produced with using BSF-skeleton
 #define PP_DEBUG
 #define PP_MATRIX_OUTPUT
 //#define PP_SAVE_RESULT
-//#define PP_GRADIENT
+#define PP_GRADIENT
 //#define BIPROJECTION
 //#define MPS_MIN_OF_OBJECTIVE_FUNCTION
 
